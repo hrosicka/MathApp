@@ -26,6 +26,8 @@ from matplotlib import pyplot as plt
 
 import numpy as np
 
+import CircleCalc
+
 class MplCanvas(FigureCanvasQTAgg):
 
     def __init__(self, parent=None, width=6, height=6, dpi=100):
@@ -125,21 +127,29 @@ class WindowCircle(QWidget):
         layout_res.addWidget(self.label_perimeter,0,0)
 
         self.label_res_perimeter = QLabel('0.0')
-        self.label_res_perimeter.setFont(QFont('Arial', 12))
+        # self.label_res_perimeter.setFont(QFont('Arial', 12))
         self.label_res_perimeter.setStyleSheet("background-color : white; color : darkblue")
         self.label_res_perimeter.setAlignment(QtCore.Qt.AlignRight)
         layout_res.addWidget(self.label_res_perimeter,0,1)
+
+        self.label_dim_per = QLabel("cm")
+        self.label_dim_per.setAlignment(QtCore.Qt.AlignLeft)
+        layout_res.addWidget(self.label_dim_per,0,2)
+
 
         self.label_area = QLabel("Circle Area:")
         self.label_area.setAlignment(QtCore.Qt.AlignLeft)
         layout_res.addWidget(self.label_area,1,0)
 
         self.label_res_area = QLabel('0.0')
-        self.label_res_area.setFont(QFont('Arial', 12))
+        # self.label_res_area.setFont(QFont('Arial', 12))
         self.label_res_area.setStyleSheet("background-color : white; color : darkblue")
         self.label_res_area.setAlignment(QtCore.Qt.AlignRight)
         layout_res.addWidget(self.label_res_area,1,1)
 
+        self.label_dim_area = QLabel("cm2")
+        self.label_dim_area.setAlignment(QtCore.Qt.AlignLeft)
+        layout_res.addWidget(self.label_dim_area,1,2)
 
 
 
@@ -150,5 +160,20 @@ class WindowCircle(QWidget):
         
         circle_plot.axes.add_artist(Drawing_colored_circle)
         circle_plot.draw()
+
+        self.calculate_circle()
+
+    def calculate_circle(self):
+
+        radius_circle = float(self.edit_radius.text())
+        myCircle = CircleCalc.Kruh(radius_circle)
+        circle_perimeter = myCircle.obvod()
+        circle_area = myCircle.obsah()
+
+        self.label_res_perimeter.setText(str(circle_perimeter))
+        self.label_res_area.setText(str(circle_area))
+
+        
+
 
         
