@@ -63,10 +63,16 @@ class WindowCircle(QWidget):
 
 
 
-        l3 = QGridLayout()
+        layout_param = QGridLayout()
+        layout_res = QGridLayout()
+
+
         groupBoxParameters = QGroupBox("Parameters")
-        groupBoxParameters.setLayout(l3)
+        groupBoxParameters.setLayout(layout_param)
+        groupBoxResults = QGroupBox("Results")
+        groupBoxResults.setLayout(layout_res)
         vbox.addWidget(groupBoxParameters)
+        vbox.addWidget(groupBoxResults)
         vbox.addWidget(sc)
         vbox.addStretch(1)
         vbox.addLayout(hbox)
@@ -78,30 +84,61 @@ class WindowCircle(QWidget):
 
         self.label_radius = QLabel("Radius:")
         self.label_radius.setAlignment(QtCore.Qt.AlignLeft)
-        l3.addWidget(self.label_radius,0,0)
+        layout_param.addWidget(self.label_radius,0,0)
 
         self.edit_radius = QLineEdit(self)
         self.edit_radius.setAlignment(QtCore.Qt.AlignRight)
-        l3.addWidget(self.edit_radius,0,1)
+        layout_param.addWidget(self.edit_radius,0,1)
+
+        self.label_dim_radius = QLabel("cm")
+        self.label_dim_radius.setAlignment(QtCore.Qt.AlignLeft)
+        layout_param.addWidget(self.label_dim_radius,0,2)
 
 
         self.label_centerX = QLabel("Center - X coord.:")
         self.label_centerX.setAlignment(QtCore.Qt.AlignLeft)
-        l3.addWidget(self.label_centerX,1,0)
+        layout_param.addWidget(self.label_centerX,1,0)
 
         self.edit_centerX = QLineEdit(self)
         self.edit_centerX.setAlignment(QtCore.Qt.AlignRight)
-        l3.addWidget(self.edit_centerX,1,1)
+        layout_param.addWidget(self.edit_centerX,1,1)
 
+        self.label_dim_x = QLabel("cm")
+        self.label_dim_x.setAlignment(QtCore.Qt.AlignLeft)
+        layout_param.addWidget(self.label_dim_x,1,2)
 
         self.label_centerY = QLabel("Center - Y coord.:")
         self.label_centerY.setAlignment(QtCore.Qt.AlignLeft)
-        l3.addWidget(self.label_centerY,2,0)
+        layout_param.addWidget(self.label_centerY,2,0)
 
         self.edit_centerY = QLineEdit(self)
         self.edit_centerY.setAlignment(QtCore.Qt.AlignRight)
-        l3.addWidget(self.edit_centerY,2,1)
+        layout_param.addWidget(self.edit_centerY,2,1)
+
+        self.label_dim_y = QLabel("cm")
+        self.label_dim_y.setAlignment(QtCore.Qt.AlignLeft)
+        layout_param.addWidget(self.label_dim_y,2,2)
         
+
+        self.label_perimeter = QLabel("Circle Perimeter:")
+        self.label_perimeter.setAlignment(QtCore.Qt.AlignLeft)
+        layout_res.addWidget(self.label_perimeter,0,0)
+
+        self.label_res_perimeter = QLabel('0.0')
+        self.label_res_perimeter.setFont(QFont('Arial', 12))
+        self.label_res_perimeter.setStyleSheet("background-color : white; color : darkblue")
+        self.label_res_perimeter.setAlignment(QtCore.Qt.AlignRight)
+        layout_res.addWidget(self.label_res_perimeter,0,1)
+
+        self.label_area = QLabel("Circle Area:")
+        self.label_area.setAlignment(QtCore.Qt.AlignLeft)
+        layout_res.addWidget(self.label_area,1,0)
+
+        self.label_res_area = QLabel('0.0')
+        self.label_res_area.setFont(QFont('Arial', 12))
+        self.label_res_area.setStyleSheet("background-color : white; color : darkblue")
+        self.label_res_area.setAlignment(QtCore.Qt.AlignRight)
+        layout_res.addWidget(self.label_res_area,1,1)
 
 
 
