@@ -18,7 +18,7 @@ class Example(QWidget):
         vbox.addStretch(1)
         vbox.addLayout(hbox)
         self.setLayout(vbox)
-        self.setGeometry(300, 300, 350, 150)
+        self.setGeometry(300, 300, 650, 650)
         self.setWindowTitle('Box layout example, QHBoxLayout, QVBoxLayout')  
         self.show()
 

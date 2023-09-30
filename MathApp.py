@@ -3,6 +3,7 @@ from random import randint
 
 from PyQt5.QtWidgets import (
     QApplication,
+    QGroupBox,
     QLabel,
     QMainWindow,
     QPushButton,
@@ -33,7 +34,7 @@ import numpy as np
 
 class MplCanvas(FigureCanvasQTAgg):
 
-    def __init__(self, parent=None, width=5, height=4, dpi=100):
+    def __init__(self, parent=None, width=5, height=5, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot(111)
         super(MplCanvas, self).__init__(fig)
@@ -73,7 +74,7 @@ class ExampleWindow(QWidget):
         vbox.addStretch(1)
         vbox.addLayout(hbox)
         self.setLayout(vbox)
-        self.setGeometry(300, 300, 350, 150)
+        self.setGeometry(300, 300, 800, 800)
         self.setWindowTitle('Box layout example, QHBoxLayout, QVBoxLayout')  
 
 

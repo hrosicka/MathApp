@@ -3,14 +3,19 @@ from random import randint
 
 from PyQt5.QtWidgets import (
     QApplication,
+    QGridLayout,
+    QGroupBox,
+    QHBoxLayout,
     QLabel,
+    QLineEdit,
     QMainWindow,
     QPushButton,
     QVBoxLayout,
-    QHBoxLayout,
     QWidget,
 )
 
+from PyQt5 import QtCore
+from PyQt5.QtGui import QFont
 
 import matplotlib
 matplotlib.use('Qt5Agg')
@@ -23,7 +28,7 @@ import numpy as np
 
 class MplCanvas(FigureCanvasQTAgg):
 
-    def __init__(self, parent=None, width=5, height=4, dpi=100):
+    def __init__(self, parent=None, width=6, height=6, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot(111)
         super(MplCanvas, self).__init__(fig)
@@ -36,7 +41,7 @@ class WindowCircle(QWidget):
 
     def initUI(self):
         
-        sc = MplCanvas(self, width=6, height=5, dpi=100)
+        sc = MplCanvas(self, width=6, height=6, dpi=100)
 
         buttonplotCircle = QPushButton('Plot Circle')
         buttonplotCircle.clicked.connect(lambda: self.plot_circle(sc))
@@ -55,12 +60,51 @@ class WindowCircle(QWidget):
         hbox.addWidget(buttonplotCircle)
         hbox.addWidget(buttonClose)
         vbox = QVBoxLayout()
+
+
+
+        l3 = QGridLayout()
+        groupBoxParameters = QGroupBox("Parameters")
+        groupBoxParameters.setLayout(l3)
+        vbox.addWidget(groupBoxParameters)
         vbox.addWidget(sc)
         vbox.addStretch(1)
         vbox.addLayout(hbox)
         self.setLayout(vbox)
-        self.setGeometry(300, 300, 350, 150)
-        self.setWindowTitle('Cirle')  
+        self.setGeometry(300, 300, 600, 600)
+        self.setWindowTitle('Circle')  
+
+        
+
+        self.label_radius = QLabel("Radius:")
+        self.label_radius.setAlignment(QtCore.Qt.AlignLeft)
+        l3.addWidget(self.label_radius,0,0)
+
+        self.edit_radius = QLineEdit(self)
+        self.edit_radius.setAlignment(QtCore.Qt.AlignRight)
+        l3.addWidget(self.edit_radius,0,1)
+
+
+        self.label_centerX = QLabel("Center - X coord.:")
+        self.label_centerX.setAlignment(QtCore.Qt.AlignLeft)
+        l3.addWidget(self.label_centerX,1,0)
+
+        self.edit_centerX = QLineEdit(self)
+        self.edit_centerX.setAlignment(QtCore.Qt.AlignRight)
+        l3.addWidget(self.edit_centerX,1,1)
+
+
+        self.label_centerY = QLabel("Center - Y coord.:")
+        self.label_centerY.setAlignment(QtCore.Qt.AlignLeft)
+        l3.addWidget(self.label_centerY,2,0)
+
+        self.edit_centerY = QLineEdit(self)
+        self.edit_centerY.setAlignment(QtCore.Qt.AlignRight)
+        l3.addWidget(self.edit_centerY,2,1)
+        
+
+
+
 
     def plot_circle(self, circle_plot):
         circle_plot.axes.cla()
