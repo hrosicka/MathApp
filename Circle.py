@@ -147,7 +147,7 @@ class WindowCircle(QWidget):
         self.label_res_area.setAlignment(QtCore.Qt.AlignRight)
         layout_res.addWidget(self.label_res_area,1,1)
 
-        self.label_dim_area = QLabel("cm2")
+        self.label_dim_area = QLabel("cm<sup>2</sup>")
         self.label_dim_area.setAlignment(QtCore.Qt.AlignLeft)
         layout_res.addWidget(self.label_dim_area,1,2)
 
