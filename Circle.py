@@ -33,6 +33,7 @@ class MplCanvas(FigureCanvasQTAgg):
     def __init__(self, parent=None, width=6, height=6, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot(111)
+        self.axes.set_aspect('equal', adjustable='box')
         super(MplCanvas, self).__init__(fig)
 
 
@@ -57,13 +58,19 @@ class WindowCircle(QWidget):
         self.setMaximumWidth(800)
         self.setMaximumHeight(800)
 
-        hbox = QHBoxLayout()
-        hbox.addStretch(1)
-        hbox.addWidget(buttonplotCircle)
-        hbox.addWidget(buttonClose)
-        vbox = QVBoxLayout()
+        
+        hbox1 = QHBoxLayout()
+        
+        hbox2 = QHBoxLayout()
+        hbox2.addStretch(1)
+        hbox2.addWidget(buttonplotCircle)
+        hbox2.addWidget(buttonClose)
 
 
+
+        vbox1 = QVBoxLayout()
+
+        vbox2 = QVBoxLayout()
 
         layout_param = QGridLayout()
         layout_res = QGridLayout()
@@ -73,12 +80,17 @@ class WindowCircle(QWidget):
         groupBoxParameters.setLayout(layout_param)
         groupBoxResults = QGroupBox("Results")
         groupBoxResults.setLayout(layout_res)
-        vbox.addWidget(groupBoxParameters)
-        vbox.addWidget(groupBoxResults)
-        vbox.addWidget(sc)
-        vbox.addStretch(1)
-        vbox.addLayout(hbox)
-        self.setLayout(vbox)
+        vbox1.addWidget(groupBoxParameters)
+        vbox1.addWidget(groupBoxResults)
+
+        hbox1.addLayout(vbox1)
+        hbox1.addWidget(sc)
+
+        vbox2.addLayout(hbox1)
+        vbox2.addStretch(1)
+        vbox2.addLayout(hbox2)
+
+        self.setLayout(vbox2)
         self.setGeometry(300, 300, 600, 600)
         self.setWindowTitle('Circle')  
 
@@ -155,9 +167,17 @@ class WindowCircle(QWidget):
 
     def plot_circle(self, circle_plot):
         circle_plot.axes.cla()
-        Drawing_colored_circle = plt.Circle((0.5,0.5),0.2)
+        Drawing_colored_circle = plt.Circle((float(self.edit_centerX.text()),(float(self.edit_centerY.text()))),float(self.edit_radius.text()))
         Drawing_colored_circle.set_color('green')
         
+        minus_x = float(self.edit_centerX.text())-2*float(self.edit_radius.text())
+        plus_x = float(self.edit_centerX.text())+2*float(self.edit_radius.text())
+        minus_y = float(self.edit_centerY.text())-2*float(self.edit_radius.text())
+        plus_y = float(self.edit_centerY.text())+2*float(self.edit_radius.text())
+
+        circle_plot.axes.set_xlim(minus_x, plus_x)
+        circle_plot.axes.set_ylim(minus_y, plus_y)
+
         circle_plot.axes.add_artist(Drawing_colored_circle)
         circle_plot.draw()
 
