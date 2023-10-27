@@ -3,6 +3,7 @@ from random import randint
 
 from PyQt5.QtWidgets import (
     QApplication,
+    QComboBox,
     QGridLayout,
     QGroupBox,
     QHBoxLayout,
@@ -132,6 +133,13 @@ class WindowCircle(QWidget):
         self.label_dim_y = QLabel("cm")
         self.label_dim_y.setAlignment(QtCore.Qt.AlignLeft)
         layout_param.addWidget(self.label_dim_y,2,2)
+
+
+        self.combo_color = QComboBox(self)
+        self.combo_color.addItem("green")
+        self.combo_color.addItem("red")
+        self.combo_color.addItem("blue")
+        layout_param.addWidget(self.combo_color,3,1)
         
 
         self.label_perimeter = QLabel("Circle Perimeter:")
@@ -169,7 +177,7 @@ class WindowCircle(QWidget):
         circle_plot.axes.cla()
         Drawing_colored_circle = plt.Circle((float(self.edit_centerX.text()),(float(self.edit_centerY.text()))),float(self.edit_radius.text()))
         Drawing_colored_circle.set_color('green')
-        
+
         minus_x = float(self.edit_centerX.text())-2*float(self.edit_radius.text())
         plus_x = float(self.edit_centerX.text())+2*float(self.edit_radius.text())
         minus_y = float(self.edit_centerY.text())-2*float(self.edit_radius.text())
