@@ -22,7 +22,7 @@ class Kruh:
         Obvod kruhu: o = 2*PI*r
         """
         obv = 2 * math.pi * self.r
-        return obv
+        return round(obv,5)
     
     def obsah(self):
         """
@@ -31,7 +31,7 @@ class Kruh:
         Obsah kruhu: S = PI*r^2
         """
         obs = math.pi * pow(self.r, 2)
-        return obs
+        return round(obs,5)
 
     def vypis(self):
         """

@@ -21,21 +21,14 @@ from PyQt5.QtGui import QFont
 import matplotlib
 matplotlib.use('Qt5Agg')
 
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
-from matplotlib.figure import Figure
+
 from matplotlib import pyplot as plt
 
 import numpy as np
 
 import CircleCalc
 
-class MplCanvas(FigureCanvasQTAgg):
-
-    def __init__(self, parent=None, width=6, height=6, dpi=100):
-        fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = fig.add_subplot(111)
-        self.axes.set_aspect('equal', adjustable='box')
-        super(MplCanvas, self).__init__(fig)
+import Canvas
 
 
 class WindowCircle(QWidget):
@@ -45,21 +38,15 @@ class WindowCircle(QWidget):
 
     def initUI(self):
         
-        sc = MplCanvas(self, width=6, height=6, dpi=100)
+        sc = Canvas.MplCanvas(self, width=6, height=6, dpi=100)
 
         buttonplotCircle = QPushButton('Plot Circle')
         buttonplotCircle.clicked.connect(lambda: self.plot_circle(sc, self.combo_color.currentText()))
         buttonClose = QPushButton('Close')
         buttonClose.clicked.connect(self.close)
 
+        self.setFixedSize(800, 400)
 
-        self.setMinimumWidth(400)
-        self.setMinimumHeight(400)
-
-        self.setMaximumWidth(800)
-        self.setMaximumHeight(800)
-
-        
         hbox1 = QHBoxLayout()
         
         hbox2 = QHBoxLayout()
@@ -92,83 +79,104 @@ class WindowCircle(QWidget):
         vbox2.addLayout(hbox2)
 
         self.setLayout(vbox2)
-        self.setGeometry(300, 300, 600, 600)
         self.setWindowTitle('Circle')  
 
         
 
         self.label_radius = QLabel("Radius:")
         self.label_radius.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_radius.setFixedWidth(150)
         layout_param.addWidget(self.label_radius,0,0)
 
         self.edit_radius = QLineEdit(self)
         self.edit_radius.setAlignment(QtCore.Qt.AlignRight)
+        self.edit_radius.setFixedWidth(150)
         layout_param.addWidget(self.edit_radius,0,1)
 
         self.label_dim_radius = QLabel("cm")
         self.label_dim_radius.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_dim_radius.setFixedWidth(30)
         layout_param.addWidget(self.label_dim_radius,0,2)
 
 
         self.label_centerX = QLabel("Center - X coord.:")
         self.label_centerX.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_centerX.setFixedWidth(150)
         layout_param.addWidget(self.label_centerX,1,0)
 
         self.edit_centerX = QLineEdit(self)
         self.edit_centerX.setAlignment(QtCore.Qt.AlignRight)
+        self.edit_centerX.setFixedWidth(150)
         layout_param.addWidget(self.edit_centerX,1,1)
 
         self.label_dim_x = QLabel("cm")
         self.label_dim_x.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_dim_x.setFixedWidth(30)
         layout_param.addWidget(self.label_dim_x,1,2)
 
         self.label_centerY = QLabel("Center - Y coord.:")
         self.label_centerY.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_centerY.setFixedWidth(150)
         layout_param.addWidget(self.label_centerY,2,0)
 
         self.edit_centerY = QLineEdit(self)
         self.edit_centerY.setAlignment(QtCore.Qt.AlignRight)
+        self.edit_centerY.setFixedWidth(150)
         layout_param.addWidget(self.edit_centerY,2,1)
 
         self.label_dim_y = QLabel("cm")
         self.label_dim_y.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_dim_y.setFixedWidth(30)
         layout_param.addWidget(self.label_dim_y,2,2)
+
+
+        self.label_combo_color = QLabel("Circle Color:")
+        self.label_combo_color.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_combo_color.setFixedWidth(150)
+        layout_param.addWidget(self.label_combo_color,3,0)
 
 
         self.combo_color = QComboBox(self)
         self.combo_color.addItem("green")
         self.combo_color.addItem("red")
         self.combo_color.addItem("blue")
+        self.combo_color.addItem("orange")
+        self.combo_color.setFixedWidth(150)
         layout_param.addWidget(self.combo_color,3,1)
         
 
         self.label_perimeter = QLabel("Circle Perimeter:")
         self.label_perimeter.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_perimeter.setFixedWidth(150)
         layout_res.addWidget(self.label_perimeter,0,0)
 
         self.label_res_perimeter = QLabel('0.0')
-        # self.label_res_perimeter.setFont(QFont('Arial', 12))
         self.label_res_perimeter.setStyleSheet("background-color : white; color : darkblue")
         self.label_res_perimeter.setAlignment(QtCore.Qt.AlignRight)
+        self.label_res_perimeter.setFixedWidth(150)
         layout_res.addWidget(self.label_res_perimeter,0,1)
 
         self.label_dim_per = QLabel("cm")
         self.label_dim_per.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_dim_per.setFixedWidth(30)
         layout_res.addWidget(self.label_dim_per,0,2)
 
 
         self.label_area = QLabel("Circle Area:")
         self.label_area.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_area.setFixedWidth(150)
         layout_res.addWidget(self.label_area,1,0)
 
         self.label_res_area = QLabel('0.0')
         # self.label_res_area.setFont(QFont('Arial', 12))
         self.label_res_area.setStyleSheet("background-color : white; color : darkblue")
         self.label_res_area.setAlignment(QtCore.Qt.AlignRight)
+        self.label_res_area.setFixedWidth(150)
         layout_res.addWidget(self.label_res_area,1,1)
 
         self.label_dim_area = QLabel("cm<sup>2</sup>")
         self.label_dim_area.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_dim_area.setFixedWidth(30)
         layout_res.addWidget(self.label_dim_area,1,2)
 
 
