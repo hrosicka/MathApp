@@ -48,7 +48,7 @@ class WindowCircle(QWidget):
         sc = MplCanvas(self, width=6, height=6, dpi=100)
 
         buttonplotCircle = QPushButton('Plot Circle')
-        buttonplotCircle.clicked.connect(lambda: self.plot_circle(sc))
+        buttonplotCircle.clicked.connect(lambda: self.plot_circle(sc, self.combo_color.currentText()))
         buttonClose = QPushButton('Close')
         buttonClose.clicked.connect(self.close)
 
@@ -173,10 +173,10 @@ class WindowCircle(QWidget):
 
 
 
-    def plot_circle(self, circle_plot):
+    def plot_circle(self, circle_plot, circle_color):
         circle_plot.axes.cla()
         Drawing_colored_circle = plt.Circle((float(self.edit_centerX.text()),(float(self.edit_centerY.text()))),float(self.edit_radius.text()))
-        Drawing_colored_circle.set_color('green')
+        Drawing_colored_circle.set_color(circle_color)
 
         minus_x = float(self.edit_centerX.text())-2*float(self.edit_radius.text())
         plus_x = float(self.edit_centerX.text())+2*float(self.edit_radius.text())
@@ -195,8 +195,8 @@ class WindowCircle(QWidget):
 
         radius_circle = float(self.edit_radius.text())
         myCircle = CircleCalc.Kruh(radius_circle)
-        circle_perimeter = myCircle.obvod()
-        circle_area = myCircle.obsah()
+        circle_perimeter = round(myCircle.obvod(),5)
+        circle_area = round(myCircle.obsah(),5)
 
         self.label_res_perimeter.setText(str(circle_perimeter))
         self.label_res_area.setText(str(circle_area))
