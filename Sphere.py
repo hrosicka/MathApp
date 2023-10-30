@@ -3,14 +3,20 @@ from random import randint
 
 from PyQt5.QtWidgets import (
     QApplication,
+    QComboBox,
+    QGridLayout,
+    QGroupBox,
+    QHBoxLayout,
     QLabel,
+    QLineEdit,
     QMainWindow,
     QPushButton,
     QVBoxLayout,
-    QHBoxLayout,
     QWidget,
 )
 
+from PyQt5 import QtCore
+from PyQt5.QtGui import QFont
 
 import matplotlib
 matplotlib.use('Qt5Agg')
@@ -44,24 +50,89 @@ class WindowSphere(QWidget):
         buttonClose = QPushButton('Close')
         buttonClose.clicked.connect(self.close)
 
+        self.setFixedSize(800, 400)
 
-        self.setMinimumWidth(400)
-        self.setMinimumHeight(400)
+        hbox1 = QHBoxLayout()
+        
+        hbox2 = QHBoxLayout()
+        hbox2.addStretch(1)
+        hbox2.addWidget(buttonplotCircle)
+        hbox2.addWidget(buttonClose)
 
-        self.setMaximumWidth(800)
-        self.setMaximumHeight(800)
 
-        hbox = QHBoxLayout()
-        hbox.addStretch(1)
-        hbox.addWidget(buttonplotCircle)
-        hbox.addWidget(buttonClose)
-        vbox = QVBoxLayout()
-        vbox.addWidget(sc)
-        vbox.addStretch(1)
-        vbox.addLayout(hbox)
-        self.setLayout(vbox)
-        self.setGeometry(300, 300, 350, 150)
-        self.setWindowTitle('Sphere')  
+
+        vbox1 = QVBoxLayout()
+
+        vbox2 = QVBoxLayout()
+
+        layout_param = QGridLayout()
+        layout_res = QGridLayout()
+
+
+        groupBoxParameters = QGroupBox("Parameters")
+        groupBoxParameters.setLayout(layout_param)
+        groupBoxResults = QGroupBox("Results")
+        groupBoxResults.setLayout(layout_res)
+        vbox1.addWidget(groupBoxParameters)
+        vbox1.addWidget(groupBoxResults)
+
+        hbox1.addLayout(vbox1)
+        hbox1.addWidget(sc)
+
+        vbox2.addLayout(hbox1)
+        vbox2.addStretch(1)
+        vbox2.addLayout(hbox2)
+
+        self.setLayout(vbox2)
+        self.setWindowTitle('Sphere')
+
+
+        self.label_radius = QLabel("Radius:")
+        self.label_radius.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_radius.setFixedWidth(150)
+        layout_param.addWidget(self.label_radius,0,0)
+
+        self.edit_radius = QLineEdit(self)
+        self.edit_radius.setAlignment(QtCore.Qt.AlignRight)
+        self.edit_radius.setFixedWidth(150)
+        layout_param.addWidget(self.edit_radius,0,1)
+
+        self.label_dim_radius = QLabel("cm")
+        self.label_dim_radius.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_dim_radius.setFixedWidth(30)
+        layout_param.addWidget(self.label_dim_radius,0,2)
+
+
+        self.label_centerX = QLabel("Center - X coord.:")
+        self.label_centerX.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_centerX.setFixedWidth(150)
+        layout_param.addWidget(self.label_centerX,1,0)
+
+        self.edit_centerX = QLineEdit(self)
+        self.edit_centerX.setAlignment(QtCore.Qt.AlignRight)
+        self.edit_centerX.setFixedWidth(150)
+        layout_param.addWidget(self.edit_centerX,1,1)
+
+        self.label_dim_x = QLabel("cm")
+        self.label_dim_x.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_dim_x.setFixedWidth(30)
+        layout_param.addWidget(self.label_dim_x,1,2)
+
+        self.label_centerY = QLabel("Center - Y coord.:")
+        self.label_centerY.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_centerY.setFixedWidth(150)
+        layout_param.addWidget(self.label_centerY,2,0)
+
+        self.edit_centerY = QLineEdit(self)
+        self.edit_centerY.setAlignment(QtCore.Qt.AlignRight)
+        self.edit_centerY.setFixedWidth(150)
+        layout_param.addWidget(self.edit_centerY,2,1)
+
+        self.label_dim_y = QLabel("cm")
+        self.label_dim_y.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_dim_y.setFixedWidth(30)
+        layout_param.addWidget(self.label_dim_y,2,2)
+
 
     def plot_sphere(self, sphere_plot):
         u, v = np.mgrid[0:2 * np.pi:30j, 0:np.pi:20j]
