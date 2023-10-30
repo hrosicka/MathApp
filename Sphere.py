@@ -133,6 +133,22 @@ class WindowSphere(QWidget):
         self.label_dim_y.setFixedWidth(30)
         layout_param.addWidget(self.label_dim_y,2,2)
 
+        self.label_centerZ = QLabel("Center - Z coord.:")
+        self.label_centerZ.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_centerZ.setFixedWidth(150)
+        layout_param.addWidget(self.label_centerZ,3,0)
+
+        self.edit_centerZ = QLineEdit(self)
+        self.edit_centerZ.setAlignment(QtCore.Qt.AlignRight)
+        self.edit_centerZ.setFixedWidth(150)
+        layout_param.addWidget(self.edit_centerZ,3,1)
+
+        self.label_dim_z = QLabel("cm")
+        self.label_dim_z.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_dim_z.setFixedWidth(30)
+        layout_param.addWidget(self.label_dim_z,3,2)
+
+
 
     def plot_sphere(self, sphere_plot):
         u, v = np.mgrid[0:2 * np.pi:30j, 0:np.pi:20j]
