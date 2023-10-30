@@ -21,6 +21,7 @@ from PyQt5 import QtCore
 
 from Circle import *
 from Sphere import *
+from Ellipse import *
 
 import matplotlib
 matplotlib.use('Qt5Agg')
@@ -90,7 +91,7 @@ class MainWindow(QMainWindow):
 
         self.window1 = WindowCircle()
         self.window2 = WindowSphere()
-        self.window3 = ExampleWindow()
+        self.window3 = WindowEllipse()
         self.window4 = ExampleWindow()
         self.window5 = ExampleWindow()
         self.window6 = ExampleWindow()
@@ -201,6 +202,10 @@ class MainWindow(QMainWindow):
         self.sphereAction.setText("&Sphere")
         self.sphereAction.triggered.connect(lambda checked: self.toggle_window(self.window2))
 
+        self.ellipseAction = QAction(self)
+        self.ellipseAction.setText("&Ellipse")
+        self.ellipseAction.triggered.connect(lambda checked: self.toggle_window(self.window3))
+
 
     def _createMenuBar(self):
         menuBar = QMenuBar(self)
@@ -216,6 +221,7 @@ class MainWindow(QMainWindow):
         menuBar.addMenu(geometryMenu)
         geometryMenu.addAction(self.circleAction)
         geometryMenu.addAction(self.sphereAction)
+        geometryMenu.addAction(self.ellipseAction)
 
 
         helpMenu = menuBar.addMenu("&Help")

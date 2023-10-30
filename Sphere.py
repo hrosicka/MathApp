@@ -45,8 +45,8 @@ class WindowSphere(QWidget):
         
         sc = MplCanvas(self, width=6, height=5, dpi=100)
 
-        buttonplotCircle = QPushButton('Plot Sphere')
-        buttonplotCircle.clicked.connect(lambda: self.plot_sphere(sc))
+        buttonplotSphere = QPushButton('Plot Sphere')
+        buttonplotSphere.clicked.connect(lambda: self.plot_sphere(sc))
         buttonClose = QPushButton('Close')
         buttonClose.clicked.connect(self.close)
 
@@ -56,7 +56,7 @@ class WindowSphere(QWidget):
         
         hbox2 = QHBoxLayout()
         hbox2.addStretch(1)
-        hbox2.addWidget(buttonplotCircle)
+        hbox2.addWidget(buttonplotSphere)
         hbox2.addWidget(buttonClose)
 
 
