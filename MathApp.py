@@ -22,6 +22,8 @@ from PyQt5 import QtCore
 from Circle import *
 from Sphere import *
 from Ellipse import *
+from Ellipsoid import *
+from Square import *
 
 import matplotlib
 matplotlib.use('Qt5Agg')
@@ -92,8 +94,8 @@ class MainWindow(QMainWindow):
         self.window1 = WindowCircle()
         self.window2 = WindowSphere()
         self.window3 = WindowEllipse()
-        self.window4 = ExampleWindow()
-        self.window5 = ExampleWindow()
+        self.window4 = WindowEllipsoid()
+        self.window5 = WindowSquare()
         self.window6 = ExampleWindow()
 
         self.setWindowTitle('PyQt Math App')
@@ -206,6 +208,14 @@ class MainWindow(QMainWindow):
         self.ellipseAction.setText("&Ellipse")
         self.ellipseAction.triggered.connect(lambda checked: self.toggle_window(self.window3))
 
+        self.ellipsoidAction = QAction(self)
+        self.ellipsoidAction.setText("&Ellipsoid")
+        self.ellipsoidAction.triggered.connect(lambda checked: self.toggle_window(self.window4))
+
+        self.squareAction = QAction(self)
+        self.squareAction.setText("&Square")
+        self.squareAction.triggered.connect(lambda checked: self.toggle_window(self.window5))
+
 
     def _createMenuBar(self):
         menuBar = QMenuBar(self)
@@ -222,6 +232,8 @@ class MainWindow(QMainWindow):
         geometryMenu.addAction(self.circleAction)
         geometryMenu.addAction(self.sphereAction)
         geometryMenu.addAction(self.ellipseAction)
+        geometryMenu.addAction(self.ellipsoidAction)
+        geometryMenu.addAction(self.squareAction)
 
 
         helpMenu = menuBar.addMenu("&Help")
