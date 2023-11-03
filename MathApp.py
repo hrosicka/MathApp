@@ -24,6 +24,7 @@ from Sphere import *
 from Ellipse import *
 from Ellipsoid import *
 from Square import *
+from Cube import *
 
 import matplotlib
 matplotlib.use('Qt5Agg')
@@ -58,33 +59,9 @@ class AnotherWindow(QWidget):
         layout.addWidget(sc)
         self.setLayout(layout)
 
-class ExampleWindow(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.initUI()
-
-    def initUI(self):
-        okButton = QPushButton('OK')
-        cancelButton = QPushButton('Cancel')
-        tlacitko = QPushButton('Tlacitko')
-        tlacitko2 = QPushButton('Tlacitko2')
-        hbox = QHBoxLayout()
-        hbox.addStretch(1)
-        hbox.addWidget(okButton)
-        hbox.addWidget(cancelButton)
-        vbox = QVBoxLayout()
-        vbox.addWidget(tlacitko)
-        vbox.addWidget(tlacitko2)
-        vbox.addStretch(1)
-        vbox.addLayout(hbox)
-        self.setLayout(vbox)
-        self.setGeometry(300, 300, 800, 800)
-        self.setWindowTitle('Box layout example, QHBoxLayout, QVBoxLayout')  
-
 
 class MainWindow(QMainWindow):
 
-   
     def __init__(self):
         super().__init__()
 
@@ -96,7 +73,7 @@ class MainWindow(QMainWindow):
         self.window3 = WindowEllipse()
         self.window4 = WindowEllipsoid()
         self.window5 = WindowSquare()
-        self.window6 = ExampleWindow()
+        self.window6 = WindowCube()
 
         self.setWindowTitle('PyQt Math App')
 
@@ -216,6 +193,10 @@ class MainWindow(QMainWindow):
         self.squareAction.setText("&Square")
         self.squareAction.triggered.connect(lambda checked: self.toggle_window(self.window5))
 
+        self.cubeAction = QAction(self)
+        self.cubeAction.setText("&Cube")
+        self.cubeAction.triggered.connect(lambda checked: self.toggle_window(self.window6))
+
 
     def _createMenuBar(self):
         menuBar = QMenuBar(self)
@@ -234,6 +215,7 @@ class MainWindow(QMainWindow):
         geometryMenu.addAction(self.ellipseAction)
         geometryMenu.addAction(self.ellipsoidAction)
         geometryMenu.addAction(self.squareAction)
+        geometryMenu.addAction(self.cubeAction)
 
 
         helpMenu = menuBar.addMenu("&Help")
