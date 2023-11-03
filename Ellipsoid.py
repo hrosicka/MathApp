@@ -27,14 +27,7 @@ from matplotlib import pyplot as plt
 
 import numpy as np
 
-
-class MplCanvas(FigureCanvasQTAgg):
-
-    def __init__(self, parent=None, width=5, height=4, dpi=100):
-        fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = fig.add_subplot(projection='3d')
-        super(MplCanvas, self).__init__(fig)
-
+import CanvasThreeD
 
 class WindowEllipsoid(QWidget):
     def __init__(self):
@@ -43,7 +36,7 @@ class WindowEllipsoid(QWidget):
 
     def initUI(self):
         
-        sc = MplCanvas(self, width=6, height=5, dpi=100)
+        sc = CanvasThreeD.MplCanvas(self, width=6, height=5, dpi=100)
 
         buttonplotEllipsoid = QPushButton('Plot Ellipsoid')
         buttonplotEllipsoid.clicked.connect(lambda: self.plot_ellipsoid(sc))
