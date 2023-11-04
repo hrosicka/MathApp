@@ -27,6 +27,8 @@ from matplotlib import pyplot as plt
 
 import numpy as np
 
+import SphereCalc
+
 import CanvasThreeD
 
 
@@ -142,6 +144,40 @@ class WindowSphere(QWidget):
         self.label_dim_z.setFixedWidth(30)
         layout_param.addWidget(self.label_dim_z,3,2)
 
+        self.label_volume = QLabel("Sphere Volume:")
+        self.label_volume.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_volume.setFixedWidth(150)
+        layout_res.addWidget(self.label_volume,0,0)
+
+        self.label_res_volume = QLabel('0.0')
+        self.label_res_volume.setStyleSheet("background-color : white; color : darkblue")
+        self.label_res_volume.setAlignment(QtCore.Qt.AlignRight)
+        self.label_res_volume.setFixedWidth(150)
+        layout_res.addWidget(self.label_res_volume,0,1)
+
+        self.label_dim_vol = QLabel("cm<sup>3</sup>")
+        self.label_dim_vol.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_dim_vol.setFixedWidth(30)
+        layout_res.addWidget(self.label_dim_vol,0,2)
+
+
+        self.label_surface = QLabel("Sphere Surface:")
+        self.label_surface.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_surface.setFixedWidth(150)
+        layout_res.addWidget(self.label_surface,1,0)
+
+        self.label_res_surface = QLabel('0.0')
+        # self.label_res_area.setFont(QFont('Arial', 12))
+        self.label_res_surface.setStyleSheet("background-color : white; color : darkblue")
+        self.label_res_surface.setAlignment(QtCore.Qt.AlignRight)
+        self.label_res_surface.setFixedWidth(150)
+        layout_res.addWidget(self.label_res_surface,1,1)
+
+        self.label_dim_surface = QLabel("cm<sup>2</sup>")
+        self.label_dim_surface.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_dim_surface.setFixedWidth(30)
+        layout_res.addWidget(self.label_dim_surface,1,2)
+
 
 
     def plot_sphere(self, sphere_plot):
@@ -154,6 +190,18 @@ class WindowSphere(QWidget):
         # YlGnBu_r
 
         sphere_plot.draw()
+
+        self.calculate_sphere()
+
+    def calculate_sphere(self):
+
+        radius_sphere = float(self.edit_radius.text())
+        mySphere = SphereCalc.Koule(radius_sphere)
+        sphere_volume = round(mySphere.objem(),5)
+        sphere_surface = round(mySphere.povrch(),5)
+
+        self.label_res_volume.setText(str(sphere_volume))
+        self.label_res_surface.setText(str(sphere_surface))
 
 
 
