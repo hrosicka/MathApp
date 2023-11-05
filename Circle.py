@@ -45,7 +45,7 @@ class WindowCircle(QWidget):
         buttonClose = QPushButton('Close')
         buttonClose.clicked.connect(self.close)
 
-        self.setFixedSize(800, 400)
+        self.setFixedSize(800, 365)
 
         hbox1 = QHBoxLayout()
         

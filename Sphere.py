@@ -31,6 +31,8 @@ import SphereCalc
 
 import CanvasThreeD
 
+import random
+
 
 class WindowSphere(QWidget):
     def __init__(self):
@@ -46,7 +48,7 @@ class WindowSphere(QWidget):
         buttonClose = QPushButton('Close')
         buttonClose.clicked.connect(self.close)
 
-        self.setFixedSize(800, 400)
+        self.setFixedSize(800, 405)
 
         hbox1 = QHBoxLayout()
         
@@ -144,6 +146,20 @@ class WindowSphere(QWidget):
         self.label_dim_z.setFixedWidth(30)
         layout_param.addWidget(self.label_dim_z,3,2)
 
+        self.label_combo_color = QLabel("Circle Color:")
+        self.label_combo_color.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_combo_color.setFixedWidth(150)
+        layout_param.addWidget(self.label_combo_color,4,0)
+
+
+        self.combo_color = QComboBox(self)
+        self.combo_color.addItem("green")
+        self.combo_color.addItem("red")
+        self.combo_color.addItem("blue")
+        self.combo_color.addItem("orange")
+        self.combo_color.setFixedWidth(150)
+        layout_param.addWidget(self.combo_color,4,1)
+
         self.label_volume = QLabel("Sphere Volume:")
         self.label_volume.setAlignment(QtCore.Qt.AlignLeft)
         self.label_volume.setFixedWidth(150)
@@ -181,13 +197,32 @@ class WindowSphere(QWidget):
 
 
     def plot_sphere(self, sphere_plot):
-        u, v = np.mgrid[0:2 * np.pi:30j, 0:np.pi:20j]
+        sphere_plot.axes.cla()
+
+        center_x = float(self.edit_centerX.text())
+        center_y = float(self.edit_centerY.text())
+        center_z = float(self.edit_centerZ.text())
+        r = float(self.edit_radius.text())
+
+        u, v = np.mgrid[0:2 * np.pi:30j, 0:np.pi:30j]
+        
+        '''
         x = 2 * np.cos(u) * np.sin(v)
         y = 2 * np.sin(u) * np.sin(v)
         z = 2 * np.cos(v)
+        '''
 
-        sphere_plot.axes.plot_surface(x, y, z, cmap=plt.cm.Pastel2_r)
+        x = r * np.outer(np.cos(u), np.sin(v)) + center_x
+        y = r * np.outer(np.sin(u), np.sin(v)) + center_y
+        z = r * np.outer(np.ones(np.size(u)), np.cos(v)) + center_z
+
+        # alpha = 1.0 / random.randint(25, 100)
+        sphere_plot.axes.plot_surface(x, y, z, color='b')
         # YlGnBu_r
+        # Pastel2_r
+        # sphere_plot.axes.plot_surface(x, y, z, cmap=plt.cm.YlGnBu_r)
+        # sphere_plot.axes.plot_surface(x, y, z, color='b')
+        # sphere_plot.axes.plot_surface(x, y, z, cmap=plt.cm.PiYG)
 
         sphere_plot.draw()
 
