@@ -9,7 +9,6 @@ from PyQt5.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QLineEdit,
-    QMainWindow,
     QPushButton,
     QVBoxLayout,
     QWidget,
@@ -26,7 +25,7 @@ from matplotlib import pyplot as plt
 
 import numpy as np
 
-import CircleCalc
+import SquareCalc
 
 import Canvas
 
@@ -41,11 +40,11 @@ class WindowSquare(QWidget):
         sc = Canvas.MplCanvas(self, width=6, height=6, dpi=100)
 
         buttonplotSquare = QPushButton('Plot Square')
-        buttonplotSquare.clicked.connect(lambda: self.plot_circle(sc, self.combo_color.currentText()))
+        buttonplotSquare.clicked.connect(lambda: self.plot_square(sc, self.combo_color.currentText()))
         buttonClose = QPushButton('Close')
         buttonClose.clicked.connect(self.close)
 
-        self.setFixedSize(800, 400)
+        self.setFixedSize(800, 365)
 
         hbox1 = QHBoxLayout()
         
@@ -83,20 +82,20 @@ class WindowSquare(QWidget):
 
         
 
-        self.label_radius = QLabel("Radius:")
-        self.label_radius.setAlignment(QtCore.Qt.AlignLeft)
-        self.label_radius.setFixedWidth(150)
-        layout_param.addWidget(self.label_radius,0,0)
+        self.label_side = QLabel("Side Length:")
+        self.label_side.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_side.setFixedWidth(150)
+        layout_param.addWidget(self.label_side,0,0)
 
-        self.edit_radius = QLineEdit(self)
-        self.edit_radius.setAlignment(QtCore.Qt.AlignRight)
-        self.edit_radius.setFixedWidth(150)
-        layout_param.addWidget(self.edit_radius,0,1)
+        self.edit_side = QLineEdit(self)
+        self.edit_side.setAlignment(QtCore.Qt.AlignRight)
+        self.edit_side.setFixedWidth(150)
+        layout_param.addWidget(self.edit_side,0,1)
 
-        self.label_dim_radius = QLabel("cm")
-        self.label_dim_radius.setAlignment(QtCore.Qt.AlignLeft)
-        self.label_dim_radius.setFixedWidth(30)
-        layout_param.addWidget(self.label_dim_radius,0,2)
+        self.label_dim_side = QLabel("cm")
+        self.label_dim_side.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_dim_side.setFixedWidth(30)
+        layout_param.addWidget(self.label_dim_side,0,2)
 
 
         self.label_centerX = QLabel("Center - X coord.:")
@@ -145,7 +144,7 @@ class WindowSquare(QWidget):
         layout_param.addWidget(self.combo_color,3,1)
         
 
-        self.label_perimeter = QLabel("Circle Perimeter:")
+        self.label_perimeter = QLabel("Square Perimeter:")
         self.label_perimeter.setAlignment(QtCore.Qt.AlignLeft)
         self.label_perimeter.setFixedWidth(150)
         layout_res.addWidget(self.label_perimeter,0,0)
@@ -162,7 +161,7 @@ class WindowSquare(QWidget):
         layout_res.addWidget(self.label_dim_per,0,2)
 
 
-        self.label_area = QLabel("Circle Area:")
+        self.label_area = QLabel("Square Area:")
         self.label_area.setAlignment(QtCore.Qt.AlignLeft)
         self.label_area.setFixedWidth(150)
         layout_res.addWidget(self.label_area,1,0)
@@ -181,33 +180,33 @@ class WindowSquare(QWidget):
 
 
 
-    def plot_circle(self, circle_plot, circle_color):
-        circle_plot.axes.cla()
-        Drawing_colored_circle = plt.Circle((float(self.edit_centerX.text()),(float(self.edit_centerY.text()))),float(self.edit_radius.text()))
-        Drawing_colored_circle.set_color(circle_color)
+    def plot_square(self, square_plot, square_color):
+        square_plot.axes.cla()
+        Drawing_colored_circle = plt.Circle((float(self.edit_centerX.text()),(float(self.edit_centerY.text()))),float(self.edit_side.text()))
+        Drawing_colored_circle.set_color(square_color)
 
-        minus_x = float(self.edit_centerX.text())-2*float(self.edit_radius.text())
-        plus_x = float(self.edit_centerX.text())+2*float(self.edit_radius.text())
-        minus_y = float(self.edit_centerY.text())-2*float(self.edit_radius.text())
-        plus_y = float(self.edit_centerY.text())+2*float(self.edit_radius.text())
+        minus_x = float(self.edit_centerX.text())-2*float(self.edit_side.text())
+        plus_x = float(self.edit_centerX.text())+2*float(self.edit_side.text())
+        minus_y = float(self.edit_centerY.text())-2*float(self.edit_side.text())
+        plus_y = float(self.edit_centerY.text())+2*float(self.edit_side.text())
 
-        circle_plot.axes.set_xlim(minus_x, plus_x)
-        circle_plot.axes.set_ylim(minus_y, plus_y)
+        square_plot.axes.set_xlim(minus_x, plus_x)
+        square_plot.axes.set_ylim(minus_y, plus_y)
 
-        circle_plot.axes.add_artist(Drawing_colored_circle)
-        circle_plot.draw()
+        square_plot.axes.add_artist(Drawing_colored_circle)
+        square_plot.draw()
 
-        self.calculate_circle()
+        self.calculate_square()
 
-    def calculate_circle(self):
+    def calculate_square(self):
 
-        radius_circle = float(self.edit_radius.text())
-        myCircle = CircleCalc.Kruh(radius_circle)
-        circle_perimeter = round(myCircle.obvod(),5)
-        circle_area = round(myCircle.obsah(),5)
+        side_square = float(self.edit_side.text())
+        mySquare = SquareCalc.Ctverec(side_square)
+        square_perimeter = round(mySquare.obvod(),5)
+        square_area = round(mySquare.obsah(),5)
 
-        self.label_res_perimeter.setText(str(circle_perimeter))
-        self.label_res_area.setText(str(circle_area))
+        self.label_res_perimeter.setText(str(square_perimeter))
+        self.label_res_area.setText(str(square_area))
 
         
 

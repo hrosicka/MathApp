@@ -20,7 +20,7 @@ class Ctverec:
         Obvod čtverce: o = 4*a
         """
         obv = 4 * self.a
-        return obv
+        return round(obv,5)
     
     def obsah(self):
         """
@@ -29,7 +29,7 @@ class Ctverec:
         Obsah čtverce: S = a^2
         """
         obs = pow(self.a, 2)
-        return obs
+        return round(obs,5)
 
     def vypis(self):
         """
