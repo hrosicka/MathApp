@@ -27,8 +27,11 @@ from matplotlib import pyplot as plt
 
 import numpy as np
 
+import CubeCalc
+
 import CanvasThreeD
 
+import random
 
 class WindowCube(QWidget):
     def __init__(self):
@@ -81,20 +84,20 @@ class WindowCube(QWidget):
         self.setWindowTitle('Cube')
 
 
-        self.label_radius = QLabel("Radius:")
-        self.label_radius.setAlignment(QtCore.Qt.AlignLeft)
-        self.label_radius.setFixedWidth(150)
-        layout_param.addWidget(self.label_radius,0,0)
+        self.label_side = QLabel("Side Length:")
+        self.label_side.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_side.setFixedWidth(150)
+        layout_param.addWidget(self.label_side,0,0)
 
-        self.edit_radius = QLineEdit(self)
-        self.edit_radius.setAlignment(QtCore.Qt.AlignRight)
-        self.edit_radius.setFixedWidth(150)
-        layout_param.addWidget(self.edit_radius,0,1)
+        self.edit_side = QLineEdit(self)
+        self.edit_side.setAlignment(QtCore.Qt.AlignRight)
+        self.edit_side.setFixedWidth(150)
+        layout_param.addWidget(self.edit_side,0,1)
 
-        self.label_dim_radius = QLabel("cm")
-        self.label_dim_radius.setAlignment(QtCore.Qt.AlignLeft)
-        self.label_dim_radius.setFixedWidth(30)
-        layout_param.addWidget(self.label_dim_radius,0,2)
+        self.label_dim_side = QLabel("cm")
+        self.label_dim_side.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_dim_side.setFixedWidth(30)
+        layout_param.addWidget(self.label_dim_side,0,2)
 
 
         self.label_centerX = QLabel("Center - X coord.:")
@@ -142,6 +145,47 @@ class WindowCube(QWidget):
         self.label_dim_z.setFixedWidth(30)
         layout_param.addWidget(self.label_dim_z,3,2)
 
+        self.combo_color = QComboBox(self)
+        self.combo_color.addItem("green")
+        self.combo_color.addItem("red")
+        self.combo_color.addItem("blue")
+        self.combo_color.addItem("orange")
+        self.combo_color.setFixedWidth(150)
+        layout_param.addWidget(self.combo_color,4,1)
+
+        self.label_volume = QLabel("Cube Volume:")
+        self.label_volume.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_volume.setFixedWidth(150)
+        layout_res.addWidget(self.label_volume,0,0)
+
+        self.label_res_volume = QLabel('0.0')
+        self.label_res_volume.setStyleSheet("background-color : white; color : darkblue")
+        self.label_res_volume.setAlignment(QtCore.Qt.AlignRight)
+        self.label_res_volume.setFixedWidth(150)
+        layout_res.addWidget(self.label_res_volume,0,1)
+
+        self.label_dim_vol = QLabel("cm<sup>3</sup>")
+        self.label_dim_vol.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_dim_vol.setFixedWidth(30)
+        layout_res.addWidget(self.label_dim_vol,0,2)
+
+
+        self.label_surface = QLabel("Cube Surface:")
+        self.label_surface.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_surface.setFixedWidth(150)
+        layout_res.addWidget(self.label_surface,1,0)
+
+        self.label_res_surface = QLabel('0.0')
+        # self.label_res_area.setFont(QFont('Arial', 12))
+        self.label_res_surface.setStyleSheet("background-color : white; color : darkblue")
+        self.label_res_surface.setAlignment(QtCore.Qt.AlignRight)
+        self.label_res_surface.setFixedWidth(150)
+        layout_res.addWidget(self.label_res_surface,1,1)
+
+        self.label_dim_surface = QLabel("cm<sup>2</sup>")
+        self.label_dim_surface.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_dim_surface.setFixedWidth(30)
+        layout_res.addWidget(self.label_dim_surface,1,2)
 
 
     def plot_cube(self, cube_plot):
@@ -155,7 +199,17 @@ class WindowCube(QWidget):
 
         cube_plot.draw()
 
+        self.calculate_sphere()
 
+    def calculate_sphere(self):
+
+        side_cube = float(self.edit_side.text())
+        myCube = CubeCalc.Krychle(side_cube)
+        cube_volume = round(myCube.objem(),5)
+        cube_surface = round(myCube.povrch(),5)
+
+        self.label_res_volume.setText(str(cube_volume))
+        self.label_res_surface.setText(str(cube_surface))
 
         
       
