@@ -26,7 +26,7 @@ from matplotlib import pyplot as plt
 
 import numpy as np
 
-import CircleCalc
+import EllipseCalc
 
 import Canvas
 
@@ -45,7 +45,7 @@ class WindowEllipse(QWidget):
         buttonClose = QPushButton('Close')
         buttonClose.clicked.connect(self.close)
 
-        self.setFixedSize(800, 400)
+        self.setFixedSize(800, 405)
 
         hbox1 = QHBoxLayout()
         
@@ -81,59 +81,73 @@ class WindowEllipse(QWidget):
         self.setLayout(vbox2)
         self.setWindowTitle('Ellipse')  
 
-        
+        self.label_axis_a = QLabel("Semi-major axis a:")
+        self.label_axis_a.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_axis_a.setFixedWidth(150)
+        layout_param.addWidget(self.label_axis_a,0,0)
 
-        self.label_radius = QLabel("Radius:")
-        self.label_radius.setAlignment(QtCore.Qt.AlignLeft)
-        self.label_radius.setFixedWidth(150)
-        layout_param.addWidget(self.label_radius,0,0)
+        self.edit_axis_a = QLineEdit(self)
+        self.edit_axis_a.setAlignment(QtCore.Qt.AlignRight)
+        self.edit_axis_a.setFixedWidth(150)
+        layout_param.addWidget(self.edit_axis_a,0,1)
 
-        self.edit_radius = QLineEdit(self)
-        self.edit_radius.setAlignment(QtCore.Qt.AlignRight)
-        self.edit_radius.setFixedWidth(150)
-        layout_param.addWidget(self.edit_radius,0,1)
+        self.label_dim_axis_a = QLabel("cm")
+        self.label_dim_axis_a.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_dim_axis_a.setFixedWidth(30)
+        layout_param.addWidget(self.label_dim_axis_a,0,2)
 
-        self.label_dim_radius = QLabel("cm")
-        self.label_dim_radius.setAlignment(QtCore.Qt.AlignLeft)
-        self.label_dim_radius.setFixedWidth(30)
-        layout_param.addWidget(self.label_dim_radius,0,2)
+
+        self.label_axis_b = QLabel("Semi-minor axis b:")
+        self.label_axis_b.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_axis_b.setFixedWidth(150)
+        layout_param.addWidget(self.label_axis_b,1,0)
+
+        self.edit_axis_b = QLineEdit(self)
+        self.edit_axis_b.setAlignment(QtCore.Qt.AlignRight)
+        self.edit_axis_b.setFixedWidth(150)
+        layout_param.addWidget(self.edit_axis_b,1,1)
+
+        self.label_dim_axis_b = QLabel("cm")
+        self.label_dim_axis_b.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_dim_axis_b.setFixedWidth(30)
+        layout_param.addWidget(self.label_dim_axis_b,1,2)
 
 
         self.label_centerX = QLabel("Center - X coord.:")
         self.label_centerX.setAlignment(QtCore.Qt.AlignLeft)
         self.label_centerX.setFixedWidth(150)
-        layout_param.addWidget(self.label_centerX,1,0)
+        layout_param.addWidget(self.label_centerX,2,0)
 
         self.edit_centerX = QLineEdit(self)
         self.edit_centerX.setAlignment(QtCore.Qt.AlignRight)
         self.edit_centerX.setFixedWidth(150)
-        layout_param.addWidget(self.edit_centerX,1,1)
+        layout_param.addWidget(self.edit_centerX,2,1)
 
         self.label_dim_x = QLabel("cm")
         self.label_dim_x.setAlignment(QtCore.Qt.AlignLeft)
         self.label_dim_x.setFixedWidth(30)
-        layout_param.addWidget(self.label_dim_x,1,2)
+        layout_param.addWidget(self.label_dim_x,2,2)
 
         self.label_centerY = QLabel("Center - Y coord.:")
         self.label_centerY.setAlignment(QtCore.Qt.AlignLeft)
         self.label_centerY.setFixedWidth(150)
-        layout_param.addWidget(self.label_centerY,2,0)
+        layout_param.addWidget(self.label_centerY,3,0)
 
         self.edit_centerY = QLineEdit(self)
         self.edit_centerY.setAlignment(QtCore.Qt.AlignRight)
         self.edit_centerY.setFixedWidth(150)
-        layout_param.addWidget(self.edit_centerY,2,1)
+        layout_param.addWidget(self.edit_centerY,3,1)
 
         self.label_dim_y = QLabel("cm")
         self.label_dim_y.setAlignment(QtCore.Qt.AlignLeft)
         self.label_dim_y.setFixedWidth(30)
-        layout_param.addWidget(self.label_dim_y,2,2)
+        layout_param.addWidget(self.label_dim_y,3,2)
 
 
         self.label_combo_color = QLabel("Ellipse Color:")
         self.label_combo_color.setAlignment(QtCore.Qt.AlignLeft)
         self.label_combo_color.setFixedWidth(150)
-        layout_param.addWidget(self.label_combo_color,3,0)
+        layout_param.addWidget(self.label_combo_color,4,0)
 
 
         self.combo_color = QComboBox(self)
@@ -142,7 +156,7 @@ class WindowEllipse(QWidget):
         self.combo_color.addItem("blue")
         self.combo_color.addItem("orange")
         self.combo_color.setFixedWidth(150)
-        layout_param.addWidget(self.combo_color,3,1)
+        layout_param.addWidget(self.combo_color,4,1)
         
 
         self.label_perimeter = QLabel("Circle Perimeter:")
@@ -183,13 +197,13 @@ class WindowEllipse(QWidget):
 
     def plot_circle(self, circle_plot, circle_color):
         circle_plot.axes.cla()
-        Drawing_colored_circle = plt.Circle((float(self.edit_centerX.text()),(float(self.edit_centerY.text()))),float(self.edit_radius.text()))
+        Drawing_colored_circle = plt.Circle((float(self.edit_centerX.text()),(float(self.edit_centerY.text()))),float(self.edit_axis_a.text()))
         Drawing_colored_circle.set_color(circle_color)
 
-        minus_x = float(self.edit_centerX.text())-2*float(self.edit_radius.text())
-        plus_x = float(self.edit_centerX.text())+2*float(self.edit_radius.text())
-        minus_y = float(self.edit_centerY.text())-2*float(self.edit_radius.text())
-        plus_y = float(self.edit_centerY.text())+2*float(self.edit_radius.text())
+        minus_x = float(self.edit_centerX.text())-2*float(self.edit_axis_a.text())
+        plus_x = float(self.edit_centerX.text())+2*float(self.edit_axis_a.text())
+        minus_y = float(self.edit_centerY.text())-2*float(self.edit_axis_a.text())
+        plus_y = float(self.edit_centerY.text())+2*float(self.edit_axis_a.text())
 
         circle_plot.axes.set_xlim(minus_x, plus_x)
         circle_plot.axes.set_ylim(minus_y, plus_y)
@@ -201,8 +215,8 @@ class WindowEllipse(QWidget):
 
     def calculate_circle(self):
 
-        radius_circle = float(self.edit_radius.text())
-        myCircle = CircleCalc.Kruh(radius_circle)
+        radius_circle = float(self.edit_axis_a.text())
+        myCircle = EllipseCalc.Elipsa(radius_circle, radius_circle)
         circle_perimeter = round(myCircle.obvod(),5)
         circle_area = round(myCircle.obsah(),5)
 
