@@ -22,7 +22,7 @@ class Elipsa:
 
         Obvod elipsy: o = PI*(2*(a^2 + b^2))^1/2
         """
-        obv =  math.pi * math.sqrt(math.pow(self.a, 2) + math.pow(self.b, 2),2)
+        obv =  math.pi * math.sqrt(2*(math.pow(self.a, 2) + math.pow(self.b, 2)))
         return round(obv,5)
     
     def obsah(self):

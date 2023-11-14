@@ -159,7 +159,7 @@ class WindowEllipse(QWidget):
         layout_param.addWidget(self.combo_color,4,1)
         
 
-        self.label_perimeter = QLabel("Circle Perimeter:")
+        self.label_perimeter = QLabel("Ellipse Perimeter:")
         self.label_perimeter.setAlignment(QtCore.Qt.AlignLeft)
         self.label_perimeter.setFixedWidth(150)
         layout_res.addWidget(self.label_perimeter,0,0)
@@ -176,7 +176,7 @@ class WindowEllipse(QWidget):
         layout_res.addWidget(self.label_dim_per,0,2)
 
 
-        self.label_area = QLabel("Circle Area:")
+        self.label_area = QLabel("Ellipse  Area:")
         self.label_area.setAlignment(QtCore.Qt.AlignLeft)
         self.label_area.setFixedWidth(150)
         layout_res.addWidget(self.label_area,1,0)
@@ -215,13 +215,14 @@ class WindowEllipse(QWidget):
 
     def calculate_circle(self):
 
-        radius_circle = float(self.edit_axis_a.text())
-        myCircle = EllipseCalc.Elipsa(radius_circle, radius_circle)
-        circle_perimeter = round(myCircle.obvod(),5)
-        circle_area = round(myCircle.obsah(),5)
+        axis_a = float(self.edit_axis_a.text())
+        axis_b = float(self.edit_axis_b.text())
+        myEllipse = EllipseCalc.Elipsa(axis_a, axis_b)
+        ellipse_perimeter = round(myEllipse.obvod(),5)
+        ellipse_area = round(myEllipse.obsah(),5)
 
-        self.label_res_perimeter.setText(str(circle_perimeter))
-        self.label_res_area.setText(str(circle_area))
+        self.label_res_perimeter.setText(str(ellipse_perimeter))
+        self.label_res_area.setText(str(ellipse_area))
 
         
 
