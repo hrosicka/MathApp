@@ -42,6 +42,8 @@ class WindowEllipse(QWidget):
 
         buttonplotEllipse = QPushButton('Plot Ellipse')
         buttonplotEllipse.clicked.connect(lambda: self.plot_circle(sc, self.combo_color.currentText()))
+        buttonClear = QPushButton('Clear')
+        buttonClear.clicked.connect(lambda: self.clear_inputs())
         buttonClose = QPushButton('Close')
         buttonClose.clicked.connect(self.close)
 
@@ -52,6 +54,7 @@ class WindowEllipse(QWidget):
         hbox2 = QHBoxLayout()
         hbox2.addStretch(1)
         hbox2.addWidget(buttonplotEllipse)
+        hbox2.addWidget(buttonClear)
         hbox2.addWidget(buttonClose)
 
 
@@ -223,6 +226,16 @@ class WindowEllipse(QWidget):
 
         self.label_res_perimeter.setText(str(ellipse_perimeter))
         self.label_res_area.setText(str(ellipse_area))
+
+
+    def clear_inputs(self):
+        self.edit_axis_a.clear()
+        self.edit_axis_b.clear()
+        self.edit_centerX.clear()
+        self.edit_centerY.clear()
+        self.label_res_area.clear()
+        self.label_res_perimeter.clear()
+        self.combo_color.clear()
 
         
 
