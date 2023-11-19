@@ -41,6 +41,8 @@ class WindowSquare(QWidget):
 
         buttonplotSquare = QPushButton('Plot Square')
         buttonplotSquare.clicked.connect(lambda: self.plot_square(sc, self.combo_color.currentText()))
+        buttonClear = QPushButton('Clear')
+        buttonClear.clicked.connect(lambda: self.clear_inputs())
         buttonClose = QPushButton('Close')
         buttonClose.clicked.connect(self.close)
 
@@ -51,6 +53,7 @@ class WindowSquare(QWidget):
         hbox2 = QHBoxLayout()
         hbox2.addStretch(1)
         hbox2.addWidget(buttonplotSquare)
+        hbox2.addWidget(buttonClear)
         hbox2.addWidget(buttonClose)
 
 
@@ -209,6 +212,11 @@ class WindowSquare(QWidget):
         self.label_res_area.setText(str(square_area))
 
         
-
+    def clear_inputs(self):
+        self.edit_side.clear()
+        self.edit_centerX.clear()
+        self.edit_centerY.clear()
+        self.label_res_area.setText("0.0")
+        self.label_res_perimeter.setText("0.0")
 
         

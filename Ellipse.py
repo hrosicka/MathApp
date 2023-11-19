@@ -233,9 +233,8 @@ class WindowEllipse(QWidget):
         self.edit_axis_b.clear()
         self.edit_centerX.clear()
         self.edit_centerY.clear()
-        self.label_res_area.clear()
-        self.label_res_perimeter.clear()
-        self.combo_color.clear()
+        self.label_res_area.setText("0.0")
+        self.label_res_perimeter.setText("0.0")
 
         
 
