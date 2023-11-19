@@ -45,6 +45,8 @@ class WindowSphere(QWidget):
 
         buttonplotSphere = QPushButton('Plot Sphere')
         buttonplotSphere.clicked.connect(lambda: self.plot_sphere(sc))
+        buttonClear = QPushButton('Clear')
+        buttonClear.clicked.connect(lambda: self.clear_inputs())
         buttonClose = QPushButton('Close')
         buttonClose.clicked.connect(self.close)
 
@@ -55,6 +57,7 @@ class WindowSphere(QWidget):
         hbox2 = QHBoxLayout()
         hbox2.addStretch(1)
         hbox2.addWidget(buttonplotSphere)
+        hbox2.addWidget(buttonClear)
         hbox2.addWidget(buttonClose)
 
 
@@ -239,6 +242,12 @@ class WindowSphere(QWidget):
         self.label_res_surface.setText(str(sphere_surface))
 
 
-
+    def clear_inputs(self):
+        self.edit_radius.clear()
+        self.edit_centerX.clear()
+        self.edit_centerY.clear()
+        self.edit_centerZ.clear()
+        self.label_res_surface.setText("0.0")
+        self.label_res_volume.setText("0.0")
         
       
