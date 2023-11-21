@@ -44,7 +44,7 @@ class WindowSphere(QWidget):
         sc = CanvasThreeD.MplCanvas(self, width=6, height=5, dpi=100)
 
         buttonplotSphere = QPushButton('Plot Sphere')
-        buttonplotSphere.clicked.connect(lambda: self.plot_sphere(sc))
+        buttonplotSphere.clicked.connect(lambda: self.plot_sphere(sc, self.combo_color.currentText()))
         buttonClear = QPushButton('Clear')
         buttonClear.clicked.connect(lambda: self.clear_inputs())
         buttonClose = QPushButton('Close')
@@ -199,7 +199,7 @@ class WindowSphere(QWidget):
 
 
 
-    def plot_sphere(self, sphere_plot):
+    def plot_sphere(self, sphere_plot, circle_color):
         sphere_plot.axes.cla()
 
         center_x = float(self.edit_centerX.text())
@@ -220,7 +220,7 @@ class WindowSphere(QWidget):
         z = r * np.outer(np.ones(np.size(u)), np.cos(v)) + center_z
 
         # alpha = 1.0 / random.randint(25, 100)
-        sphere_plot.axes.plot_surface(x, y, z, color='b')
+        sphere_plot.axes.plot_surface(x, y, z, color=circle_color)
         # YlGnBu_r
         # Pastel2_r
         # sphere_plot.axes.plot_surface(x, y, z, cmap=plt.cm.YlGnBu_r)
