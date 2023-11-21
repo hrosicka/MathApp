@@ -44,6 +44,8 @@ class WindowCube(QWidget):
 
         buttonplotCube = QPushButton('Plot Cube')
         buttonplotCube.clicked.connect(lambda: self.plot_cube(sc))
+        buttonClear = QPushButton('Clear')
+        buttonClear.clicked.connect(lambda: self.clear_inputs())
         buttonClose = QPushButton('Close')
         buttonClose.clicked.connect(self.close)
 
@@ -54,6 +56,7 @@ class WindowCube(QWidget):
         hbox2 = QHBoxLayout()
         hbox2.addStretch(1)
         hbox2.addWidget(buttonplotCube)
+        hbox2.addWidget(buttonClear)
         hbox2.addWidget(buttonClose)
 
 
@@ -212,4 +215,9 @@ class WindowCube(QWidget):
         self.label_res_surface.setText(str(cube_surface))
 
         
-      
+    def clear_inputs(self):
+        self.edit_side.clear()
+        self.edit_centerX.clear()
+        self.edit_centerY.clear()
+        self.label_res_surface.setText("0.0")
+        self.label_res_volume.setText("0.0") 
