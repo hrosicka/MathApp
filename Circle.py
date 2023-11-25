@@ -42,7 +42,7 @@ class WindowCircle(QWidget):
         buttonplotCircle = QPushButton('Plot Circle')
         buttonplotCircle.clicked.connect(lambda: self.plot_circle(sc, self.combo_color.currentText()))
         buttonClear = QPushButton('Clear')
-        buttonClear.clicked.connect(lambda: self.clear_inputs())
+        buttonClear.clicked.connect(lambda: self.clear_inputs(sc))
         buttonClose = QPushButton('Close')
         buttonClose.clicked.connect(self.close)
 
@@ -212,7 +212,9 @@ class WindowCircle(QWidget):
         self.label_res_area.setText(str(circle_area))
 
 
-    def clear_inputs(self):
+    def clear_inputs(self, sc):
+        sc.axes.cla()
+        sc.draw()
         self.edit_radius.clear()
         self.edit_centerX.clear()
         self.edit_centerY.clear()
