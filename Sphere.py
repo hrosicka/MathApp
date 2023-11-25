@@ -13,10 +13,16 @@ from PyQt5.QtWidgets import (
     QPushButton,
     QVBoxLayout,
     QWidget,
+    QMessageBox,
 )
 
 from PyQt5 import QtCore
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import (
+    QFont, 
+    QValidator,
+    QDoubleValidator, 
+    QRegExpValidator,
+)  
 
 import matplotlib
 matplotlib.use('Qt5Agg')
@@ -87,6 +93,9 @@ class WindowSphere(QWidget):
         self.setLayout(vbox2)
         self.setWindowTitle('Sphere')
 
+        validator_double = QDoubleValidator()
+        validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
+
 
         self.label_radius = QLabel("Radius:")
         self.label_radius.setAlignment(QtCore.Qt.AlignLeft)
@@ -94,6 +103,7 @@ class WindowSphere(QWidget):
         layout_param.addWidget(self.label_radius,0,0)
 
         self.edit_radius = QLineEdit(self)
+        self.edit_radius.setValidator(validator_possitive)
         self.edit_radius.setAlignment(QtCore.Qt.AlignRight)
         self.edit_radius.setFixedWidth(150)
         layout_param.addWidget(self.edit_radius,0,1)
@@ -110,6 +120,7 @@ class WindowSphere(QWidget):
         layout_param.addWidget(self.label_centerX,1,0)
 
         self.edit_centerX = QLineEdit(self)
+        self.edit_centerX.setValidator(validator_double)
         self.edit_centerX.setAlignment(QtCore.Qt.AlignRight)
         self.edit_centerX.setFixedWidth(150)
         layout_param.addWidget(self.edit_centerX,1,1)
@@ -125,6 +136,7 @@ class WindowSphere(QWidget):
         layout_param.addWidget(self.label_centerY,2,0)
 
         self.edit_centerY = QLineEdit(self)
+        self.edit_centerY.setValidator(validator_double)
         self.edit_centerY.setAlignment(QtCore.Qt.AlignRight)
         self.edit_centerY.setFixedWidth(150)
         layout_param.addWidget(self.edit_centerY,2,1)
@@ -140,6 +152,7 @@ class WindowSphere(QWidget):
         layout_param.addWidget(self.label_centerZ,3,0)
 
         self.edit_centerZ = QLineEdit(self)
+        self.edit_centerZ.setValidator(validator_double)
         self.edit_centerZ.setAlignment(QtCore.Qt.AlignRight)
         self.edit_centerZ.setFixedWidth(150)
         layout_param.addWidget(self.edit_centerZ,3,1)
@@ -198,38 +211,64 @@ class WindowSphere(QWidget):
         layout_res.addWidget(self.label_dim_surface,1,2)
 
 
+        self.edit_radius.textChanged.connect(self.check_state_rad)
+        self.edit_radius.textChanged.emit(self.edit_radius.text())
+
+        self.edit_centerX.textChanged.connect(self.check_state_centerX)
+        self.edit_centerX.textChanged.emit(self.edit_centerX.text())
+
+        self.edit_centerY.textChanged.connect(self.check_state_centerY)
+        self.edit_centerY.textChanged.emit(self.edit_centerY.text())
+
+        self.edit_centerZ.textChanged.connect(self.check_state_centerZ)
+        self.edit_centerZ.textChanged.emit(self.edit_centerZ.text())
+
 
     def plot_sphere(self, sphere_plot, circle_color):
         sphere_plot.axes.cla()
 
-        center_x = float(self.edit_centerX.text())
-        center_y = float(self.edit_centerY.text())
-        center_z = float(self.edit_centerZ.text())
-        r = float(self.edit_radius.text())
+        if self.edit_radius.text() == "0" or self.edit_radius.text() == "":
+            QMessageBox.about(self, 'Error','Radius can be only a possitive number')
 
-        u, v = np.mgrid[0:2 * np.pi:30j, 0:np.pi:30j]
-        
-        '''
-        x = 2 * np.cos(u) * np.sin(v)
-        y = 2 * np.sin(u) * np.sin(v)
-        z = 2 * np.cos(v)
-        '''
+        elif self.edit_centerX.text() == "":
+            QMessageBox.about(self, 'Error','Center - X coord. is missing')
 
-        x = r * np.outer(np.cos(u), np.sin(v)) + center_x
-        y = r * np.outer(np.sin(u), np.sin(v)) + center_y
-        z = r * np.outer(np.ones(np.size(u)), np.cos(v)) + center_z
+        elif self.edit_centerY.text() == "":
+            QMessageBox.about(self, 'Error','Center - Y coord. is missing')
 
-        # alpha = 1.0 / random.randint(25, 100)
-        sphere_plot.axes.plot_surface(x, y, z, color=circle_color)
-        # YlGnBu_r
-        # Pastel2_r
-        # sphere_plot.axes.plot_surface(x, y, z, cmap=plt.cm.YlGnBu_r)
-        # sphere_plot.axes.plot_surface(x, y, z, color='b')
-        # sphere_plot.axes.plot_surface(x, y, z, cmap=plt.cm.PiYG)
+        elif self.edit_centerZ.text() == "":
+            QMessageBox.about(self, 'Error','Center - Z coord. is missing')
+ 
+        else:
 
-        sphere_plot.draw()
+            center_x = float(self.edit_centerX.text())
+            center_y = float(self.edit_centerY.text())
+            center_z = float(self.edit_centerZ.text())
+            r = float(self.edit_radius.text())
 
-        self.calculate_sphere()
+            u, v = np.mgrid[0:2 * np.pi:30j, 0:np.pi:30j]
+            
+            '''
+            x = 2 * np.cos(u) * np.sin(v)
+            y = 2 * np.sin(u) * np.sin(v)
+            z = 2 * np.cos(v)
+            '''
+
+            x = r * np.outer(np.cos(u), np.sin(v)) + center_x
+            y = r * np.outer(np.sin(u), np.sin(v)) + center_y
+            z = r * np.outer(np.ones(np.size(u)), np.cos(v)) + center_z
+
+            # alpha = 1.0 / random.randint(25, 100)
+            sphere_plot.axes.plot_surface(x, y, z, color=circle_color)
+            # YlGnBu_r
+            # Pastel2_r
+            # sphere_plot.axes.plot_surface(x, y, z, cmap=plt.cm.YlGnBu_r)
+            # sphere_plot.axes.plot_surface(x, y, z, color='b')
+            # sphere_plot.axes.plot_surface(x, y, z, cmap=plt.cm.PiYG)
+
+            sphere_plot.draw()
+
+            self.calculate_sphere()
 
     def calculate_sphere(self):
 
@@ -250,4 +289,61 @@ class WindowSphere(QWidget):
         self.label_res_surface.setText("0.0")
         self.label_res_volume.setText("0.0")
         
-      
+    def check_state_rad(self, *args, **kwargs):
+        sender = self.sender()
+        validator = sender.validator()
+        state = validator.validate(sender.text(), 0)[0]
+        if self.edit_radius.text() == "0" or self.edit_radius.text() == "":
+            color = '#f6989d' # red
+        elif state == QValidator.Acceptable:
+            color = '#c4df9b' # green
+        elif state == QValidator.Intermediate:
+            color = '#fff79a' # yellow
+        else:
+            color = '#f6989d' # red
+        sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
+
+
+    def check_state_centerX(self, *args, **kwargs):
+        sender = self.sender()
+        validator = sender.validator()
+        state = validator.validate(sender.text(), 0)[0]
+        if self.edit_centerX.text() == "":
+            color = '#f6989d' # red
+        elif state == QValidator.Acceptable:
+            color = '#c4df9b' # green
+        elif state == QValidator.Intermediate:
+            color = '#fff79a' # yellow
+        else:
+            color = '#f6989d' # red
+        sender.setStyleSheet('QLineEdit { background-color: %s }' % color)   
+
+
+    def check_state_centerY(self, *args, **kwargs):
+        sender = self.sender()
+        validator = sender.validator()
+        state = validator.validate(sender.text(), 0)[0]
+        if self.edit_centerY.text() == "":
+            color = '#f6989d' # red
+        elif state == QValidator.Acceptable:
+            color = '#c4df9b' # green
+        elif state == QValidator.Intermediate:
+            color = '#fff79a' # yellow
+        else:
+            color = '#f6989d' # red
+        sender.setStyleSheet('QLineEdit { background-color: %s }' % color) 
+
+
+    def check_state_centerZ(self, *args, **kwargs):
+        sender = self.sender()
+        validator = sender.validator()
+        state = validator.validate(sender.text(), 0)[0]
+        if self.edit_centerZ.text() == "":
+            color = '#f6989d' # red
+        elif state == QValidator.Acceptable:
+            color = '#c4df9b' # green
+        elif state == QValidator.Intermediate:
+            color = '#fff79a' # yellow
+        else:
+            color = '#f6989d' # red
+        sender.setStyleSheet('QLineEdit { background-color: %s }' % color) 
