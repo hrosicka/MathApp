@@ -90,7 +90,7 @@ class WindowCircle(QWidget):
 
         
         validator_double = QDoubleValidator()
-        validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{1,6})|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
+        validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
         
 
         self.label_radius = QLabel("Radius:")
@@ -239,7 +239,9 @@ class WindowCircle(QWidget):
         sender = self.sender()
         validator = sender.validator()
         state = validator.validate(sender.text(), 0)[0]
-        if state == QValidator.Acceptable:
+        if self.edit_radius.text() == "0" or self.edit_radius.text() == "":
+            color = '#f6989d' # red
+        elif state == QValidator.Acceptable:
             color = '#c4df9b' # green
         elif state == QValidator.Intermediate:
             color = '#fff79a' # yellow
