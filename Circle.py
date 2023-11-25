@@ -15,7 +15,12 @@ from PyQt5.QtWidgets import (
 )
 
 from PyQt5 import QtCore
-from PyQt5.QtGui import QFont, QValidator, QDoubleValidator
+from PyQt5.QtGui import (
+    QFont, 
+    QValidator,
+    QDoubleValidator, 
+    QRegExpValidator,
+)  
 
 import matplotlib
 matplotlib.use('Qt5Agg')
@@ -84,7 +89,9 @@ class WindowCircle(QWidget):
         self.setWindowTitle('Circle')  
 
         
-        validator = QDoubleValidator()
+        validator_double = QDoubleValidator()
+        validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{1,6})|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
+        
 
         self.label_radius = QLabel("Radius:")
         self.label_radius.setAlignment(QtCore.Qt.AlignLeft)
@@ -92,7 +99,7 @@ class WindowCircle(QWidget):
         layout_param.addWidget(self.label_radius,0,0)
 
         self.edit_radius = QLineEdit(self)
-        self.edit_radius.setValidator(validator)
+        self.edit_radius.setValidator(validator_possitive)
         self.edit_radius.setAlignment(QtCore.Qt.AlignRight)
         self.edit_radius.setFixedWidth(150)
         layout_param.addWidget(self.edit_radius,0,1)
