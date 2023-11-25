@@ -117,6 +117,7 @@ class WindowCircle(QWidget):
         layout_param.addWidget(self.label_centerX,1,0)
 
         self.edit_centerX = QLineEdit(self)
+        self.edit_centerX.setValidator(validator_double)
         self.edit_centerX.setAlignment(QtCore.Qt.AlignRight)
         self.edit_centerX.setFixedWidth(150)
         layout_param.addWidget(self.edit_centerX,1,1)
@@ -132,6 +133,7 @@ class WindowCircle(QWidget):
         layout_param.addWidget(self.label_centerY,2,0)
 
         self.edit_centerY = QLineEdit(self)
+        self.edit_centerY.setValidator(validator_double)
         self.edit_centerY.setAlignment(QtCore.Qt.AlignRight)
         self.edit_centerY.setFixedWidth(150)
         layout_param.addWidget(self.edit_centerY,2,1)
@@ -191,18 +193,35 @@ class WindowCircle(QWidget):
         self.label_dim_area.setFixedWidth(30)
         layout_res.addWidget(self.label_dim_area,1,2)
 
+        self.edit_radius.textChanged.connect(self.check_state_rad)
+        self.edit_radius.textChanged.emit(self.edit_radius.text())
+
+        self.edit_centerX.textChanged.connect(self.check_state_centerX)
+        self.edit_centerX.textChanged.emit(self.edit_centerX.text())
+
+        self.edit_centerY.textChanged.connect(self.check_state_centerY)
+        self.edit_centerY.textChanged.emit(self.edit_centerY.text())
+
 
 
     def plot_circle(self, circle_plot, circle_color):
 
-        self.edit_radius.textChanged.connect(self.check_state)
-        self.edit_radius.textChanged.emit(self.edit_radius.text())
+        circle_plot.axes.cla()
+        circle_plot.draw()
+        self.label_res_area.setText("0.0")
+        self.label_res_perimeter.setText("0.0")
+        
 
         if self.edit_radius.text() == "0" or self.edit_radius.text() == "":
-            QMessageBox.about(self, 'Error','Radius can only be only a possitive number')
+            QMessageBox.about(self, 'Error','Radius can be only a possitive number')
+
+        elif self.edit_centerX.text() == "":
+            QMessageBox.about(self, 'Error','Center - X coord. is missing')
+
+        elif self.edit_centerY.text() == "":
+            QMessageBox.about(self, 'Error','Center - Y coord. is missing')
 
         else:
-            circle_plot.axes.cla()
             Drawing_colored_circle = plt.Circle((float(self.edit_centerX.text()),(float(self.edit_centerY.text()))),float(self.edit_radius.text()))
             Drawing_colored_circle.set_color(circle_color)
 
@@ -240,7 +259,7 @@ class WindowCircle(QWidget):
         self.label_res_perimeter.setText("0.0")
 
     
-    def check_state(self, *args, **kwargs):
+    def check_state_rad(self, *args, **kwargs):
         sender = self.sender()
         validator = sender.validator()
         state = validator.validate(sender.text(), 0)[0]
@@ -254,7 +273,33 @@ class WindowCircle(QWidget):
             color = '#f6989d' # red
         sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
 
-        
+
+    def check_state_centerX(self, *args, **kwargs):
+        sender = self.sender()
+        validator = sender.validator()
+        state = validator.validate(sender.text(), 0)[0]
+        if self.edit_centerX.text() == "":
+            color = '#f6989d' # red
+        elif state == QValidator.Acceptable:
+            color = '#c4df9b' # green
+        elif state == QValidator.Intermediate:
+            color = '#fff79a' # yellow
+        else:
+            color = '#f6989d' # red
+        sender.setStyleSheet('QLineEdit { background-color: %s }' % color)   
 
 
+    def check_state_centerY(self, *args, **kwargs):
+        sender = self.sender()
+        validator = sender.validator()
+        state = validator.validate(sender.text(), 0)[0]
+        if self.edit_centerY.text() == "":
+            color = '#f6989d' # red
+        elif state == QValidator.Acceptable:
+            color = '#c4df9b' # green
+        elif state == QValidator.Intermediate:
+            color = '#fff79a' # yellow
+        else:
+            color = '#f6989d' # red
+        sender.setStyleSheet('QLineEdit { background-color: %s }' % color) 
         
