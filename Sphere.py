@@ -225,7 +225,12 @@ class WindowSphere(QWidget):
 
 
     def plot_sphere(self, sphere_plot, circle_color):
+        
         sphere_plot.axes.cla()
+        sphere_plot.draw()
+        self.label_res_surface.setText("0.0")
+        self.label_res_volume.setText("0.0")
+        
 
         if self.edit_radius.text() == "0" or self.edit_radius.text() == "":
             QMessageBox.about(self, 'Error','Radius can be only a possitive number')
