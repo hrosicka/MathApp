@@ -12,6 +12,7 @@ from PyQt5.QtWidgets import (
     QPushButton,
     QVBoxLayout,
     QWidget,
+    QMessageBox,
 )
 
 from PyQt5 import QtCore
@@ -197,22 +198,26 @@ class WindowCircle(QWidget):
         self.edit_radius.textChanged.connect(self.check_state)
         self.edit_radius.textChanged.emit(self.edit_radius.text())
 
-        circle_plot.axes.cla()
-        Drawing_colored_circle = plt.Circle((float(self.edit_centerX.text()),(float(self.edit_centerY.text()))),float(self.edit_radius.text()))
-        Drawing_colored_circle.set_color(circle_color)
+        if self.edit_radius.text() == "0" or self.edit_radius.text() == "":
+            QMessageBox.about(self, 'Error','Radius can only be only a possitive number')
 
-        minus_x = float(self.edit_centerX.text())-2*float(self.edit_radius.text())
-        plus_x = float(self.edit_centerX.text())+2*float(self.edit_radius.text())
-        minus_y = float(self.edit_centerY.text())-2*float(self.edit_radius.text())
-        plus_y = float(self.edit_centerY.text())+2*float(self.edit_radius.text())
+        else:
+            circle_plot.axes.cla()
+            Drawing_colored_circle = plt.Circle((float(self.edit_centerX.text()),(float(self.edit_centerY.text()))),float(self.edit_radius.text()))
+            Drawing_colored_circle.set_color(circle_color)
 
-        circle_plot.axes.set_xlim(minus_x, plus_x)
-        circle_plot.axes.set_ylim(minus_y, plus_y)
+            minus_x = float(self.edit_centerX.text())-2*float(self.edit_radius.text())
+            plus_x = float(self.edit_centerX.text())+2*float(self.edit_radius.text())
+            minus_y = float(self.edit_centerY.text())-2*float(self.edit_radius.text())
+            plus_y = float(self.edit_centerY.text())+2*float(self.edit_radius.text())
 
-        circle_plot.axes.add_artist(Drawing_colored_circle)
-        circle_plot.draw()
+            circle_plot.axes.set_xlim(minus_x, plus_x)
+            circle_plot.axes.set_ylim(minus_y, plus_y)
 
-        self.calculate_circle()
+            circle_plot.axes.add_artist(Drawing_colored_circle)
+            circle_plot.draw()
+
+            self.calculate_circle()
 
     def calculate_circle(self):
 
