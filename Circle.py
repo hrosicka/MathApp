@@ -15,7 +15,7 @@ from PyQt5.QtWidgets import (
 )
 
 from PyQt5 import QtCore
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QValidator, QDoubleValidator
 
 import matplotlib
 matplotlib.use('Qt5Agg')
@@ -84,6 +84,7 @@ class WindowCircle(QWidget):
         self.setWindowTitle('Circle')  
 
         
+        validator = QDoubleValidator()
 
         self.label_radius = QLabel("Radius:")
         self.label_radius.setAlignment(QtCore.Qt.AlignLeft)
@@ -91,6 +92,7 @@ class WindowCircle(QWidget):
         layout_param.addWidget(self.label_radius,0,0)
 
         self.edit_radius = QLineEdit(self)
+        self.edit_radius.setValidator(validator)
         self.edit_radius.setAlignment(QtCore.Qt.AlignRight)
         self.edit_radius.setFixedWidth(150)
         layout_param.addWidget(self.edit_radius,0,1)
@@ -184,6 +186,10 @@ class WindowCircle(QWidget):
 
 
     def plot_circle(self, circle_plot, circle_color):
+
+        self.edit_radius.textChanged.connect(self.check_state)
+        self.edit_radius.textChanged.emit(self.edit_radius.text())
+
         circle_plot.axes.cla()
         Drawing_colored_circle = plt.Circle((float(self.edit_centerX.text()),(float(self.edit_centerY.text()))),float(self.edit_radius.text()))
         Drawing_colored_circle.set_color(circle_color)
@@ -220,6 +226,19 @@ class WindowCircle(QWidget):
         self.edit_centerY.clear()
         self.label_res_area.setText("0.0")
         self.label_res_perimeter.setText("0.0")
+
+    
+    def check_state(self, *args, **kwargs):
+        sender = self.sender()
+        validator = sender.validator()
+        state = validator.validate(sender.text(), 0)[0]
+        if state == QValidator.Acceptable:
+            color = '#c4df9b' # green
+        elif state == QValidator.Intermediate:
+            color = '#fff79a' # yellow
+        else:
+            color = '#f6989d' # red
+        sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
 
         
 
