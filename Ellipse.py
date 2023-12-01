@@ -16,13 +16,19 @@ from PyQt5.QtWidgets import (
 )
 
 from PyQt5 import QtCore
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import (
+    QFont, 
+    QValidator,
+    QDoubleValidator, 
+    QRegExpValidator,
+)
 
 import matplotlib
 matplotlib.use('Qt5Agg')
 
 
 from matplotlib import pyplot as plt
+from matplotlib.patches import Ellipse
 
 import numpy as np
 
@@ -41,7 +47,7 @@ class WindowEllipse(QWidget):
         sc = Canvas.MplCanvas(self, width=6, height=6, dpi=100)
 
         buttonplotEllipse = QPushButton('Plot Ellipse')
-        buttonplotEllipse.clicked.connect(lambda: self.plot_circle(sc, self.combo_color.currentText()))
+        buttonplotEllipse.clicked.connect(lambda: self.plot_ellipse(sc, self.combo_color.currentText()))
         buttonClear = QPushButton('Clear')
         buttonClear.clicked.connect(lambda: self.clear_inputs())
         buttonClose = QPushButton('Close')
@@ -84,12 +90,16 @@ class WindowEllipse(QWidget):
         self.setLayout(vbox2)
         self.setWindowTitle('Ellipse')  
 
+        validator_double = QDoubleValidator()
+        validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
+
         self.label_axis_a = QLabel("Semi-major axis a:")
         self.label_axis_a.setAlignment(QtCore.Qt.AlignLeft)
         self.label_axis_a.setFixedWidth(150)
         layout_param.addWidget(self.label_axis_a,0,0)
 
         self.edit_axis_a = QLineEdit(self)
+        self.edit_axis_a.setValidator(validator_possitive)
         self.edit_axis_a.setAlignment(QtCore.Qt.AlignRight)
         self.edit_axis_a.setFixedWidth(150)
         layout_param.addWidget(self.edit_axis_a,0,1)
@@ -106,6 +116,7 @@ class WindowEllipse(QWidget):
         layout_param.addWidget(self.label_axis_b,1,0)
 
         self.edit_axis_b = QLineEdit(self)
+        self.edit_axis_b.setValidator(validator_possitive)
         self.edit_axis_b.setAlignment(QtCore.Qt.AlignRight)
         self.edit_axis_b.setFixedWidth(150)
         layout_param.addWidget(self.edit_axis_b,1,1)
@@ -122,6 +133,7 @@ class WindowEllipse(QWidget):
         layout_param.addWidget(self.label_centerX,2,0)
 
         self.edit_centerX = QLineEdit(self)
+        self.edit_centerX.setValidator(validator_double)
         self.edit_centerX.setAlignment(QtCore.Qt.AlignRight)
         self.edit_centerX.setFixedWidth(150)
         layout_param.addWidget(self.edit_centerX,2,1)
@@ -137,6 +149,7 @@ class WindowEllipse(QWidget):
         layout_param.addWidget(self.label_centerY,3,0)
 
         self.edit_centerY = QLineEdit(self)
+        self.edit_centerY.setValidator(validator_double)
         self.edit_centerY.setAlignment(QtCore.Qt.AlignRight)
         self.edit_centerY.setFixedWidth(150)
         layout_param.addWidget(self.edit_centerY,3,1)
@@ -197,26 +210,39 @@ class WindowEllipse(QWidget):
         layout_res.addWidget(self.label_dim_area,1,2)
 
 
+        self.edit_axis_a.textChanged.connect(self.check_state_axis_a)
+        self.edit_axis_a.textChanged.emit(self.edit_axis_a.text())
 
-    def plot_circle(self, circle_plot, circle_color):
-        circle_plot.axes.cla()
-        Drawing_colored_circle = plt.Circle((float(self.edit_centerX.text()),(float(self.edit_centerY.text()))),float(self.edit_axis_a.text()))
-        Drawing_colored_circle.set_color(circle_color)
+        self.edit_axis_b.textChanged.connect(self.check_state_axis_b)
+        self.edit_axis_b.textChanged.emit(self.edit_axis_b.text())
+
+        self.edit_centerX.textChanged.connect(self.check_state_centerX)
+        self.edit_centerX.textChanged.emit(self.edit_centerX.text())
+
+        self.edit_centerY.textChanged.connect(self.check_state_centerY)
+        self.edit_centerY.textChanged.emit(self.edit_centerY.text())
+
+
+
+    def plot_ellipse(self, ellipse_plot, ellipse_color):
+        ellipse_plot.axes.cla()
+        Drawing_colored_ellipse = Ellipse((float(self.edit_centerX.text()),(float(self.edit_centerY.text()))),2*float(self.edit_axis_a.text()),2*float(self.edit_axis_b.text()))
+        Drawing_colored_ellipse.set_color(ellipse_color)
 
         minus_x = float(self.edit_centerX.text())-2*float(self.edit_axis_a.text())
         plus_x = float(self.edit_centerX.text())+2*float(self.edit_axis_a.text())
-        minus_y = float(self.edit_centerY.text())-2*float(self.edit_axis_a.text())
-        plus_y = float(self.edit_centerY.text())+2*float(self.edit_axis_a.text())
+        minus_y = float(self.edit_centerY.text())-2*float(self.edit_axis_b.text())
+        plus_y = float(self.edit_centerY.text())+2*float(self.edit_axis_b.text())
 
-        circle_plot.axes.set_xlim(minus_x, plus_x)
-        circle_plot.axes.set_ylim(minus_y, plus_y)
+        ellipse_plot.axes.set_xlim(minus_x, plus_x)
+        ellipse_plot.axes.set_ylim(minus_y, plus_y)
 
-        circle_plot.axes.add_artist(Drawing_colored_circle)
-        circle_plot.draw()
+        ellipse_plot.axes.add_artist(Drawing_colored_ellipse)
+        ellipse_plot.draw()
 
-        self.calculate_circle()
+        self.calculate_ellipse()
 
-    def calculate_circle(self):
+    def calculate_ellipse(self):
 
         axis_a = float(self.edit_axis_a.text())
         axis_b = float(self.edit_axis_b.text())
@@ -235,6 +261,67 @@ class WindowEllipse(QWidget):
         self.edit_centerY.clear()
         self.label_res_area.setText("0.0")
         self.label_res_perimeter.setText("0.0")
+
+
+    def check_state_axis_a(self, *args, **kwargs):
+        sender = self.sender()
+        validator = sender.validator()
+        state = validator.validate(sender.text(), 0)[0]
+        if self.edit_axis_a.text() == "0" or self.edit_axis_a.text() == "":
+            color = '#f6989d' # red
+        elif state == QValidator.Acceptable:
+            color = '#c4df9b' # green
+        elif state == QValidator.Intermediate:
+            color = '#fff79a' # yellow
+        else:
+            color = '#f6989d' # red
+        sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
+
+
+    def check_state_axis_b(self, *args, **kwargs):
+        sender = self.sender()
+        validator = sender.validator()
+        state = validator.validate(sender.text(), 0)[0]
+        if self.edit_axis_b.text() == "0" or self.edit_axis_b.text() == "":
+            color = '#f6989d' # red
+        elif state == QValidator.Acceptable:
+            color = '#c4df9b' # green
+        elif state == QValidator.Intermediate:
+            color = '#fff79a' # yellow
+        else:
+            color = '#f6989d' # red
+        sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
+
+
+    def check_state_centerX(self, *args, **kwargs):
+        sender = self.sender()
+        validator = sender.validator()
+        state = validator.validate(sender.text(), 0)[0]
+        if self.edit_centerX.text() == "":
+            color = '#f6989d' # red
+        elif state == QValidator.Acceptable:
+            color = '#c4df9b' # green
+        elif state == QValidator.Intermediate:
+            color = '#fff79a' # yellow
+        else:
+            color = '#f6989d' # red
+        sender.setStyleSheet('QLineEdit { background-color: %s }' % color)   
+
+
+    def check_state_centerY(self, *args, **kwargs):
+        sender = self.sender()
+        validator = sender.validator()
+        state = validator.validate(sender.text(), 0)[0]
+        if self.edit_centerY.text() == "":
+            color = '#f6989d' # red
+        elif state == QValidator.Acceptable:
+            color = '#c4df9b' # green
+        elif state == QValidator.Intermediate:
+            color = '#fff79a' # yellow
+        else:
+            color = '#f6989d' # red
+        sender.setStyleSheet('QLineEdit { background-color: %s }' % color) 
+    
 
         
 

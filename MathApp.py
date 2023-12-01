@@ -98,7 +98,7 @@ class MainWindow(QMainWindow):
         
 
         self.label = QLabel(self)
-        self.pixmap = QPixmap('Shapes.png')
+        self.pixmap = QPixmap('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shapes.png')
         self.label.setPixmap(self.pixmap)
         l3.addWidget(self.label,0,0,1,2)
 
