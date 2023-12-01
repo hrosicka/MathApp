@@ -13,6 +13,7 @@ from PyQt5.QtWidgets import (
     QPushButton,
     QVBoxLayout,
     QWidget,
+    QMessageBox,
 )
 
 from PyQt5 import QtCore
@@ -49,7 +50,7 @@ class WindowEllipse(QWidget):
         buttonplotEllipse = QPushButton('Plot Ellipse')
         buttonplotEllipse.clicked.connect(lambda: self.plot_ellipse(sc, self.combo_color.currentText()))
         buttonClear = QPushButton('Clear')
-        buttonClear.clicked.connect(lambda: self.clear_inputs())
+        buttonClear.clicked.connect(lambda: self.clear_inputs(sc))
         buttonClose = QPushButton('Close')
         buttonClose.clicked.connect(self.close)
 
@@ -225,22 +226,42 @@ class WindowEllipse(QWidget):
 
 
     def plot_ellipse(self, ellipse_plot, ellipse_color):
+        
         ellipse_plot.axes.cla()
-        Drawing_colored_ellipse = Ellipse((float(self.edit_centerX.text()),(float(self.edit_centerY.text()))),2*float(self.edit_axis_a.text()),2*float(self.edit_axis_b.text()))
-        Drawing_colored_ellipse.set_color(ellipse_color)
-
-        minus_x = float(self.edit_centerX.text())-2*float(self.edit_axis_a.text())
-        plus_x = float(self.edit_centerX.text())+2*float(self.edit_axis_a.text())
-        minus_y = float(self.edit_centerY.text())-2*float(self.edit_axis_b.text())
-        plus_y = float(self.edit_centerY.text())+2*float(self.edit_axis_b.text())
-
-        ellipse_plot.axes.set_xlim(minus_x, plus_x)
-        ellipse_plot.axes.set_ylim(minus_y, plus_y)
-
-        ellipse_plot.axes.add_artist(Drawing_colored_ellipse)
         ellipse_plot.draw()
+        self.label_res_area.setText("0.0")
+        self.label_res_perimeter.setText("0.0")
+        
 
-        self.calculate_ellipse()
+        if self.edit_axis_a.text() == "0" or self.edit_axis_a.text() == "":
+            QMessageBox.about(self, 'Error','Major axis can be only a possitive number')
+
+        elif self.edit_axis_b.text() == "0" or self.edit_axis_b.text() == "":
+            QMessageBox.about(self, 'Error','Minor axis can be only a possitive number')
+
+        elif self.edit_centerX.text() == "":
+            QMessageBox.about(self, 'Error','Center - X coord. is missing')
+
+        elif self.edit_centerY.text() == "":
+            QMessageBox.about(self, 'Error','Center - Y coord. is missing')
+
+        else:
+
+            Drawing_colored_ellipse = Ellipse((float(self.edit_centerX.text()),(float(self.edit_centerY.text()))),2*float(self.edit_axis_a.text()),2*float(self.edit_axis_b.text()))
+            Drawing_colored_ellipse.set_color(ellipse_color)
+
+            minus_x = float(self.edit_centerX.text())-2*float(self.edit_axis_a.text())
+            plus_x = float(self.edit_centerX.text())+2*float(self.edit_axis_a.text())
+            minus_y = float(self.edit_centerY.text())-2*float(self.edit_axis_b.text())
+            plus_y = float(self.edit_centerY.text())+2*float(self.edit_axis_b.text())
+
+            ellipse_plot.axes.set_xlim(minus_x, plus_x)
+            ellipse_plot.axes.set_ylim(minus_y, plus_y)
+
+            ellipse_plot.axes.add_artist(Drawing_colored_ellipse)
+            ellipse_plot.draw()
+
+            self.calculate_ellipse()
 
     def calculate_ellipse(self):
 
@@ -254,7 +275,9 @@ class WindowEllipse(QWidget):
         self.label_res_area.setText(str(ellipse_area))
 
 
-    def clear_inputs(self):
+    def clear_inputs(self, sc):
+        sc.axes.cla()
+        sc.draw()
         self.edit_axis_a.clear()
         self.edit_axis_b.clear()
         self.edit_centerX.clear()
