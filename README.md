@@ -8,5 +8,6 @@ Main window with menu and buttons
 
 ### Circle
 Calculation and plotting circle
+
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/CircleCalculation.PNG)
 
