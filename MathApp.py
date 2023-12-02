@@ -16,7 +16,11 @@ from PyQt5.QtWidgets import (
     QAction,
 )
 
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import (
+    QPixmap, 
+    QIcon,
+)
+
 from PyQt5 import QtCore
 
 from Circle import *
@@ -99,6 +103,7 @@ class MainWindow(QMainWindow):
 
         self.label = QLabel(self)
         self.pixmap = QPixmap('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shapes.png')
+        self.setWindowIcon(QIcon('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png'))
         self.label.setPixmap(self.pixmap)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         l3.addWidget(self.label,0,0,1,2)

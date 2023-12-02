@@ -21,6 +21,7 @@ from PyQt5.QtGui import (
     QValidator,
     QDoubleValidator, 
     QRegExpValidator,
+    QIcon,
 )  
 
 import matplotlib
@@ -44,6 +45,7 @@ class WindowCircle(QWidget):
     def initUI(self):
         
         sc = Canvas.MplCanvas(self, width=6, height=6, dpi=100)
+        self.setWindowIcon(QIcon('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png'))
 
         buttonplotCircle = QPushButton('Plot Circle')
         buttonplotCircle.clicked.connect(lambda: self.plot_circle(sc, self.combo_color.currentText()))
