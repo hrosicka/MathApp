@@ -1,27 +1,23 @@
-import sys
-from random import randint
-
 from PyQt5.QtWidgets import (
-    QApplication,
     QComboBox,
     QGridLayout,
     QGroupBox,
     QHBoxLayout,
     QLabel,
     QLineEdit,
+    QMessageBox,
     QPushButton,
     QVBoxLayout,
     QWidget,
-    QMessageBox,
 )
 
 from PyQt5 import QtCore
 from PyQt5.QtGui import (
-    QFont, 
-    QValidator,
-    QDoubleValidator, 
-    QRegExpValidator,
+    QDoubleValidator,
     QIcon,
+    QPixmap,
+    QRegExpValidator,
+    QValidator,
 )  
 
 import matplotlib
@@ -92,7 +88,11 @@ class WindowCircle(QWidget):
         self.setWindowTitle('Circle')  
 
         
-        validator_double = QDoubleValidator()
+        validator_double = QDoubleValidator(-10000000,10000000,5)
+        locale = QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates)
+        validator_double.setLocale(locale)
+        validator_double.setNotation(QDoubleValidator.StandardNotation)
+
         validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
         
 
@@ -215,13 +215,20 @@ class WindowCircle(QWidget):
         
 
         if self.edit_radius.text() == "0" or self.edit_radius.text() == "":
-            QMessageBox.about(self, 'Error','Radius can be only a possitive number')
+            messagebox = QMessageBox(QMessageBox.Warning, "Error", "Radius can be only a possitive number!", buttons = QMessageBox.Ok, parent=self)
+            messagebox.setIconPixmap(QPixmap('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\stop_writing.png'))
+            messagebox.exec_()
+
 
         elif self.edit_centerX.text() == "":
-            QMessageBox.about(self, 'Error','Center - X coord. is missing')
+            messagebox = QMessageBox(QMessageBox.Warning, "Error", "Center - X coord. is missing!", buttons = QMessageBox.Ok, parent=self)
+            messagebox.setIconPixmap(QPixmap('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\stop_writing.png'))
+            messagebox.exec_()
 
         elif self.edit_centerY.text() == "":
-            QMessageBox.about(self, 'Error','Center - Y coord. is missing')
+            messagebox = QMessageBox(QMessageBox.Warning, "Error", "Center - Y coord. is missing!", buttons = QMessageBox.Ok, parent=self)
+            messagebox.setIconPixmap(QPixmap('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\stop_writing.png'))
+            messagebox.exec_()
 
         else:
             Drawing_colored_circle = plt.Circle((float(self.edit_centerX.text()),(float(self.edit_centerY.text()))),float(self.edit_radius.text()))
