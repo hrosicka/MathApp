@@ -32,7 +32,6 @@ import CircleCalc
 
 import Canvas
 
-
 class WindowCircle(QWidget):
     def __init__(self):
         super().__init__()
@@ -95,7 +94,6 @@ class WindowCircle(QWidget):
 
         validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([1-9][0-9]{0,6}[.])|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
         
-
         self.label_radius = QLabel("Radius:")
         self.label_radius.setAlignment(QtCore.Qt.AlignLeft)
         self.label_radius.setFixedWidth(150)
@@ -158,6 +156,7 @@ class WindowCircle(QWidget):
         self.combo_color.addItem("blue")
         self.combo_color.addItem("orange")
         self.combo_color.setFixedWidth(150)
+        self.combo_color.setFixedHeight(50)
         layout_param.addWidget(self.combo_color,3,1)
         
 
@@ -214,18 +213,17 @@ class WindowCircle(QWidget):
         self.label_res_perimeter.setText("0.0")
         
 
-        if self.edit_radius.text() == "0" or self.edit_radius.text() == "":
+        if self.edit_radius.text() in ["", "0", "0.", "+", "-"]:
             messagebox = QMessageBox(QMessageBox.Warning, "Error", "Radius can be only a possitive number!", buttons = QMessageBox.Ok, parent=self)
             messagebox.setIconPixmap(QPixmap('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\stop_writing.png'))
             messagebox.exec_()
 
-
-        elif self.edit_centerX.text() == "":
+        elif self.edit_centerX.text() in ["", "+", "-"]:
             messagebox = QMessageBox(QMessageBox.Warning, "Error", "Center - X coord. is missing!", buttons = QMessageBox.Ok, parent=self)
             messagebox.setIconPixmap(QPixmap('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\stop_writing.png'))
             messagebox.exec_()
 
-        elif self.edit_centerY.text() == "":
+        elif self.edit_centerY.text() in ["", "+", "-"]:
             messagebox = QMessageBox(QMessageBox.Warning, "Error", "Center - Y coord. is missing!", buttons = QMessageBox.Ok, parent=self)
             messagebox.setIconPixmap(QPixmap('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\stop_writing.png'))
             messagebox.exec_()

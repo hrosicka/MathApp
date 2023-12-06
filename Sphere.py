@@ -1,27 +1,23 @@
-import sys
-from random import randint
-
 from PyQt5.QtWidgets import (
-    QApplication,
     QComboBox,
     QGridLayout,
     QGroupBox,
     QHBoxLayout,
     QLabel,
     QLineEdit,
-    QMainWindow,
+    QMessageBox,
     QPushButton,
     QVBoxLayout,
     QWidget,
-    QMessageBox,
 )
 
 from PyQt5 import QtCore
 from PyQt5.QtGui import (
-    QFont, 
-    QValidator,
-    QDoubleValidator, 
+    QDoubleValidator,
+    QIcon,
+    QPixmap,
     QRegExpValidator,
+    QValidator,
 )  
 
 import matplotlib
@@ -37,9 +33,6 @@ import SphereCalc
 
 import CanvasThreeD
 
-import random
-
-
 class WindowSphere(QWidget):
     def __init__(self):
         super().__init__()
@@ -48,6 +41,7 @@ class WindowSphere(QWidget):
     def initUI(self):
         
         sc = CanvasThreeD.MplCanvas(self, width=6, height=5, dpi=100)
+        self.setWindowIcon(QIcon('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png'))
 
         buttonplotSphere = QPushButton('Plot Sphere')
         buttonplotSphere.clicked.connect(lambda: self.plot_sphere(sc, self.combo_color.currentText()))
@@ -93,9 +87,12 @@ class WindowSphere(QWidget):
         self.setLayout(vbox2)
         self.setWindowTitle('Sphere')
 
-        validator_double = QDoubleValidator()
+        validator_double = QDoubleValidator(-10000000,10000000,5)
+        locale = QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates)
+        validator_double.setLocale(locale)
+        validator_double.setNotation(QDoubleValidator.StandardNotation)
+        
         validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
-
 
         self.label_radius = QLabel("Radius:")
         self.label_radius.setAlignment(QtCore.Qt.AlignLeft)
@@ -199,7 +196,6 @@ class WindowSphere(QWidget):
         layout_res.addWidget(self.label_surface,1,0)
 
         self.label_res_surface = QLabel('0.0')
-        # self.label_res_area.setFont(QFont('Arial', 12))
         self.label_res_surface.setStyleSheet("background-color : white; color : darkblue")
         self.label_res_surface.setAlignment(QtCore.Qt.AlignRight)
         self.label_res_surface.setFixedWidth(150)
@@ -232,17 +228,25 @@ class WindowSphere(QWidget):
         self.label_res_volume.setText("0.0")
         
 
-        if self.edit_radius.text() == "0" or self.edit_radius.text() == "":
-            QMessageBox.about(self, 'Error','Radius can be only a possitive number')
+        if self.edit_radius.text() in ["", "0", "0.", "+", "-"]:
+            messagebox = QMessageBox(QMessageBox.Warning, "Error", "Radius can be only a possitive number!", buttons = QMessageBox.Ok, parent=self)
+            messagebox.setIconPixmap(QPixmap('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\stop_writing.png'))
+            messagebox.exec_()
 
-        elif self.edit_centerX.text() == "":
-            QMessageBox.about(self, 'Error','Center - X coord. is missing')
+        elif self.edit_centerX.text() in ["", "+", "-"]:
+            messagebox = QMessageBox(QMessageBox.Warning, "Error", "Center - X coord. is missing!", buttons = QMessageBox.Ok, parent=self)
+            messagebox.setIconPixmap(QPixmap('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\stop_writing.png'))
+            messagebox.exec_()
 
-        elif self.edit_centerY.text() == "":
-            QMessageBox.about(self, 'Error','Center - Y coord. is missing')
+        elif self.edit_centerY.text() in ["", "+", "-"]:
+            messagebox = QMessageBox(QMessageBox.Warning, "Error", "Center - Y coord. is missing!", buttons = QMessageBox.Ok, parent=self)
+            messagebox.setIconPixmap(QPixmap('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\stop_writing.png'))
+            messagebox.exec_()
 
-        elif self.edit_centerZ.text() == "":
-            QMessageBox.about(self, 'Error','Center - Z coord. is missing')
+        elif self.edit_centerZ.text() in ["", "+", "-"]:
+            messagebox = QMessageBox(QMessageBox.Warning, "Error", "Center - Z coord. is missing!", buttons = QMessageBox.Ok, parent=self)
+            messagebox.setIconPixmap(QPixmap('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\stop_writing.png'))
+            messagebox.exec_()
  
         else:
 
@@ -253,26 +257,12 @@ class WindowSphere(QWidget):
 
             u, v = np.mgrid[0:2 * np.pi:30j, 0:np.pi:30j]
             
-            '''
-            x = 2 * np.cos(u) * np.sin(v)
-            y = 2 * np.sin(u) * np.sin(v)
-            z = 2 * np.cos(v)
-            '''
-
             x = r * np.outer(np.cos(u), np.sin(v)) + center_x
             y = r * np.outer(np.sin(u), np.sin(v)) + center_y
             z = r * np.outer(np.ones(np.size(u)), np.cos(v)) + center_z
 
-            # alpha = 1.0 / random.randint(25, 100)
             sphere_plot.axes.plot_surface(x, y, z, color=circle_color)
-            # YlGnBu_r
-            # Pastel2_r
-            # sphere_plot.axes.plot_surface(x, y, z, cmap=plt.cm.YlGnBu_r)
-            # sphere_plot.axes.plot_surface(x, y, z, color='b')
-            # sphere_plot.axes.plot_surface(x, y, z, cmap=plt.cm.PiYG)
-
             sphere_plot.draw()
-
             self.calculate_sphere()
 
     def calculate_sphere(self):
