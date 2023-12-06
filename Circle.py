@@ -93,7 +93,7 @@ class WindowCircle(QWidget):
         validator_double.setLocale(locale)
         validator_double.setNotation(QDoubleValidator.StandardNotation)
 
-        validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
+        validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([1-9][0-9]{0,6}[.])|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
         
 
         self.label_radius = QLabel("Radius:")
