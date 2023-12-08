@@ -11,3 +11,7 @@ Calculation and plotting circle
 
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/CircleCalculation.PNG)
 
+### Sphere
+Calculation and plotting sphere
+
+![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/SphereCalculation.PNG)
