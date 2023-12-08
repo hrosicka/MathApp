@@ -46,7 +46,7 @@ class WindowSphere(QWidget):
         buttonplotSphere = QPushButton('Plot Sphere')
         buttonplotSphere.clicked.connect(lambda: self.plot_sphere(sc, self.combo_color.currentText()))
         buttonClear = QPushButton('Clear')
-        buttonClear.clicked.connect(lambda: self.clear_inputs())
+        buttonClear.clicked.connect(lambda: self.clear_inputs(sc))
         buttonClose = QPushButton('Close')
         buttonClose.clicked.connect(self.close)
 
@@ -171,6 +171,7 @@ class WindowSphere(QWidget):
         self.combo_color.addItem("blue")
         self.combo_color.addItem("orange")
         self.combo_color.setFixedWidth(150)
+        self.combo_color.setFixedHeight(28)
         layout_param.addWidget(self.combo_color,4,1)
 
         self.label_volume = QLabel("Sphere Volume:")
@@ -276,7 +277,9 @@ class WindowSphere(QWidget):
         self.label_res_surface.setText(str(sphere_surface))
 
 
-    def clear_inputs(self):
+    def clear_inputs(self, sc):
+        sc.axes.cla()
+        sc.draw()
         self.edit_radius.clear()
         self.edit_centerX.clear()
         self.edit_centerY.clear()

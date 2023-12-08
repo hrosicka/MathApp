@@ -173,6 +173,7 @@ class WindowEllipse(QWidget):
         self.combo_color.addItem("blue")
         self.combo_color.addItem("orange")
         self.combo_color.setFixedWidth(150)
+        self.combo_color.setFixedHeight(28)
         layout_param.addWidget(self.combo_color,4,1)
         
 
