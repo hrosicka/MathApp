@@ -141,7 +141,52 @@ class WindowEllipsoid(QWidget):
         self.label_dim_z.setFixedWidth(30)
         layout_param.addWidget(self.label_dim_z,3,2)
 
+        self.label_combo_color = QLabel("Ellipsoid Color:")
+        self.label_combo_color.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_combo_color.setFixedWidth(150)
+        layout_param.addWidget(self.label_combo_color,4,0)
 
+        self.combo_color = QComboBox(self)
+        self.combo_color.addItem("green")
+        self.combo_color.addItem("red")
+        self.combo_color.addItem("blue")
+        self.combo_color.addItem("orange")
+        self.combo_color.setFixedWidth(150)
+        self.combo_color.setFixedHeight(28)
+        layout_param.addWidget(self.combo_color,4,1)
+
+        self.label_volume = QLabel("Ellipsoid Volume:")
+        self.label_volume.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_volume.setFixedWidth(150)
+        layout_res.addWidget(self.label_volume,0,0)
+
+        self.label_res_volume = QLabel('0.0')
+        self.label_res_volume.setStyleSheet("background-color : white; color : darkblue")
+        self.label_res_volume.setAlignment(QtCore.Qt.AlignRight)
+        self.label_res_volume.setFixedWidth(150)
+        layout_res.addWidget(self.label_res_volume,0,1)
+
+        self.label_dim_vol = QLabel("cm<sup>3</sup>")
+        self.label_dim_vol.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_dim_vol.setFixedWidth(30)
+        layout_res.addWidget(self.label_dim_vol,0,2)
+
+
+        self.label_surface = QLabel("Ellipsoid Surface:")
+        self.label_surface.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_surface.setFixedWidth(150)
+        layout_res.addWidget(self.label_surface,1,0)
+
+        self.label_res_surface = QLabel('0.0')
+        self.label_res_surface.setStyleSheet("background-color : white; color : darkblue")
+        self.label_res_surface.setAlignment(QtCore.Qt.AlignRight)
+        self.label_res_surface.setFixedWidth(150)
+        layout_res.addWidget(self.label_res_surface,1,1)
+
+        self.label_dim_surface = QLabel("cm<sup>2</sup>")
+        self.label_dim_surface.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_dim_surface.setFixedWidth(30)
+        layout_res.addWidget(self.label_dim_surface,1,2)
 
     def plot_ellipsoid(self, ellipsoid_plot):
         u, v = np.mgrid[0:2 * np.pi:30j, 0:np.pi:20j]
