@@ -15,7 +15,13 @@ from PyQt5.QtWidgets import (
 )
 
 from PyQt5 import QtCore
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import (
+    QDoubleValidator,
+    QIcon,
+    QPixmap,
+    QRegExpValidator,
+    QValidator,
+)  
 
 import matplotlib
 matplotlib.use('Qt5Agg')
@@ -81,7 +87,14 @@ class WindowSquare(QWidget):
         vbox2.addLayout(hbox2)
 
         self.setLayout(vbox2)
-        self.setWindowTitle('Square')  
+        self.setWindowTitle('Square')
+
+        validator_double = QDoubleValidator(-10000000,10000000,5)
+        locale = QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates)
+        validator_double.setLocale(locale)
+        validator_double.setNotation(QDoubleValidator.StandardNotation)
+
+        validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([1-9][0-9]{0,6}[.])|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
 
         
 
@@ -91,6 +104,7 @@ class WindowSquare(QWidget):
         layout_param.addWidget(self.label_side,0,0)
 
         self.edit_side = QLineEdit(self)
+        self.edit_side.setValidator(validator_possitive)
         self.edit_side.setAlignment(QtCore.Qt.AlignRight)
         self.edit_side.setFixedWidth(150)
         layout_param.addWidget(self.edit_side,0,1)
