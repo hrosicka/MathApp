@@ -87,13 +87,15 @@ class WindowCircle(QWidget):
         self.setWindowTitle('Circle')  
 
         
-        validator_double = QDoubleValidator(-10000000,10000000,5)
-        locale = QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates)
-        validator_double.setLocale(locale)
-        validator_double.setNotation(QDoubleValidator.StandardNotation)
+        # validator_double = QDoubleValidator(-10000000,10000000,5,notation=QDoubleValidator.StandardNotation)
+        # locale = QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates)
+        # validator_double.setLocale(locale)
+        # validator_double.setNotation(QDoubleValidator.StandardNotation)
 
         validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([1-9][0-9]{0,6}[.])|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
-        
+        validator_double = QRegExpValidator(QtCore.QRegExp(r'([-][1-9][0-9]{0,6})|([-][1-9][0-9]{0,6}[.])|([-][0][.][0-9]{1,6})|([-][1-9]{1,6}[.][0-9]{1,6})|([1-9][0-9]{0,6})|([1-9][0-9]{0,6}[.])|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
+
+
         self.label_radius = QLabel("Radius:")
         self.label_radius.setAlignment(QtCore.Qt.AlignLeft)
         self.label_radius.setFixedWidth(150)
