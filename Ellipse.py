@@ -88,13 +88,14 @@ class WindowEllipse(QWidget):
         self.setLayout(vbox2)
         self.setWindowTitle('Ellipse')  
 
-        validator_double = QDoubleValidator()
-        locale = QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates)
-        validator_double.setLocale(locale)
-        validator_double.setNotation(QDoubleValidator.StandardNotation)
-        
-        validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
+        # validator_double = QDoubleValidator()
+        # locale = QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates)
+        # validator_double.setLocale(locale)
+        # validator_double.setNotation(QDoubleValidator.StandardNotation)
 
+        validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
+        validator_double = QRegExpValidator(QtCore.QRegExp(r'([-][1-9][0-9]{0,6})|([-][1-9][0-9]{0,6}[.])|([-][0][.][0-9]{1,6})|([-][1-9]{1,6}[.][0-9]{1,6})|([1-9][0-9]{0,6})|([1-9][0-9]{0,6}[.])|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
+        
         self.label_axis_a = QLabel("Semi-major axis a:")
         self.label_axis_a.setAlignment(QtCore.Qt.AlignLeft)
         self.label_axis_a.setFixedWidth(150)
