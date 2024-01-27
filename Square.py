@@ -1,8 +1,4 @@
-import sys
-from random import randint
-
 from PyQt5.QtWidgets import (
-    QApplication,
     QComboBox,
     QGridLayout,
     QGroupBox,
@@ -44,6 +40,7 @@ class WindowSquare(QWidget):
     def initUI(self):
         
         sc = Canvas.MplCanvas(self, width=6, height=6, dpi=100)
+        self.setWindowIcon(QIcon('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png'))
 
         buttonplotSquare = QPushButton('Plot Square')
         buttonplotSquare.clicked.connect(lambda: self.plot_square(sc, self.combo_color.currentText()))
@@ -89,13 +86,14 @@ class WindowSquare(QWidget):
         self.setLayout(vbox2)
         self.setWindowTitle('Square')
 
-        validator_double = QDoubleValidator(-10000000,10000000,5)
-        locale = QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates)
-        validator_double.setLocale(locale)
-        validator_double.setNotation(QDoubleValidator.StandardNotation)
+        
+        # validator_double = QDoubleValidator(-10000000,10000000,5,notation=QDoubleValidator.StandardNotation)
+        # locale = QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates)
+        # validator_double.setLocale(locale)
+        # validator_double.setNotation(QDoubleValidator.StandardNotation)
 
         validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([1-9][0-9]{0,6}[.])|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
-
+        validator_double = QRegExpValidator(QtCore.QRegExp(r'([-][1-9][0-9]{0,6})|([-][1-9][0-9]{0,6}[.])|([-][0][.][0-9]{1,6})|([-][1-9]{1,6}[.][0-9]{1,6})|([1-9][0-9]{0,6})|([1-9][0-9]{0,6}[.])|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
         
 
         self.label_side = QLabel("Side Length:")
