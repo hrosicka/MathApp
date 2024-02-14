@@ -73,7 +73,7 @@ class MainWindow(QMainWindow):
         self.setMaximumHeight(800)
 
         buttonClose = QPushButton('Close')
-        buttonClose.clicked.connect(self.close)
+        buttonClose.clicked.connect(app.closeAllWindows)
 
         l = QHBoxLayout()
         l.addStretch(1)
