@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QLineEdit,
+    QMessageBox,
     QPushButton,
     QVBoxLayout,
     QWidget,
@@ -207,22 +208,40 @@ class WindowSquare(QWidget):
 
 
     def plot_square(self, square_plot, square_color):
-        square_plot.axes.cla()
-        Drawing_colored_circle = plt.Circle((float(self.edit_centerX.text()),(float(self.edit_centerY.text()))),float(self.edit_side.text()))
-        Drawing_colored_circle.set_color(square_color)
 
-        minus_x = float(self.edit_centerX.text())-2*float(self.edit_side.text())
-        plus_x = float(self.edit_centerX.text())+2*float(self.edit_side.text())
-        minus_y = float(self.edit_centerY.text())-2*float(self.edit_side.text())
-        plus_y = float(self.edit_centerY.text())+2*float(self.edit_side.text())
+        if self.edit_side.text() in ["", "0", "0.", "+", "-"]:
+            messagebox = QMessageBox(QMessageBox.Warning, "Error", "Side can be only a possitive number!", buttons = QMessageBox.Ok, parent=self)
+            messagebox.setIconPixmap(QPixmap('stop_writing.png'))
+            messagebox.exec_()
 
-        square_plot.axes.set_xlim(minus_x, plus_x)
-        square_plot.axes.set_ylim(minus_y, plus_y)
+        elif self.edit_centerX.text() in ["", "+", "-"]:
+            messagebox = QMessageBox(QMessageBox.Warning, "Error", "Center - X coord. is missing!", buttons = QMessageBox.Ok, parent=self)
+            messagebox.setIconPixmap(QPixmap('stop_writing.png'))
+            messagebox.exec_()
 
-        square_plot.axes.add_artist(Drawing_colored_circle)
-        square_plot.draw()
+        elif self.edit_centerY.text() in ["", "+", "-"]:
+            messagebox = QMessageBox(QMessageBox.Warning, "Error", "Center - Y coord. is missing!", buttons = QMessageBox.Ok, parent=self)
+            messagebox.setIconPixmap(QPixmap('stop_writing.png'))
+            messagebox.exec_()
 
-        self.calculate_square()
+        else:
+
+            square_plot.axes.cla()
+            Drawing_colored_circle = plt.Circle((float(self.edit_centerX.text()),(float(self.edit_centerY.text()))),float(self.edit_side.text()))
+            Drawing_colored_circle.set_color(square_color)
+
+            minus_x = float(self.edit_centerX.text())-2*float(self.edit_side.text())
+            plus_x = float(self.edit_centerX.text())+2*float(self.edit_side.text())
+            minus_y = float(self.edit_centerY.text())-2*float(self.edit_side.text())
+            plus_y = float(self.edit_centerY.text())+2*float(self.edit_side.text())
+
+            square_plot.axes.set_xlim(minus_x, plus_x)
+            square_plot.axes.set_ylim(minus_y, plus_y)
+
+            square_plot.axes.add_artist(Drawing_colored_circle)
+            square_plot.draw()
+
+            self.calculate_square()
 
     def calculate_square(self):
 
