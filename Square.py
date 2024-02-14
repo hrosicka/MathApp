@@ -25,6 +25,7 @@ matplotlib.use('Qt5Agg')
 
 
 from matplotlib import pyplot as plt
+import matplotlib.patches as patches
 
 import numpy as np
 
@@ -225,23 +226,27 @@ class WindowSquare(QWidget):
             messagebox.exec_()
 
         else:
-
+            
             square_plot.axes.cla()
-            Drawing_colored_circle = plt.Circle((float(self.edit_centerX.text()),(float(self.edit_centerY.text()))),float(self.edit_side.text()))
-            Drawing_colored_circle.set_color(square_color)
+            square = patches.Rectangle((float(self.edit_centerX.text()) - float(self.edit_side.text())/2, (float(self.edit_centerY.text()) - float(self.edit_side.text())/2)), float(self.edit_side.text()), float(self.edit_side.text()), edgecolor = square_color, facecolor = square_color)
 
-            minus_x = float(self.edit_centerX.text())-2*float(self.edit_side.text())
-            plus_x = float(self.edit_centerX.text())+2*float(self.edit_side.text())
-            minus_y = float(self.edit_centerY.text())-2*float(self.edit_side.text())
-            plus_y = float(self.edit_centerY.text())+2*float(self.edit_side.text())
+            minus_x = float(self.edit_centerX.text())-float(self.edit_side.text())
+            plus_x = float(self.edit_centerX.text())+float(self.edit_side.text())
+            minus_y = float(self.edit_centerY.text())-float(self.edit_side.text())
+            plus_y = float(self.edit_centerY.text())+float(self.edit_side.text())
 
             square_plot.axes.set_xlim(minus_x, plus_x)
             square_plot.axes.set_ylim(minus_y, plus_y)
 
-            square_plot.axes.add_artist(Drawing_colored_circle)
+            square_plot.axes.add_patch(square)
             square_plot.draw()
 
+            
+           
+
+
             self.calculate_square()
+
 
     def calculate_square(self):
 
