@@ -15,3 +15,9 @@ Calculation and plotting circle
 Calculation and plotting sphere
 
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/SphereCalculation.PNG)
+
+### Ellipse
+Calculation and plotting ellipse
+
+![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/EllipseCalculation.PNG)
+
