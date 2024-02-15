@@ -21,3 +21,8 @@ Calculation and plotting ellipse
 
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/EllipseCalculation.PNG)
 
+### Square
+Calculation and plotting square
+
+![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/SquareCalculation.PNG)
+
