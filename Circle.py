@@ -28,6 +28,8 @@ from matplotlib import pyplot as plt
 
 import numpy as np
 
+import pandas as pd
+
 import CircleCalc
 
 import Canvas
@@ -46,6 +48,8 @@ class WindowCircle(QWidget):
         buttonplotCircle.clicked.connect(lambda: self.plot_circle(sc, self.combo_color.currentText()))
         buttonClear = QPushButton('Clear')
         buttonClear.clicked.connect(lambda: self.clear_inputs(sc))
+        buttonExport = QPushButton('Export')
+        buttonExport.clicked.connect(lambda: self.export_excel())
         buttonClose = QPushButton('Close')
         buttonClose.clicked.connect(self.close)
 
@@ -57,6 +61,7 @@ class WindowCircle(QWidget):
         hbox2.addStretch(1)
         hbox2.addWidget(buttonplotCircle)
         hbox2.addWidget(buttonClear)
+        hbox2.addWidget(buttonExport)
         hbox2.addWidget(buttonClose)
 
 
@@ -312,3 +317,12 @@ class WindowCircle(QWidget):
             color = '#f6989d' # red
         sender.setStyleSheet('QLineEdit { background-color: %s }' % color) 
         
+
+    def export_excel(self):
+        data = {
+        'Property': [self.label_radius.text(), self.label_centerX.text()],
+        'Value': [self.edit_radius.text(), self.edit_centerX.text()],
+        'Unit': ['cm', 'cm']
+        }
+        df = pd.DataFrame(data)
+        df.to_excel('output_circle.xlsx', sheet_name='Circle Calculation', index=False)
