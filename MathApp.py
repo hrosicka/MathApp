@@ -162,7 +162,7 @@ class MainWindow(QMainWindow):
         # Creating action using the first constructor
         self.closeAction = QAction(self)
         self.closeAction.setText("&Close")
-        self.closeAction.triggered.connect(self.close)
+        self.closeAction.triggered.connect(app.closeAllWindows)
 
         self.circleAction = QAction(self)
         self.circleAction.setText("&Circle")
