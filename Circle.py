@@ -319,10 +319,38 @@ class WindowCircle(QWidget):
         
 
     def export_excel(self):
+
+        # Creating Excel Writer Object from Pandas  
+        writer = pd.ExcelWriter('output_circle.xlsx',engine='xlsxwriter')   
+        workbook = writer.book
+        worksheet = workbook.add_worksheet('Circle Calculation')
+        writer.sheets['Circle Calculation'] = worksheet
+         
         data = {
-        'Property': [self.label_radius.text(), self.label_centerX.text()],
-        'Value': [self.edit_radius.text(), self.edit_centerX.text()],
-        'Unit': ['cm', 'cm']
+        'Property': [self.label_centerX.text(),
+                     self.label_centerX.text(),
+                     self.label_centerY.text()],
+        'Value': [self.edit_radius.text(), 
+                  self.edit_centerX.text(),
+                  self.edit_centerY.text()],
+        'Unit': ['cm', 
+                 'cm',
+                 'cm']
         }
+
+        results = {
+        'Result': [self.label_perimeter.text(),
+                     self.label_area.text()],
+        'Value': [self.label_res_perimeter.text(), 
+                  self.label_res_area.text()],
+        'Unit': ['cm', 
+                 'cm']
+        }
+
         df = pd.DataFrame(data)
-        df.to_excel('output_circle.xlsx', sheet_name='Circle Calculation', index=False)
+        df.to_excel(writer,sheet_name='Circle Calculation',startrow=0 , startcol=0)
+
+        df_res = pd.DataFrame(results)
+        df_res.to_excel(writer,sheet_name='Circle Calculation',startrow=5 , startcol=0) 
+
+        writer.close()
