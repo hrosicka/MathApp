@@ -248,7 +248,11 @@ class WindowCircle(QWidget):
             circle_plot.axes.set_ylim(minus_y, plus_y)
 
             circle_plot.axes.add_artist(Drawing_colored_circle)
+            
             circle_plot.draw()
+
+            fig = circle_plot.figure
+            fig.savefig('box_plot.png')
 
             self.calculate_circle()
 
