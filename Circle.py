@@ -252,7 +252,7 @@ class WindowCircle(QWidget):
             circle_plot.draw()
 
             fig = circle_plot.figure
-            fig.savefig('box_plot.png')
+            fig.savefig('circle_plot.png')
 
             self.calculate_circle()
 
@@ -356,5 +356,12 @@ class WindowCircle(QWidget):
 
         df_res = pd.DataFrame(results)
         df_res.to_excel(writer,sheet_name='Circle Calculation',startrow=5 , startcol=0) 
+
+        # Get the xlsxwriter workbook and worksheet objects.
+        workbook  = writer.book
+        worksheet = writer.sheets['Circle Calculation']
+
+        # Insert an image.
+        worksheet.insert_image('F2', 'circle_plot.png')
 
         writer.close()
