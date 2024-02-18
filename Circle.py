@@ -1,4 +1,7 @@
+import os
+
 from PyQt5.QtWidgets import (
+    QAction, 
     QComboBox,
     QGridLayout,
     QGroupBox,
@@ -7,6 +10,7 @@ from PyQt5.QtWidgets import (
     QLineEdit,
     QMessageBox,
     QPushButton,
+    QToolBar,
     QVBoxLayout,
     QWidget,
 )
@@ -31,8 +35,8 @@ import numpy as np
 import pandas as pd
 
 import CircleCalc
-
 import Canvas
+import CheckCreateDirectory
 
 class WindowCircle(QWidget):
     def __init__(self):
@@ -53,7 +57,24 @@ class WindowCircle(QWidget):
         buttonClose = QPushButton('Close')
         buttonClose.clicked.connect(self.close)
 
-        self.setFixedSize(800, 365)
+        toolbar = QToolBar()
+
+        self.closeAction = QAction(self)
+        self.closeAction.setToolTip("Close window")
+        self.closeAction.setIcon(QIcon('Shape_ico.png'))
+        self.closeAction.triggered.connect(self.close)
+
+
+        toolbar.addAction(self.closeAction)
+        toolbar.addAction(QIcon('Shape_ico.png'), "&Save graph as picture")
+        toolbar.addAction(QIcon('Shape_ico.png'), "&Export results into Excel")
+        toolbar.addAction(QIcon('Shape_ico.png'), "Clear all data and results")
+        toolbar.addAction(QIcon('Shape_ico.png'), "Close window")
+
+
+        
+
+        self.setFixedSize(800, 395)
 
         hbox1 = QHBoxLayout()
         
@@ -73,7 +94,6 @@ class WindowCircle(QWidget):
         layout_param = QGridLayout()
         layout_res = QGridLayout()
 
-
         groupBoxParameters = QGroupBox("Parameters")
         groupBoxParameters.setLayout(layout_param)
         groupBoxResults = QGroupBox("Results")
@@ -83,7 +103,7 @@ class WindowCircle(QWidget):
 
         hbox1.addLayout(vbox1)
         hbox1.addWidget(sc)
-
+        vbox2.setMenuBar(toolbar)
         vbox2.addLayout(hbox1)
         vbox2.addStretch(1)
         vbox2.addLayout(hbox2)
@@ -324,8 +344,11 @@ class WindowCircle(QWidget):
 
     def export_excel(self):
 
+        path = ".\\Results"
+        CheckCreateDirectory.check_create_dir(path)
+
         # Creating Excel Writer Object from Pandas  
-        writer = pd.ExcelWriter('output_circle.xlsx',engine='xlsxwriter')   
+        writer = pd.ExcelWriter('.\\Results\\output_circle.xlsx',engine='xlsxwriter')   
         workbook = writer.book
         worksheet = workbook.add_worksheet('Circle Calculation')
         writer.sheets['Circle Calculation'] = worksheet
