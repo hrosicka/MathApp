@@ -59,21 +59,6 @@ class WindowCircle(QWidget):
 
         toolbar = QToolBar()
 
-        self.closeAction = QAction(self)
-        self.closeAction.setToolTip("Close window")
-        self.closeAction.setIcon(QIcon('Shape_ico.png'))
-        self.closeAction.triggered.connect(self.close)
-
-
-        toolbar.addAction(self.closeAction)
-        toolbar.addAction(QIcon('Shape_ico.png'), "&Save graph as picture")
-        toolbar.addAction(QIcon('Shape_ico.png'), "&Export results into Excel")
-        toolbar.addAction(QIcon('Shape_ico.png'), "Clear all data and results")
-        toolbar.addAction(QIcon('Shape_ico.png'), "Close window")
-
-
-        
-
         self.setFixedSize(800, 395)
 
         hbox1 = QHBoxLayout()
@@ -230,6 +215,25 @@ class WindowCircle(QWidget):
         self.edit_centerY.textChanged.connect(self.check_state_centerY)
         self.edit_centerY.textChanged.emit(self.edit_centerY.text())
 
+
+        self.closeAction = QAction(self)
+        self.closeAction.setToolTip("Close window")
+        self.closeAction.setIcon(QIcon('CloseAppIcon.svg'))
+        self.closeAction.triggered.connect(self.close)
+
+
+        toolbar.addAction(QIcon('Shape_ico.png'), "&Solve and plot picture")
+        toolbar.addAction(QIcon('Shape_ico.png'), "&Save graph as picture")
+
+        self.exportAction = QAction(self)
+        self.exportAction.setToolTip("Export input data, results\nand graph into Excel")
+        self.exportAction.setIcon(QIcon('ExportXLSIcon.svg'))
+        self.exportAction.triggered.connect(self.export_excel)
+
+        
+        toolbar.addAction(self.exportAction)
+        toolbar.addAction(QIcon('Shape_ico.png'), "Clear all data and results")
+        toolbar.addAction(self.closeAction)
 
 
     def plot_circle(self, circle_plot, circle_color):
