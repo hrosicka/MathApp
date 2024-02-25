@@ -276,7 +276,7 @@ class WindowCircle(QWidget):
             circle_plot.draw()
 
             fig = circle_plot.figure
-            fig.savefig('circle_plot.png')
+            fig.savefig('.\\Results\\circle_plot.png')
 
             self.calculate_circle()
 
@@ -389,6 +389,6 @@ class WindowCircle(QWidget):
         worksheet = writer.sheets['Circle Calculation']
 
         # Insert an image.
-        worksheet.insert_image('F2', 'circle_plot.png')
+        worksheet.insert_image('F2', '.\\Results\\circle_plot.png')
 
         writer.close()
