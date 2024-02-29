@@ -17,7 +17,6 @@ from PyQt5.QtWidgets import (
 
 from PyQt5 import QtCore
 from PyQt5.QtGui import (
-    QDoubleValidator,
     QIcon,
     QPixmap,
     QRegExpValidator,
@@ -48,26 +47,33 @@ class WindowCircle(QWidget):
         sc = Canvas.MplCanvas(self, width=6, height=6, dpi=100)
         self.setWindowIcon(QIcon('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png'))
 
+        # button for caltulation a plot 
         buttonplotCircle = QPushButton('Plot Circle')
         buttonplotCircle.clicked.connect(lambda: self.plot_circle(sc, self.combo_color.currentText()))
         
+        # button for clear inputs, results and graph
         self.buttonClear = QPushButton('Clear')
         self.buttonClear.clicked.connect(lambda: self.clear_inputs(sc))
         self.buttonClear.setEnabled(False)
         
+        # button for export excel 
         buttonExport = QPushButton('Export')
         buttonExport.clicked.connect(lambda: self.export_excel())
         
+        # button for close window
         buttonClose = QPushButton('Close')
         buttonClose.clicked.connect(self.close)
 
+        # top toolbar
         toolbar = QToolBar()
         toolbar.setIconSize(QtCore.QSize(50, 50))
 
-        self.setFixedSize(800, 440)
+        # size of window
+        self.setFixedSize(800, 428)
 
         hbox1 = QHBoxLayout()
         
+        # horizontal box layout for buttons in the bottom
         hbox2 = QHBoxLayout()
         hbox2.addStretch(1)
         hbox2.addWidget(buttonplotCircle)
@@ -75,24 +81,30 @@ class WindowCircle(QWidget):
         hbox2.addWidget(buttonExport)
         hbox2.addWidget(buttonClose)
 
-
-
-        vbox1 = QVBoxLayout()
-
-        vbox2 = QVBoxLayout()
-
+        # layout and group box for input parameters
         layout_param = QGridLayout()
-        layout_res = QGridLayout()
-
         groupBoxParameters = QGroupBox("Parameters")
         groupBoxParameters.setLayout(layout_param)
+
+        # layout and group box for results
+        layout_res = QGridLayout()
         groupBoxResults = QGroupBox("Results")
         groupBoxResults.setLayout(layout_res)
+
+        # vertical box layout for groupboxes - input and results
+        vbox1 = QVBoxLayout()
         vbox1.addWidget(groupBoxParameters)
         vbox1.addWidget(groupBoxResults)
 
+        # horizontal box layout for vbox1 with groupboxes and graph
         hbox1.addLayout(vbox1)
         hbox1.addWidget(sc)
+
+        # vertical box layout for:
+        # 1. menu
+        # 2. horizontal box layout for vbox1 with groupboxes and graph
+        # 3. horizontal box layout with buttons
+        vbox2 = QVBoxLayout()
         vbox2.setMenuBar(toolbar)
         vbox2.addLayout(hbox1)
         vbox2.addStretch(1)
@@ -101,12 +113,7 @@ class WindowCircle(QWidget):
         self.setLayout(vbox2)
         self.setWindowTitle('Circle')  
 
-        
-        # validator_double = QDoubleValidator(-10000000,10000000,5,notation=QDoubleValidator.StandardNotation)
-        # locale = QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates)
-        # validator_double.setLocale(locale)
-        # validator_double.setNotation(QDoubleValidator.StandardNotation)
-
+        # validators - regulat expression
         validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([1-9][0-9]{0,6}[.])|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
         validator_double = QRegExpValidator(QtCore.QRegExp(r'([-][1-9][0-9]{0,6})|([-][1-9][0-9]{0,6}[.])|([-][0][.][0-9]{1,6})|([-][1-9]{1,6}[.][0-9]{1,6})|([1-9][0-9]{0,6})|([1-9][0-9]{0,6}[.])|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
 
@@ -300,6 +307,7 @@ class WindowCircle(QWidget):
 
             self.calculate_circle()
             self.clearAction.setEnabled(True)
+            self.buttonClear.setEnabled(True)
 
     def save_fig(self):
         self.fig.savefig('.\\Results\\circle_plot.png')
@@ -324,6 +332,7 @@ class WindowCircle(QWidget):
         self.label_res_area.setText("0.0")
         self.label_res_perimeter.setText("0.0")
         self.clearAction.setEnabled(False)
+        self.buttonClear.setEnabled(False)
 
     
     def check_state_rad(self, *args, **kwargs):

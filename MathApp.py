@@ -1,9 +1,7 @@
 import sys
-from random import randint
 
 from PyQt5.QtWidgets import (
     QApplication,
-    QGroupBox,
     QLabel,
     QMainWindow,
     QPushButton,
