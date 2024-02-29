@@ -50,23 +50,28 @@ class WindowCircle(QWidget):
 
         buttonplotCircle = QPushButton('Plot Circle')
         buttonplotCircle.clicked.connect(lambda: self.plot_circle(sc, self.combo_color.currentText()))
-        buttonClear = QPushButton('Clear')
-        buttonClear.clicked.connect(lambda: self.clear_inputs(sc))
+        
+        self.buttonClear = QPushButton('Clear')
+        self.buttonClear.clicked.connect(lambda: self.clear_inputs(sc))
+        self.buttonClear.setEnabled(False)
+        
         buttonExport = QPushButton('Export')
         buttonExport.clicked.connect(lambda: self.export_excel())
+        
         buttonClose = QPushButton('Close')
         buttonClose.clicked.connect(self.close)
 
         toolbar = QToolBar()
+        toolbar.setIconSize(QtCore.QSize(50, 50))
 
-        self.setFixedSize(800, 395)
+        self.setFixedSize(800, 440)
 
         hbox1 = QHBoxLayout()
         
         hbox2 = QHBoxLayout()
         hbox2.addStretch(1)
         hbox2.addWidget(buttonplotCircle)
-        hbox2.addWidget(buttonClear)
+        hbox2.addWidget(self.buttonClear)
         hbox2.addWidget(buttonExport)
         hbox2.addWidget(buttonClose)
 
@@ -216,23 +221,37 @@ class WindowCircle(QWidget):
         self.edit_centerY.textChanged.emit(self.edit_centerY.text())
 
 
-        self.closeAction = QAction(self)
-        self.closeAction.setToolTip("Close window")
-        self.closeAction.setIcon(QIcon('CloseAppIcon.svg'))
-        self.closeAction.triggered.connect(self.close)
-
-
+        
         toolbar.addAction(QIcon('Shape_ico.png'), "&Solve and plot picture")
-        toolbar.addAction(QIcon('Shape_ico.png'), "&Save graph as picture")
 
+        # Export graph as PNG - button in the top toolbar
+        self.exportPicture = QAction(self)
+        self.exportPicture.setToolTip("Save graph as picture")
+        self.exportPicture.setIcon(QIcon('SavePictureIcon.svg'))
+        self.exportPicture.triggered.connect(self.save_fig)
+        toolbar.addAction(self.exportPicture)
+
+        # Export inputs, results and graph into Excel file - button in the top toolbar
         self.exportAction = QAction(self)
         self.exportAction.setToolTip("Export input data, results\nand graph into Excel")
         self.exportAction.setIcon(QIcon('ExportXLSIcon.svg'))
         self.exportAction.triggered.connect(self.export_excel)
-
-        
         toolbar.addAction(self.exportAction)
-        toolbar.addAction(QIcon('Shape_ico.png'), "Clear all data and results")
+
+        # Clear all - inputs, results and graph - button in the top toolbar
+        # Button is disable, when result are not allowable
+        self.clearAction = QAction(self)
+        self.clearAction.setToolTip("Clear all data and results")
+        self.clearAction.setIcon(QIcon('ClearResultsIcon.svg'))
+        self.clearAction.triggered.connect(lambda: self.clear_inputs(sc))
+        self.clearAction.setEnabled(False)
+        toolbar.addAction(self.clearAction)
+
+        # Close window - - button in the top toolbar
+        self.closeAction = QAction(self)
+        self.closeAction.setToolTip("Close window")
+        self.closeAction.setIcon(QIcon('CloseAppIcon.svg'))
+        self.closeAction.triggered.connect(self.close)
         toolbar.addAction(self.closeAction)
 
 
@@ -275,10 +294,15 @@ class WindowCircle(QWidget):
             
             circle_plot.draw()
 
-            fig = circle_plot.figure
-            fig.savefig('.\\Results\\circle_plot.png')
+            self.fig = circle_plot.figure
+            
+            self.save_fig()
 
             self.calculate_circle()
+            self.clearAction.setEnabled(True)
+
+    def save_fig(self):
+        self.fig.savefig('.\\Results\\circle_plot.png')
 
     def calculate_circle(self):
 
@@ -299,6 +323,7 @@ class WindowCircle(QWidget):
         self.edit_centerY.clear()
         self.label_res_area.setText("0.0")
         self.label_res_perimeter.setText("0.0")
+        self.clearAction.setEnabled(False)
 
     
     def check_state_rad(self, *args, **kwargs):
