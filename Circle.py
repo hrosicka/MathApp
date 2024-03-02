@@ -78,8 +78,8 @@ class WindowCircle(QWidget):
         hbox2 = QHBoxLayout()
         hbox2.addStretch(1)
         hbox2.addWidget(self.buttonplotCircle)
-        hbox2.addWidget(self.buttonClear)
         hbox2.addWidget(self.buttonExport)
+        hbox2.addWidget(self.buttonClear)
         hbox2.addWidget(self.buttonClose)
 
         # layout and group box for input parameters
@@ -229,8 +229,12 @@ class WindowCircle(QWidget):
         self.edit_centerY.textChanged.emit(self.edit_centerY.text())
 
 
-        
-        toolbar.addAction(QIcon('Shape_ico.png'), "&Solve and plot picture")
+        # Solve and plot picture - button in the top toolbar
+        self.exportPictAction = QAction(self)
+        self.exportPictAction.setToolTip("Solve and plot picture")
+        self.exportPictAction.setIcon(QIcon('CalculateIcon.svg'))
+        self.exportPictAction.triggered.connect(lambda: self.plot_circle(sc, self.combo_color.currentText()))
+        toolbar.addAction(self.exportPictAction)
 
         # Export graph as PNG - button in the top toolbar
         self.exportPictAction = QAction(self)
