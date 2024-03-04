@@ -48,18 +48,24 @@ class WindowCircle(QWidget):
         self.setWindowIcon(QIcon('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png'))
 
         # button for calculation a plot 
-        self.buttonplotCircle = QPushButton('Plot Circle')
+        self.buttonplotCircle = QPushButton('Solve and Plot')
         self.buttonplotCircle.clicked.connect(lambda: self.plot_circle(sc, self.combo_color.currentText()))
+        self.buttonplotCircle.setToolTip("Solve and plot picture")
+
+         # button for export to Excel 
+        self.buttonPicture = QPushButton('Graph Export')
+        self.buttonPicture.clicked.connect(lambda: self.save_fig())
+        self.buttonPicture.setEnabled(False)
         
+        # button for export to Excel 
+        self.buttonExport = QPushButton('Excel Export')
+        self.buttonExport.clicked.connect(lambda: self.export_excel())
+        self.buttonExport.setEnabled(False)
+                
         # button for clear inputs, results and graph
         self.buttonClear = QPushButton('Clear')
         self.buttonClear.clicked.connect(lambda: self.clear_inputs(sc))
         self.buttonClear.setEnabled(False)
-        
-        # button for export excel 
-        self.buttonExport = QPushButton('Export')
-        self.buttonExport.clicked.connect(lambda: self.export_excel())
-        self.buttonExport.setEnabled(False)
         
         # button for close window
         self.buttonClose = QPushButton('Close')
@@ -78,6 +84,7 @@ class WindowCircle(QWidget):
         hbox2 = QHBoxLayout()
         hbox2.addStretch(1)
         hbox2.addWidget(self.buttonplotCircle)
+        hbox2.addWidget(self.buttonPicture)
         hbox2.addWidget(self.buttonExport)
         hbox2.addWidget(self.buttonClear)
         hbox2.addWidget(self.buttonClose)
@@ -316,6 +323,7 @@ class WindowCircle(QWidget):
             self.clearAction.setEnabled(True)
             self.buttonClear.setEnabled(True)
             self.exportPictAction.setEnabled(True)
+            self.buttonPicture.setEnabled(True)
             self.exportXlsxAction.setEnabled(True)
             self.buttonExport.setEnabled(True)
 
@@ -343,6 +351,7 @@ class WindowCircle(QWidget):
         self.label_res_perimeter.setText("0.0")
         self.clearAction.setEnabled(False)
         self.exportPictAction.setEnabled(False)
+        self.buttonPicture.setEnabled(False)
         self.exportXlsxAction.setEnabled(False)
         self.buttonExport.setEnabled(False)
         self.buttonClear.setEnabled(False)
