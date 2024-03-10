@@ -11,6 +11,17 @@ Calculation and plotting circle
 
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/CircleCalculation.PNG)
 
+### Circle input validations
+
+![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/CircleCalculationValidation.PNG)
+
+![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/CircleCalculationRadiusValidation.PNG)
+
+![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/CircleCalculationCenterXValidation.PNG)
+
+![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/CircleCalculationCenterYValidation.PNG)
+
+
 ### Sphere
 Calculation and plotting sphere
 
