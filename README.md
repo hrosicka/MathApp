@@ -11,6 +11,19 @@ Calculation and plotting circle
 
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/CircleCalculation.PNG)
 
+It is possible to use buttons in tollbars (icons) or classical buttons in the bottom part of form.
+
+### Button (icons) in toolbars
+![](https://github.com/hrosicka/PyQtMathApp/blob/master/CalculateIcon.svg) - Solve and plot
+
+![](https://github.com/hrosicka/PyQtMathApp/blob/master/SavePictureIcon.svg) - Export graph as PNG 
+
+![](https://github.com/hrosicka/PyQtMathApp/blob/master/ExportXLSIcon.svg) - Export Excel - inputs, results and graph
+
+![](https://github.com/hrosicka/PyQtMathApp/blob/master/ClearResultsIcon.svg) - Clear inputs and results
+
+![](https://github.com/hrosicka/PyQtMathApp/blob/master/CloseAppIcon.svg) - Close window
+
 ### Circle input validations
 
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/CircleCalculationValidation.PNG)
