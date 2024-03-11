@@ -34,6 +34,10 @@ It is possible to use buttons in tollbar (icons) or classical buttons in the bot
 
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/CircleCalculationCenterYValidation.PNG)
 
+### Color choise
+It is possible to choose color in the combo box
+![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/CircleColorCombo.PNG)
+
 
 ## Sphere
 Calculation and plotting sphere
