@@ -11,9 +11,9 @@ Calculation and plotting circle
 
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/CircleCalculation.PNG)
 
-It is possible to use buttons in tollbars (icons) or classical buttons in the bottom part of form.
+It is possible to use buttons in tollbar (icons) or classical buttons in the bottom part of form.
 
-### Button (icons) in toolbars
+### Buttons (icons) in toolbar
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/CalculateIcon.svg) - Solve and plot
 
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/SavePictureIcon.svg) - Export graph as PNG 
