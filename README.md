@@ -1,12 +1,12 @@
 # PyQtMathApp
 Calculation and plotting geometry shape such as circle, sphere... Still in progress...
 
-### Main window
+## Main window
 Main window with menu and buttons
 
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/MainWindow.PNG)
 
-### Circle
+## Circle
 Calculation and plotting circle
 
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/CircleCalculation.PNG)
@@ -35,17 +35,17 @@ It is possible to use buttons in tollbars (icons) or classical buttons in the bo
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/CircleCalculationCenterYValidation.PNG)
 
 
-### Sphere
+## Sphere
 Calculation and plotting sphere
 
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/SphereCalculation.PNG)
 
-### Ellipse
+## Ellipse
 Calculation and plotting ellipse
 
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/EllipseCalculation.PNG)
 
-### Square
+## Square
 Calculation and plotting square
 
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/SquareCalculation.PNG)
