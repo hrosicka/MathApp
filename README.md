@@ -39,11 +39,10 @@ It is possible to choose color in the combo box
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/CircleColorCombo.PNG)
 
 ### Export excel file
-Ii is possible to excel excel file
+Ii is possible to export excel file
 - inputs
 - results
 - graph
-- 
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/CircleCalculationXlsxResults.PNG)
 
 ## Sphere
