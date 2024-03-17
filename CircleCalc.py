@@ -1,12 +1,17 @@
 import math
 
 class Kruh:
-    """ 
-    Třída pro vytvoření a získání vlastností kruhu
+    """
+    Class representing a circle. 
+    It allows calculating the circumference, area, and other properties.
 
-    Metody počítají obvod, obsah. Výsledky lze získat jako stringy - v tuple
+    Attributes:
+        radius (float): The radius of the circle in centimeters.
 
-    Výsledek je vypsán v centimetrech, proto musí být vstup také v centimetrech
+    Methods:
+        obvod() -> float: Returns the circumference of the circle in centimeters.
+        obsah() -> float: Returns the area of the circle in square centimeters.
+        vypis() -> tuple[str, str]: Returns a pair of strings with information about the circle (circumference, area).
     """
     
     def __init__(self, r):
@@ -17,29 +22,34 @@ class Kruh:
 
     def obvod(self):
         """
-        Metoda pro výpočet obvodu kruhu v centimetrech
+        Calculates and returns the circumference of the circle.
 
-        Obvod kruhu: o = 2*PI*r
+        Formula: circumference = 2 * PI * radius
+
+        Returns:
+            float: The circumference of the circle in centimeters.
         """
         obv = 2 * math.pi * self.r
         return round(obv,5)
     
     def obsah(self):
         """
-        Metoda pro výpočet obsahu kruhu v centimetrech
+        Calculates and returns the area of the circle.
 
-        Obsah kruhu: S = PI*r^2
+        Formula: area = PI * radius^2
+
+        Returns:
+            float: The area of the circle in square centimeters.
         """
         obs = math.pi * pow(self.r, 2)
         return round(obs,5)
 
     def vypis(self):
         """
-        Metoda pro vypsání obsahu a obvodu kruhu - v centimetrech
+        Returns a pair of strings with information about the circle (circumference, area).
 
-        Vrací 2 řetězce - tuple formát - v pořadí obvod, obsah
-
-        Zaokrouhleno na 3 desetinná místa
+        Returns:
+            tuple[str, str]: A pair of strings with information about the circle's circumference and area.
         """
         textObvod = "Kruh o poloměru {} cm má obvod {} cm.".format(self.r, round(self.obvod(), 3))
         textObsah = "Kruh o poloměru {} cm má obsah {} cm2.".format(self.r, round(self.obsah(), 3))
