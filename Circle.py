@@ -121,8 +121,8 @@ class WindowCircle(QWidget):
         self.setLayout(vbox2)
         self.setWindowTitle('Circle')  
 
-        # validators - regulat expression
-        validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([1-9][0-9]{0,6}[.])|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
+        # validators - regular expression
+        validator_positive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([0])|([0][.][1-9][0-9]{0,6})|([1-9][0-9]{0,6}[.][1-9][0-9]{0,6})'))
         validator_double = QRegExpValidator(QtCore.QRegExp(r'([-][1-9][0-9]{0,6})|([-][1-9][0-9]{0,6}[.])|([-][0][.][0-9]{1,6})|([-][1-9]{1,6}[.][0-9]{1,6})|([1-9][0-9]{0,6})|([1-9][0-9]{0,6}[.])|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
 
 
@@ -132,7 +132,7 @@ class WindowCircle(QWidget):
         layout_param.addWidget(self.label_radius,0,0)
 
         self.edit_radius = QLineEdit(self)
-        self.edit_radius.setValidator(validator_possitive)
+        self.edit_radius.setValidator(validator_positive)
         self.edit_radius.setAlignment(QtCore.Qt.AlignRight)
         self.edit_radius.setFixedWidth(150)
         layout_param.addWidget(self.edit_radius,0,1)
@@ -233,13 +233,13 @@ class WindowCircle(QWidget):
         self.label_dim_area.setFixedWidth(30)
         layout_res.addWidget(self.label_dim_area,1,2)
 
-        self.edit_radius.textChanged.connect(self.check_state_rad)
+        self.edit_radius.textChanged.connect(self.check_state_rad_and_set_color)
         self.edit_radius.textChanged.emit(self.edit_radius.text())
 
-        self.edit_centerX.textChanged.connect(self.check_state_centerX)
+        self.edit_centerX.textChanged.connect(self.check_state_and_set_color)
         self.edit_centerX.textChanged.emit(self.edit_centerX.text())
 
-        self.edit_centerY.textChanged.connect(self.check_state_centerY)
+        self.edit_centerY.textChanged.connect(self.check_state_and_set_color)
         self.edit_centerY.textChanged.emit(self.edit_centerY.text())
 
 
@@ -292,7 +292,7 @@ class WindowCircle(QWidget):
         
 
         if self.edit_radius.text() in ["", "0", "0.", "+", "-"]:
-            messagebox = QMessageBox(QMessageBox.Warning, "Error", "Radius can be only a possitive number!", buttons = QMessageBox.Ok, parent=self)
+            messagebox = QMessageBox(QMessageBox.Warning, "Error", "Radius can be only a positive number!", buttons = QMessageBox.Ok, parent=self)
             messagebox.setIconPixmap(QPixmap('stop_writing.png'))
             messagebox.exec_()
 
@@ -363,51 +363,48 @@ class WindowCircle(QWidget):
         self.buttonExport.setEnabled(False)
         self.buttonClear.setEnabled(False)
 
-    
-    def check_state_rad(self, *args, **kwargs):
+
+    def check_state_and_set_color(self, sender):
+        """
+        This function checks the validation state of a QLineEdit sender and sets its background color accordingly.
+
+        Args:
+            sender (QtWidgets.QLineEdit): The QLineEdit widget whose state and color need to be updated.
+        """
         sender = self.sender()
         validator = sender.validator()
         state = validator.validate(sender.text(), 0)[0]
-        if self.edit_radius.text() == "0" or self.edit_radius.text() == "":
-            color = '#f6989d' # red
-        elif state == QValidator.Acceptable:
-            color = '#c4df9b' # green
+        color = '#f6989d'  # Default color (red)
+
+        if sender.text() == "":
+            color = '#f6989d'  # Empty field remains red
+        elif state == QValidator.Acceptable or sender.text() == "0":
+            color = '#c4df9b'  # Valid input turns green
         elif state == QValidator.Intermediate:
-            color = '#fff79a' # yellow
+            color = '#fff79a'  # Intermediate state turns yellow
+
+        sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
+    
+    def check_state_rad_and_set_color(self):
+        """
+        This function checks the validation state of a QLineEdit sender and sets its background color accordingly.
+
+        Args:
+            sender (QtWidgets.QLineEdit): The QLineEdit widget whose state and color need to be updated.
+        """
+        sender = self.sender()
+        validator = sender.validator()
+        state = validator.validate(sender.text(), 0)[0]
+
+        if sender.text() == "0" or sender.text() == "":
+            color = '#f6989d' # Empty or "0" field remains red
+        elif state == QValidator.Acceptable:
+            color = '#c4df9b' # Valid input turns green
+        elif state == QValidator.Intermediate:
+            color = '#fff79a' # Intermediate state turns yellow
         else:
             color = '#f6989d' # red
         sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
-
-
-    def check_state_centerX(self, *args, **kwargs):
-        sender = self.sender()
-        validator = sender.validator()
-        state = validator.validate(sender.text(), 0)[0]
-        if self.edit_centerX.text() == "":
-            color = '#f6989d' # red
-        elif state == QValidator.Acceptable:
-            color = '#c4df9b' # green
-        elif state == QValidator.Intermediate:
-            color = '#fff79a' # yellow
-        else:
-            color = '#f6989d' # red
-        sender.setStyleSheet('QLineEdit { background-color: %s }' % color)   
-
-
-    def check_state_centerY(self, *args, **kwargs):
-        sender = self.sender()
-        validator = sender.validator()
-        state = validator.validate(sender.text(), 0)[0]
-        if self.edit_centerY.text() == "":
-            color = '#f6989d' # red
-        elif state == QValidator.Acceptable:
-            color = '#c4df9b' # green
-        elif state == QValidator.Intermediate:
-            color = '#fff79a' # yellow
-        else:
-            color = '#f6989d' # red
-        sender.setStyleSheet('QLineEdit { background-color: %s }' % color) 
-        
 
     def export_excel(self):
 
