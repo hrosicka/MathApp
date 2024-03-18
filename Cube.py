@@ -149,10 +149,18 @@ class WindowCube(QWidget):
         layout_param.addWidget(self.label_dim_z,3,2)
 
         self.combo_color = QComboBox(self)
-        self.combo_color.addItem("green")
-        self.combo_color.addItem("red")
-        self.combo_color.addItem("blue")
-        self.combo_color.addItem("orange")
+        colors = ["black", 
+                  "blue", 
+                  "gray", 
+                  "green", 
+                  "magenta", 
+                  "orange", 
+                  "pink", 
+                  "red", 
+                  "violet", 
+                  "yellow"]
+        self.combo_color.addItems(colors)
+        
         self.combo_color.setFixedWidth(150)
         layout_param.addWidget(self.combo_color,4,1)
 

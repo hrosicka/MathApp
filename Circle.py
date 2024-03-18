@@ -181,18 +181,19 @@ class WindowCircle(QWidget):
         self.label_combo_color.setFixedWidth(150)
         layout_param.addWidget(self.label_combo_color,3,0)
 
-        self.combo_color = QComboBox(self)
         
-        self.combo_color.addItem("black")
-        self.combo_color.addItem("blue")
-        self.combo_color.addItem("gray")
-        self.combo_color.addItem("green")
-        self.combo_color.addItem("magenta")
-        self.combo_color.addItem("orange")
-        self.combo_color.addItem("pink")
-        self.combo_color.addItem("red")
-        self.combo_color.addItem("violet")
-        self.combo_color.addItem("yellow")
+        self.combo_color = QComboBox(self)
+        colors = ["black", 
+                  "blue", 
+                  "gray", 
+                  "green", 
+                  "magenta", 
+                  "orange", 
+                  "pink", 
+                  "red", 
+                  "violet", 
+                  "yellow"]
+        self.combo_color.addItems(colors)
 
         self.combo_color.setFixedWidth(150)
         self.combo_color.setFixedHeight(28)
