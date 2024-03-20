@@ -278,9 +278,9 @@ class WindowEllipse(QWidget):
 
         axis_a = float(self.edit_axis_a.text())
         axis_b = float(self.edit_axis_b.text())
-        myEllipse = EllipseCalc.Elipsa(axis_a, axis_b)
-        ellipse_perimeter = round(myEllipse.obvod(),5)
-        ellipse_area = round(myEllipse.obsah(),5)
+        myEllipse = EllipseCalc.Ellipse(axis_a, axis_b)
+        ellipse_perimeter = round(myEllipse.circumference(),5)
+        ellipse_area = round(myEllipse.area(),5)
 
         self.label_res_perimeter.setText(str(ellipse_perimeter))
         self.label_res_area.setText(str(ellipse_area))

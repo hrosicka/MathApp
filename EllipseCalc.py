@@ -1,47 +1,69 @@
 import math
 
-class Elipsa:
-    """ 
-    Třída pro vytvoření a získání vlastností elipsy
+class Ellipse:
+    """
+    This class represents an ellipse and provides methods to calculate its properties like circumference and area.
 
-    Metody počítají obvod, obsah. Výsledky lze získat jako stringy - v tuple
-
-    Výsledek je vypsán v centimetrech, proto musí být vstup také v centimetrech
+    Attributes:
+        semi_major_axis (float): The length of the semi-major axis of the ellipse in centimeters.
+        semi_minor_axis (float): The length of the semi-minor axis of the ellipse in centimeters.
     """
     
-    def __init__(self, a, b):
+    def __init__(self, semi_major_axis, semi_minor_axis):
         """
-        Konstruktor elipsy - parametrem je poloměr r v centimetrech
-        """
-        self.a = a
-        self.b = b
+        Initializes an Ellipse object.
 
-    def obvod(self):
-        """
-        Metoda pro výpočet obvodu elipsy v centimetrech
+        Args:
+            semi_major_axis (float): The positive length of the semi-major axis of the ellipse in centimeters.
+            semi_minor_axis (float): The positive length of the semi-minor axis of the ellipse in centimeters.
 
-        Obvod elipsy: o = PI*(2*(a^2 + b^2))^1/2
+        Raises:
+            TypeError: If either axis length is not a number.
+            ValueError: If either axis length is not positive.
         """
-        obv =  math.pi * math.sqrt(2*(math.pow(self.a, 2) + math.pow(self.b, 2)))
-        return round(obv,5)
+        if not isinstance(semi_major_axis, (int, float)):
+            raise TypeError("Semi-major axis length must be a number.")
+        if semi_major_axis <= 0:
+            raise ValueError("Semi-major axis length must be positive.")
+        if not isinstance(semi_minor_axis, (int, float)):
+            raise TypeError("Semi-minor axis length must be a number.")
+        if semi_minor_axis <= 0:
+            raise ValueError("Semi-minor axis length must be positive.")
+        self.semi_major_axis = semi_major_axis
+        self.semi_minor_axis = semi_minor_axis
+
+    def circumference(self):
+        """
+        Calculates and returns the circumference of the ellipse in centimeters.
+
+        Formula: circumference = 2 * PI * sqrt(2 * (a^2 + b^2))
+
+        Returns:
+            float: The circumference of the ellipse in centimeters, rounded to 5 decimal places.
+        """
+        circumference =  math.pi * math.sqrt(2*(math.pow(self.semi_major_axis, 2) + math.pow(self.semi_minor_axis, 2)))
+        return round(circumference,5)
     
-    def obsah(self):
+    def area(self):
         """
-        Metoda pro výpočet obsahu elipsy v centimetrech
+        Calculates and returns the area of the ellipse in square centimeters.
 
-        Obsah kruhu: S = PI*a*b
+        Formula: area = PI * a * b
+
+        Returns:
+            float: The area of the ellipse in square centimeters, rounded to 5 decimal places.
         """
-        obs = math.pi * self.a * self.b
-        return round(obs,5)
+        area = math.pi * self.semi_major_axis * self.semi_minor_axis
+        return round(area,5)
 
-    def vypis(self):
+    def get_description(self):
         """
-        Metoda pro vypsání obsahu a obvodu elipsy - v centimetrech
+        Returns a tuple containing two formatted strings describing the ellipse's circumference and area.
 
-        Vrací 2 řetězce - tuple formát - v pořadí obvod, obsah
-
-        Zaokrouhleno na 3 desetinná místa
+        Returns:
+            tuple[str, str]: A tuple containing user-friendly descriptions of the ellipse's circumference 
+                            and area in centimeters and square centimeters respectively.
         """
-        textObvod = "Elipsa o poloosách {} a {} cm má obvod {} cm.".format(self.a, self.b, round(self.obvod(), 3))
-        textObsah = "Elipsa o poloosách {} a {} cm má obsah {} cm2.".format(self.a, self.b, round(self.obsah(), 3))
-        return(textObvod, textObsah)
+        info_circumference = "Ellipse with axis {} and {} cm has circumference {} cm.".format(self.semi_major_axis, self.semi_minor_axis, round(self.circumference(), 3))
+        info_area = "Ellipse with axis {} a {} cm and has area {} cm2.".format(self.semi_major_axis, self.semi_minor_axis, round(self.area(), 3))
+        return(info_circumference, info_area)
