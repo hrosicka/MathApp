@@ -3,6 +3,7 @@ import os
 from PyQt5.QtWidgets import (
     QAction, 
     QComboBox,
+    QFileDialog,
     QGridLayout,
     QGroupBox,
     QHBoxLayout,
@@ -38,49 +39,61 @@ import Canvas
 import CheckCreateDirectory
 
 class WindowCircle(QWidget):
+    """
+    This class represents the main window of the circle calculation application.
+
+    It handles the user interface elements, input validation, calculation logic,
+    and interaction with external libraries for plotting and data export.
+    """
+
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
-        
+        """
+        Initializes the user interface of the window.
+
+        This method sets up the window layout, widgets, and their connections.
+        """
+        # Create a Matplotlib canvas for plotting the circle
         sc = Canvas.MplCanvas(self, width=6, height=6, dpi=100)
         self.setWindowIcon(QIcon('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png'))
 
-        # button for calculation a plot 
+        # Button to solve and plot the circle
         self.buttonplotCircle = QPushButton('Solve and Plot')
         self.buttonplotCircle.clicked.connect(lambda: self.plot_circle(sc, self.combo_color.currentText()))
         self.buttonplotCircle.setToolTip("Solve and plot picture")
 
-         # button for export to Excel 
+        # Button to export the graph as an image
         self.buttonPicture = QPushButton('Graph Export')
         self.buttonPicture.clicked.connect(lambda: self.save_fig())
         self.buttonPicture.setEnabled(False)
         
-        # button for export to Excel 
+        # Button to export data to Excel 
         self.buttonExport = QPushButton('Excel Export')
         self.buttonExport.clicked.connect(lambda: self.export_excel())
         self.buttonExport.setEnabled(False)
                 
-        # button for clear inputs, results and graph
+        # Button to clear all inputs, results, and the graph
         self.buttonClear = QPushButton('Clear')
         self.buttonClear.clicked.connect(lambda: self.clear_inputs(sc))
         self.buttonClear.setEnabled(False)
         
-        # button for close window
+        # Button to close the window
         self.buttonClose = QPushButton('Close')
         self.buttonClose.clicked.connect(self.close)
 
-        # top toolbar
+        # Create a toolbar for frequently used actions
         toolbar = QToolBar()
         toolbar.setIconSize(QtCore.QSize(50, 50))
 
-        # size of window
+        # Set the window size
         self.setFixedSize(800, 428)
 
         hbox1 = QHBoxLayout()
         
-        # horizontal box layout for buttons in the bottom
+        
         hbox2 = QHBoxLayout()
         hbox2.addStretch(1)
         hbox2.addWidget(self.buttonplotCircle)
@@ -89,22 +102,21 @@ class WindowCircle(QWidget):
         hbox2.addWidget(self.buttonClear)
         hbox2.addWidget(self.buttonClose)
 
-        # layout and group box for input parameters
+        # Create layout and group box for input parameters
         layout_param = QGridLayout()
         groupBoxParameters = QGroupBox("Parameters")
         groupBoxParameters.setLayout(layout_param)
 
-        # layout and group box for results
+        # Create layout and group box for results
         layout_res = QGridLayout()
         groupBoxResults = QGroupBox("Results")
         groupBoxResults.setLayout(layout_res)
 
-        # vertical box layout for groupboxes - input and results
         vbox1 = QVBoxLayout()
         vbox1.addWidget(groupBoxParameters)
         vbox1.addWidget(groupBoxResults)
 
-        # horizontal box layout for vbox1 with groupboxes and graph
+        # Create horizontal layout for the graph and the group boxes with input/results
         hbox1.addLayout(vbox1)
         hbox1.addWidget(sc)
 
@@ -125,8 +137,8 @@ class WindowCircle(QWidget):
         validator_positive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([0])|([0][.][1-9][0-9]{0,6})|([1-9][0-9]{0,6}[.][1-9][0-9]{0,6})'))
         validator_double = QRegExpValidator(QtCore.QRegExp(r'([-][1-9][0-9]{0,6})|([-][1-9][0-9]{0,6}[.])|([-][0][.][0-9]{1,6})|([-][1-9]{1,6}[.][0-9]{1,6})|([1-9][0-9]{0,6})|([1-9][0-9]{0,6}[.])|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
 
-
-        self.label_radius = QLabel("Radius:")
+        # Create input field for radius
+        self.label_radius = QLabel("Radius (r):")
         self.label_radius.setAlignment(QtCore.Qt.AlignLeft)
         self.label_radius.setFixedWidth(150)
         layout_param.addWidget(self.label_radius,0,0)
@@ -142,8 +154,8 @@ class WindowCircle(QWidget):
         self.label_dim_radius.setFixedWidth(30)
         layout_param.addWidget(self.label_dim_radius,0,2)
 
-
-        self.label_centerX = QLabel("Center - X coord.:")
+        # Create input field for center coordinate x₀
+        self.label_centerX = QLabel("X coordinate (x₀):")
         self.label_centerX.setAlignment(QtCore.Qt.AlignLeft)
         self.label_centerX.setFixedWidth(150)
         layout_param.addWidget(self.label_centerX,1,0)
@@ -159,7 +171,8 @@ class WindowCircle(QWidget):
         self.label_dim_x.setFixedWidth(30)
         layout_param.addWidget(self.label_dim_x,1,2)
 
-        self.label_centerY = QLabel("Center - Y coord.:")
+        # Create input field for center coordinate y₀
+        self.label_centerY = QLabel("Y coordinate (y₀):")
         self.label_centerY.setAlignment(QtCore.Qt.AlignLeft)
         self.label_centerY.setFixedWidth(150)
         layout_param.addWidget(self.label_centerY,2,0)
@@ -181,7 +194,7 @@ class WindowCircle(QWidget):
         self.label_combo_color.setFixedWidth(150)
         layout_param.addWidget(self.label_combo_color,3,0)
 
-        
+        # Create combo for color
         self.combo_color = QComboBox(self)
         colors = ["black", 
                   "blue", 
@@ -199,8 +212,8 @@ class WindowCircle(QWidget):
         self.combo_color.setFixedHeight(28)
         layout_param.addWidget(self.combo_color,3,1)
         
-
-        self.label_perimeter = QLabel("Circle Perimeter:")
+        # Create field for result - Circumference (c)
+        self.label_perimeter = QLabel("Circumference (c):")
         self.label_perimeter.setAlignment(QtCore.Qt.AlignLeft)
         self.label_perimeter.setFixedWidth(150)
         layout_res.addWidget(self.label_perimeter,0,0)
@@ -216,14 +229,13 @@ class WindowCircle(QWidget):
         self.label_dim_per.setFixedWidth(30)
         layout_res.addWidget(self.label_dim_per,0,2)
 
-
-        self.label_area = QLabel("Circle Area:")
+        # Create field for result - Area (A)
+        self.label_area = QLabel("Area (A):")
         self.label_area.setAlignment(QtCore.Qt.AlignLeft)
         self.label_area.setFixedWidth(150)
         layout_res.addWidget(self.label_area,1,0)
 
         self.label_res_area = QLabel('0.0')
-        # self.label_res_area.setFont(QFont('Arial', 12))
         self.label_res_area.setStyleSheet("background-color : white; color : darkblue")
         self.label_res_area.setAlignment(QtCore.Qt.AlignRight)
         self.label_res_area.setFixedWidth(150)
@@ -234,16 +246,7 @@ class WindowCircle(QWidget):
         self.label_dim_area.setFixedWidth(30)
         layout_res.addWidget(self.label_dim_area,1,2)
 
-        self.edit_radius.textChanged.connect(self.check_state_rad_and_set_color)
-        self.edit_radius.textChanged.emit(self.edit_radius.text())
-
-        self.edit_centerX.textChanged.connect(self.check_state_and_set_color)
-        self.edit_centerX.textChanged.emit(self.edit_centerX.text())
-
-        self.edit_centerY.textChanged.connect(self.check_state_and_set_color)
-        self.edit_centerY.textChanged.emit(self.edit_centerY.text())
-
-
+        
         # Solve and plot picture - button in the top toolbar
         self.exportPictAction = QAction(self)
         self.exportPictAction.setToolTip("Solve and plot picture")
@@ -282,6 +285,20 @@ class WindowCircle(QWidget):
         self.closeAction.setIcon(QIcon('CloseAppIcon.svg'))
         self.closeAction.triggered.connect(self.close)
         toolbar.addAction(self.closeAction)
+
+        self.edit_radius.textChanged.connect(self.check_state_rad_and_set_color)
+        self.edit_radius.textChanged.connect(lambda: self.clear_results(sc))
+        self.edit_radius.textChanged.emit(self.edit_radius.text())
+
+        self.edit_centerX.textChanged.connect(self.check_state_and_set_color)
+        self.edit_centerX.textChanged.connect(lambda: self.clear_results(sc))
+        self.edit_centerX.textChanged.emit(self.edit_centerX.text())
+        
+        self.edit_centerY.textChanged.connect(self.check_state_and_set_color)
+        self.edit_centerX.textChanged.connect(lambda: self.clear_results(sc))
+        self.edit_centerY.textChanged.emit(self.edit_centerY.text())
+
+        self.combo_color.currentIndexChanged.connect(lambda: self.clear_results(sc))
 
 
     def plot_circle(self, circle_plot, circle_color):
@@ -325,7 +342,7 @@ class WindowCircle(QWidget):
 
             self.fig = circle_plot.figure
             
-            self.save_fig()
+            # self.save_fig()
 
             self.calculate_circle()
             self.clearAction.setEnabled(True)
@@ -336,7 +353,21 @@ class WindowCircle(QWidget):
             self.buttonExport.setEnabled(True)
 
     def save_fig(self):
-        self.fig.savefig('.\\Results\\circle_plot.png')
+        """
+        Saves the current figure as a PNG image.
+
+        This method prompts the user to select a file name and location to save the
+        figure as a PNG image.
+        """
+        # self.fig.savefig('.\\Results\\circle_plot.png')
+        file_name, _ = QFileDialog.getSaveFileName(self, 'Save Figure', os.path.join(os.getcwd(), 'circle.png'), 'PNG (*.png)')
+
+        if file_name:
+            try:
+                self.fig.savefig(file_name)
+                QMessageBox.information(self, 'Success', 'Figure saved successfully.')
+            except Exception as e:
+                QMessageBox.warning(self, 'Error', f'An error occurred while saving the figure: {e}')
 
     def calculate_circle(self):
 
@@ -350,11 +381,43 @@ class WindowCircle(QWidget):
 
 
     def clear_inputs(self, sc):
+        """
+        Clears all inputs, results, and the graph.
+
+        This method clears the text in the radius, x coordinate, and y coordinate
+        fields, as well as the result fields for diameter, circumference, and area.
+        It also clears the plot on the Matplotlib canvas.
+
+        Args:
+            sc: The Matplotlib canvas object used for plotting.
+        """
         sc.axes.cla()
         sc.draw()
         self.edit_radius.clear()
         self.edit_centerX.clear()
         self.edit_centerY.clear()
+        self.label_res_area.setText("0.0")
+        self.label_res_perimeter.setText("0.0")
+        self.clearAction.setEnabled(False)
+        self.exportPictAction.setEnabled(False)
+        self.buttonPicture.setEnabled(False)
+        self.exportXlsxAction.setEnabled(False)
+        self.buttonExport.setEnabled(False)
+        self.buttonClear.setEnabled(False)
+
+    def clear_results(self, sc):
+        """
+        Clears all inputs, results, and the graph.
+
+        This method clears the text in the radius, x coordinate, and y coordinate
+        fields, as well as the result fields for diameter, circumference, and area.
+        It also clears the plot on the Matplotlib canvas.
+
+        Args:
+            sc: The Matplotlib canvas object used for plotting.
+        """
+        sc.axes.cla()
+        sc.draw()
         self.label_res_area.setText("0.0")
         self.label_res_perimeter.setText("0.0")
         self.clearAction.setEnabled(False)
@@ -410,7 +473,7 @@ class WindowCircle(QWidget):
     def export_excel(self):
 
         path = ".\\Results"
-        CheckCreateDirectory.check_create_dir(path)
+        # CheckCreateDirectory.check_create_dir(path)
 
         # Creating Excel Writer Object from Pandas  
         writer = pd.ExcelWriter('.\\Results\\output_circle.xlsx',engine='xlsxwriter')   
@@ -440,16 +503,28 @@ class WindowCircle(QWidget):
         }
 
         df = pd.DataFrame(data)
-        df.to_excel(writer,sheet_name='Circle Calculation',startrow=0 , startcol=0)
 
-        df_res = pd.DataFrame(results)
-        df_res.to_excel(writer,sheet_name='Circle Calculation',startrow=5 , startcol=0) 
+        file_name, _ = QFileDialog.getSaveFileName(self, 'Export to Excel', os.path.join(os.getcwd(), 'circle.xlsx'), 'Excel (*.xlsx)')
 
-        # Get the xlsxwriter workbook and worksheet objects.
-        workbook  = writer.book
-        worksheet = writer.sheets['Circle Calculation']
+        if file_name:
+            try:
 
-        # Insert an image.
-        worksheet.insert_image('F2', '.\\Results\\circle_plot.png')
+                df.to_excel(writer,sheet_name='Circle Calculation',startrow=0 , startcol=0)
 
-        writer.close()
+                df_res = pd.DataFrame(results)
+                df_res.to_excel(writer,sheet_name='Circle Calculation',startrow=5 , startcol=0) 
+
+                # Get the xlsxwriter workbook and worksheet objects.
+                workbook  = writer.book
+                worksheet = writer.sheets['Circle Calculation']
+
+                # Insert an image.
+                self.fig.savefig('.\\Results\\circle_plot.png')
+                worksheet.insert_image('F2', '.\\Results\\circle_plot.png')
+
+                writer.close()
+
+                QMessageBox.information(self, 'Success', 'Data exported to Excel successfully.')
+
+            except Exception as e:
+                QMessageBox.warning(self, 'Error', f'An error occurred while exporting the data: {e}')
