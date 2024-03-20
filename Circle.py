@@ -482,7 +482,7 @@ class WindowCircle(QWidget):
         writer.sheets['Circle Calculation'] = worksheet
          
         data = {
-        'Property': [self.label_centerX.text(),
+        'Property': [self.label_radius.text(),
                      self.label_centerX.text(),
                      self.label_centerY.text()],
         'Value': [self.edit_radius.text(), 
