@@ -59,8 +59,8 @@ class Circle:
             tuple[str, str]: A tuple containing strings that describe the circle's circumference 
                             and area in a user-friendly format.
         """
-        info_circumference = "Kruh o poloměru {} cm má obvod {} cm.".format(self.radius, round(self.circumference(), 3))
-        info_area = "Kruh o poloměru {} cm má obsah {} cm2.".format(self.radius, round(self.area(), 3))
+        info_circumference = "Circle with radius {} cm has circumference {} cm.".format(self.radius, round(self.circumference(), 3))
+        info_area = "Circle with radius {} cm has area {} cm2.".format(self.radius, round(self.area(), 3))
         return(info_circumference, info_area)
 
-# help(Kruh)
+# help(Circle)

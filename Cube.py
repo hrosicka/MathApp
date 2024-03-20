@@ -215,9 +215,9 @@ class WindowCube(QWidget):
     def calculate_sphere(self):
 
         side_cube = float(self.edit_side.text())
-        myCube = CubeCalc.Krychle(side_cube)
-        cube_volume = round(myCube.objem(),5)
-        cube_surface = round(myCube.povrch(),5)
+        myCube = CubeCalc.Cube(side_cube)
+        cube_volume = round(myCube.volume(),5)
+        cube_surface = round(myCube.surface_area(),5)
 
         self.label_res_volume.setText(str(cube_volume))
         self.label_res_surface.setText(str(cube_surface))

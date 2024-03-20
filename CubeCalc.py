@@ -1,46 +1,63 @@
-class Krychle:
-    """ 
-    Třída pro vytvoření a získání vlastností krychle
+class Cube:
+    """
+    This class represents a 3D cube and provides methods to calculate its geometrical properties 
+    like surface area and volume.
 
-    Metody počítají povrch, objem. Výsledky lze získat jako stringy - v tuple
-
-    Výsledek je vypsán v centimetrech, proto musí být vstup také v centimetrech
+    Attributes:
+        side_length (float): The length of a side of the cube in centimeters. 
     """
     
-    def __init__(self, a):
+    def __init__(self, side_length):
         """
-        Konstruktor krychle - parametrem je strana a v centimetrech
-        """
-        self.a = a
+        Initializes a Cube object.
 
-    def povrch(self):
-        """
-        Metoda pro výpočet povrchu krychle v centimetrech
+        Args:
+            side_length (float): The positive length of a side of the cube in centimeters.
 
-        Povrch krychle: S = 6*a*^2
+        Raises:
+            TypeError: If the side_length is not a number.
+            ValueError: If the side_length is not positive.
         """
-        pov = 6 * pow(self.a,2)
-        return round(pov, 5)
+        if not isinstance(side_length, (int, float)):
+            raise TypeError("Side length must be a number.")
+        if side_length <= 0:
+            raise ValueError("Side length must be a positive number.")
+        self.side_length = side_length
+
+    def surface_area(self):
+        """
+        Calculates and returns the total surface area of the cube in square centimeters.
+
+        Formula: surface area = 6 * side_length^2
+
+        Returns:
+            float: The surface area of the cube in square centimeters, rounded to 5 decimal places.
+        """
+        surface_area = 6 * pow(self.side_length,2)
+        return round(surface_area, 5)
     
-    def objem(self):
+    def volume(self):
         """
-        Metoda pro výpočet objemu krychle v centimetrech
+        Calculates and returns the volume of the cube in cubic centimeters.
 
-        Objem krychle: V = a^3
+        Formula: volume = side_length^3
+
+        Returns:
+            float: The volume of the cube in cubic centimeters, rounded to 5 decimal places.
         """
-        obj = pow(self.a, 3)
-        return round(obj, 5)
+        volume = pow(self.side_length, 3)
+        return round(volume, 5)
 
-    def vypis(self):
+    def get_description(self):
         """
-        Metoda pro vypsání povrchu a objemu krychle - v centimetrech
+        Returns a tuple containing two formatted strings describing the cube's surface area and volume.
 
-        Vrací 2 řetězce - tuple formát - v pořadí povrch, objem
-
-        Zaokrouhleno na 3 desetinná místa
+        Returns:
+            tuple[str, str]: A tuple containing user-friendly descriptions of the cube's surface area 
+                            and volume in square centimeters and cubic centimeters respectively.
         """
-        textPovrch = "Krychle o hraně {} cm má povrch {} cm2.".format(self.a, round(self.povrch(),3))
-        textObjem = "Krychle o hraně {} cm má objem {} cm3.".format(self.a, round(self.objem(),3))
-        return(textPovrch, textObjem)
+        surface_area_info = "Cube with side length {} cm has surface area {} cm2.".format(self.side_length, round(self.surface_area(),3))
+        volume_info = "Cube with side length {} cm has volume {} cm3.".format(self.side_length, round(self.volume(),3))
+        return(surface_area_info, volume_info)
 
-# help(Krychle)
+# help(Cube)
