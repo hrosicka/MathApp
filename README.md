@@ -15,7 +15,8 @@ This interactive application allows you to visualize and learn about various geo
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/MainWindow.PNG)
 
 ## Circle
-Calculation and plotting circle
+
+This window allows you to calculate the circumference and area of a circle and display it graphically. The user can enter the radius and coordinates of the center of the circle, and the application will display the result of the calculation and a graph of the circle.
 
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/CircleCalculation.PNG)
 
