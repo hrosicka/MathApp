@@ -1,58 +1,63 @@
 import math
 
-class Kruh:
+class Circle:
     """
-    Class representing a circle. 
-    It allows calculating the circumference, area, and other properties.
+    This class represents a circle and provides methods to calculate 
+    its properties like circumference, area, and informative string descriptions.
 
     Attributes:
         radius (float): The radius of the circle in centimeters.
-
-    Methods:
-        obvod() -> float: Returns the circumference of the circle in centimeters.
-        obsah() -> float: Returns the area of the circle in square centimeters.
-        vypis() -> tuple[str, str]: Returns a pair of strings with information about the circle (circumference, area).
     """
     
-    def __init__(self, r):
+    def __init__(self, radius):
         """
-        Konstruktor kruhu - parametrem je poloměr r v centimetrech
-        """
-        self.r = r
+        Initializes a Circle object.
 
-    def obvod(self):
+        Args:
+            radius (float): The radius of the circle in centimeters.
+
+        Raises:
+            ValueError: If the radius is not a positive number.
+        """
+        if radius <= 0:
+            raise ValueError("Radius must be a positive number.")
+        self.radius = radius
+
+    def circumference(self):
         """
         Calculates and returns the circumference of the circle.
 
-        Formula: circumference = 2 * PI * radius
+        Formula: circumference = 2 * pi * radius
 
         Returns:
-            float: The circumference of the circle in centimeters.
+            float: The circumference of the circle in centimeters, rounded to 5 decimal places.
         """
-        obv = 2 * math.pi * self.r
-        return round(obv,5)
+        circumference = 2 * math.pi * self.radius
+        return round(circumference,5)
     
-    def obsah(self):
+    def area(self):
         """
         Calculates and returns the area of the circle.
 
-        Formula: area = PI * radius^2
+        Formula: area = pi * radius^2
 
         Returns:
-            float: The area of the circle in square centimeters.
+            float: The area of the circle in square centimeters, rounded to 5 decimal places.
         """
-        obs = math.pi * pow(self.r, 2)
-        return round(obs,5)
+        area = math.pi * pow(self.radius, 2)
+        return round(area,5)
 
-    def vypis(self):
+    def get_description(self):
         """
-        Returns a pair of strings with information about the circle (circumference, area).
+        Returns a tuple containing two formatted strings describing the circle's 
+        circumference and area.
 
         Returns:
-            tuple[str, str]: A pair of strings with information about the circle's circumference and area.
+            tuple[str, str]: A tuple containing strings that describe the circle's circumference 
+                            and area in a user-friendly format.
         """
-        textObvod = "Kruh o poloměru {} cm má obvod {} cm.".format(self.r, round(self.obvod(), 3))
-        textObsah = "Kruh o poloměru {} cm má obsah {} cm2.".format(self.r, round(self.obsah(), 3))
-        return(textObvod, textObsah)
+        info_circumference = "Kruh o poloměru {} cm má obvod {} cm.".format(self.radius, round(self.circumference(), 3))
+        info_area = "Kruh o poloměru {} cm má obsah {} cm2.".format(self.radius, round(self.area(), 3))
+        return(info_circumference, info_area)
 
 # help(Kruh)

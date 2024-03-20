@@ -341,9 +341,9 @@ class WindowCircle(QWidget):
     def calculate_circle(self):
 
         radius_circle = float(self.edit_radius.text())
-        myCircle = CircleCalc.Kruh(radius_circle)
-        circle_perimeter = round(myCircle.obvod(),5)
-        circle_area = round(myCircle.obsah(),5)
+        myCircle = CircleCalc.Circle(radius_circle)
+        circle_perimeter = round(myCircle.circumference(),5)
+        circle_area = round(myCircle.area(),5)
 
         self.label_res_perimeter.setText(str(circle_perimeter))
         self.label_res_area.setText(str(circle_area))
