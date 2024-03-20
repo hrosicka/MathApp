@@ -1,48 +1,68 @@
 import math
 
-class Koule:
-    """ 
-    Třída pro vytvoření a získání vlastností koule
+class Sphere:
+    """
+    This class represents a sphere and provides methods to calculate 
+    its properties like surface area, volume, and informative string descriptions.
 
-    Metody počítají povrch, objem. Výsledky lze získat jako stringy - v tuple
-
-    Výsledek je vypsán v centimetrech, proto musí být vstup také v centimetrech
+    Attributes:
+        radius (float): The radius of the sphere in centimeters.
     """
     
-    def __init__(self, r):
+    def __init__(self, radius):
         """
-        Konstruktor koule - parametrem je poloměr r v centimetrech
-        """
-        self.r = r
+        Initializes a Sphere object.
 
-    def povrch(self):
-        """
-        Metoda pro výpočet povrchu koule v centimetrech
+        Args:
+            radius (float): The radius of the sphere in centimeters.
 
-        Povrch koule: S = 4*PI*r^2
+        Raises:
+            TypeError: If the radius is not a number.
+            ValueError: If the radius is not a positive number.
         """
-        pov = 4 * math.pi * pow(self.r,2)
-        return round(pov,5)
+        if not isinstance(radius, (int, float)):
+            raise TypeError("Radius must be a number.")
+        if radius <= 0:
+            raise ValueError("Radius must be a positive number.")
+        self.radius = radius
+
+    def surface_area(self):
+        """
+        Calculates and returns the surface area of the sphere.
+
+        Formula: surface area = 4 * pi * radius^2
+
+        Returns:
+            float: The surface area of the sphere in square centimeters, 
+            rounded to 5 decimal places.
+        """
+        surface_area = 4 * math.pi * pow(self.radius,2)
+        return round(surface_area,5)
     
-    def objem(self):
+    def volume(self):
         """
-        Metoda pro výpočet objemu koule v centimetrech
+        Calculates and returns the volume of the sphere.
 
-        Objem koule: V = 4/3*PI*r^3
+        Formula: volume = 4/3 * pi * radius^3
+
+        Returns:
+            float: The volume of the sphere in cubic centimeters, 
+            rounded to 5 decimal places.
         """
-        obj = 4 * math.pi*pow(self.r, 3) / 3
-        return round(obj,5)
+        volume = 4 * math.pi*pow(self.radius, 3) / 3
+        return round(volume,5)
 
-    def vypis(self):
+    def get_description(self):
         """
-        Metoda pro vypsání povrchu a objemu koule - v centimetrech
+        Returns a tuple containing two formatted strings describing the sphere's 
+        surface area and volume.
 
-        Vrací 2 řetězce - tuple formát - v pořadí povrch, objem
-
-        Zaokrouhleno na 3 desetinná místa
+        Returns:
+            tuple[str, str]: A tuple containing strings that describe the sphere's 
+            surface area and volume in a user-friendly format.
         """
-        textPovrch = "Koule o poloměru {} cm má povrch {} cm2.".format(self.r, round(self.povrch(),3))
-        textObjem = "Koule o poloměru {} cm má objem {} cm3.".format(self.r, round(self.objem(),3))
-        return(textPovrch, textObjem)
+        surface_area_info = "Sphere with radius {} cm has surface area {} cm2.".format(self.radius, round(self.surface_area(),3))
+        volume_info = "Sphere with radius {} cm has volume {} cm3.".format(self.radius, round(self.volume(),3))
+        return(surface_area_info, volume_info)
 
-# help(Koule)
+# help(Sphere)

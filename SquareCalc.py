@@ -1,46 +1,66 @@
-class Ctverec:
-    """ 
-    Třída pro vytvoření a získání vlastností čtverce
+class Square:
+    """
+    This class represents a square and provides methods to calculate 
+    its properties like perimeter, area, and informative string descriptions.
 
-    Metody počítají obvod, obsah. Výsledky lze získat jako stringy - v tuple
-
-    Výsledek je vypsán v centimetrech, proto musí být vstup také v centimetrech
+    Attributes:
+        side_length (float): The side length of the square in centimeters.
     """
     
-    def __init__(self, a):
+    def __init__(self, side_length):
         """
-        Konstruktor čtverce - parametrem je strana a v centimetrech
-        """
-        self.a = a
+        Initializes a Square object.
 
-    def obvod(self):
-        """
-        Metoda pro výpočet obvodu čtverce v centimetrech
+        Args:
+            side_length (float): The side length of the square in centimeters.
 
-        Obvod čtverce: o = 4*a
+        Raises:
+            TypeError: If the side_length is not a number.
+            ValueError: If the side_length is not a positive number.
         """
-        obv = 4 * self.a
-        return round(obv,5)
+        if not isinstance(side_length, (int, float)):
+            raise TypeError("Side length must be a number.")
+        if side_length <= 0:
+            raise ValueError("Side length must be a positive number.")
+        self.side_length = side_length
+
+    def circumference(self):
+        """
+        Calculates and returns the circumference (perimeter) of the square.
+
+        Formula: circumference = 4 * side_length
+
+        Returns:
+            float: The circumference (perimeter) of the square in centimeters, 
+            rounded to 5 decimal places.
+        """
+        circumference = 4 * self.side_length
+        return round(circumference,5)
     
-    def obsah(self):
+    def area(self):
         """
-        Metoda pro výpočet obsahu čtverce v centimetrech
+        Calculates and returns the area of the square.
 
-        Obsah čtverce: S = a^2
+        Formula: area = side_length^2
+
+        Returns:
+            float: The area of the square in square centimeters, 
+            rounded to 5 decimal places.
         """
-        obs = pow(self.a, 2)
-        return round(obs,5)
+        area = pow(self.side_length, 2)
+        return round(area,5)
 
-    def vypis(self):
+    def get_description(self):
         """
-        Metoda pro vypsání obsahu a obvodu čtverce - v centimetrech
+        Returns a tuple containing two formatted strings describing the square's 
+        circumference and area.
 
-        Vrací 2 řetězce - tuple formát - v pořadí obvod, obsah
-
-        Zaokrouhleno na 3 desetinná místa
+        Returns:
+            tuple[str, str]: A tuple containing strings that describe the square's circumference 
+            and area in a user-friendly format.
         """
-        textObvod = "Čtverec o straně {} cm má obvod {} cm.".format(self.a, self.obvod())
-        textObsah = "Čtverec o straně {} cm má obsah {} cm2.".format(self.a, self.obsah())
-        return(textObvod, textObsah)
+        info_circumference = "Square with side length {} cm has circumference {} cm.".format(self.side_length, self.circumference())
+        info_area = "Square with side length {} cm has area {} cm2.".format(self.side_length, self.area())
+        return(info_circumference, info_area)
     
 # help(Ctverec)

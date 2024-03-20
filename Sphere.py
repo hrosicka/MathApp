@@ -277,9 +277,9 @@ class WindowSphere(QWidget):
     def calculate_sphere(self):
 
         radius_sphere = float(self.edit_radius.text())
-        mySphere = SphereCalc.Koule(radius_sphere)
-        sphere_volume = round(mySphere.objem(),5)
-        sphere_surface = round(mySphere.povrch(),5)
+        mySphere = SphereCalc.Sphere(radius_sphere)
+        sphere_volume = round(mySphere.volume(),5)
+        sphere_surface = round(mySphere.surface_area(),5)
 
         self.label_res_volume.setText(str(sphere_volume))
         self.label_res_surface.setText(str(sphere_surface))

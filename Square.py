@@ -259,9 +259,9 @@ class WindowSquare(QWidget):
     def calculate_square(self):
 
         side_square = float(self.edit_side.text())
-        mySquare = SquareCalc.Ctverec(side_square)
-        square_perimeter = round(mySquare.obvod(),5)
-        square_area = round(mySquare.obsah(),5)
+        mySquare = SquareCalc.Square(side_square)
+        square_perimeter = round(mySquare.circumference(),5)
+        square_area = round(mySquare.area(),5)
 
         self.label_res_perimeter.setText(str(square_perimeter))
         self.label_res_area.setText(str(square_area))
