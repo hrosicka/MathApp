@@ -17,8 +17,11 @@ class Circle:
             radius (float): The radius of the circle in centimeters.
 
         Raises:
+            TypeError: If the radius is not a number.
             ValueError: If the radius is not a positive number.
         """
+        if not isinstance(radius, (int, float)):
+            raise TypeError("Radius must be a number.")
         if radius <= 0:
             raise ValueError("Radius must be a positive number.")
         self.radius = radius
