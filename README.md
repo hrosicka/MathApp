@@ -1,4 +1,4 @@
-# PyQtMathApp - Explore 2D and 3D Shapes
+# MathApp - Explore 2D and 3D Shapes
 This interactive application allows you to visualize and learn about various geometric shapes. Still in progress...
 
 ## Key Features:
