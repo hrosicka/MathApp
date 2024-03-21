@@ -11,48 +11,73 @@ This interactive application allows you to visualize and learn about various geo
 
 ## Main window
 
-
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/MainWindow.PNG)
 
 ## Circle
 
-This window allows you to calculate the circumference and area of a circle and display it graphically. The user can enter the radius and coordinates of the center of the circle, and the application will display the result of the calculation and a graph of the circle.
+### The application allows you to:
+- Calculate the circumference and area of a circle.
+- Visually represent the circle on a graph.
+- Export the results and graph to an Excel file.
+- Save the graph as an image.
 
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/CircleCalculation.PNG)
 
-It is possible to use buttons in tollbar (icons) or classical buttons in the bottom part of form.
+### User Interface
+The application window is divided into three main sections:
 
-### Buttons (icons) in toolbar
-![](https://github.com/hrosicka/PyQtMathApp/blob/master/CalculateIcon.svg) - Solve and plot
+- **Input Parameters:** This section contains labeled fields for entering the circle's radius, center coordinates (X and Y), and selecting a color for the graph.
+- **Results:** This section displays the calculated circumference and area of the circle.
+- **Graph:** This section displays a visual representation of the circle based on the entered parameters.
+- **Menu Bar:** This bar located at the top of the window provides quick access to actions like solving, exporting, clearing, and closing the application.
 
-![](https://github.com/hrosicka/PyQtMathApp/blob/master/SavePictureIcon.svg) - Export graph as PNG 
+### Menu bar
+- **Solve and plot** Click this button to calculate the circle's circumference and area and plot the circle on the graph.
+  
+  ![](https://github.com/hrosicka/PyQtMathApp/blob/master/CalculateIcon.svg)
 
-![](https://github.com/hrosicka/PyQtMathApp/blob/master/ExportXLSIcon.svg) - Export Excel - inputs, results and graph
+- **Graph Export:** Click this button to save the plotted circle as an image file (enabled after solving).
 
-![](https://github.com/hrosicka/PyQtMathApp/blob/master/ClearResultsIcon.svg) - Clear inputs and results
+  ![](https://github.com/hrosicka/PyQtMathApp/blob/master/SavePictureIcon.svg) 
 
-![](https://github.com/hrosicka/PyQtMathApp/blob/master/CloseAppIcon.svg) - Close window
+- **Excel Export:** Click this button to export the input parameters, results, and graph to an Excel file (enabled after solving).
 
-### Circle input validations
+  ![](https://github.com/hrosicka/PyQtMathApp/blob/master/ExportXLSIcon.svg)
 
+- **Clear:** Click this button to clear all input fields, results, and the graph (disabled when results are unavailable).
+  
+  ![](https://github.com/hrosicka/PyQtMathApp/blob/master/ClearResultsIcon.svg)
+
+- **Close:** Click this button to close the window.
+  
+  ![](https://github.com/hrosicka/PyQtMathApp/blob/master/CloseAppIcon.svg) -
+
+### Using the Application
+1. **Enter the circle's radius:** In the "Radius (r)" field, enter a positive numerical value for the circle's radius. The background color of the field will change depending on the validity of your input (red for invalid, green for valid).
+   
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/CircleCalculationValidation.PNG)
 
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/CircleCalculationRadiusValidation.PNG)
+
+2. **Enter the center coordinates:** Enter the X and Y coordinates of the circle's center in the respective fields. Similar to the radius field, the background changes based on the input validity.
 
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/CircleCalculationCenterXValidation.PNG)
 
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/CircleCalculationCenterYValidation.PNG)
 
-### Color choise
-It is possible to choose color in the combo box
+3. **Select a circle color:** Choose a desired color for the circle from the "Circle Color" dropdown menu.
+   
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/CircleColorCombo.PNG)
 
-### Export excel file
-Ii is possible to export excel file
-- inputs
-- results
-- graph
+4. **Click "Solve and Plot" button:** Click this button to trigger the calculation and visualization. The application will calculate the circle's circumference and area and plot the circle on the graph using your chosen color. The calculated values for circumference and area will be displayed in the "Results" section.
+
+5. **Export options (after solving):** Once you have a result, the "Graph Export" and "Excel Export" buttons become enabled. Click "Graph Export" to save the plotted circle as an image file. Click "Excel Export" to save the input parameters, results, and graph to an Excel spreadsheet.
+   
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/CircleCalculationXlsxResults.PNG)
+
+6. **Clear all (optional):** If you want to start over, click the "Clear" button. This will clear all input fields, results, and the graph. The button is disabled when there are no results to clear.
+
+7. **Close:** Click the "Close" button (or the "X" button in the top right corner) to exit the window.
 
 ## Sphere
 Calculation and plotting sphere
