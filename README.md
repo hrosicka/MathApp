@@ -94,3 +94,5 @@ Calculation and plotting square
 
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/SquareCalculation.PNG)
 
+[MIT LICENSE](https://github.com/hrosicka/MathApp/blob/master/doc/LICENSE.txt)
+
