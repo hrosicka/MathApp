@@ -39,12 +39,21 @@ class WindowSphere(QWidget):
         self.initUI()
 
     def initUI(self):
-        
+        """
+        Initializes the user interface of the window.
+
+        This method sets up the window layout, widgets, and their connections.
+        """
+        # Create a 3D Matplotlib canvas for plotting the circle
         sc = CanvasThreeD.MplCanvas(self, width=6, height=5, dpi=100)
         self.setWindowIcon(QIcon('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png'))
+        
+        # Button to solve and plot the circle
+        self.buttonplotSphere = QPushButton('Solve and Plot')
+        self.buttonplotSphere.clicked.connect(lambda: self.plot_sphere(sc, self.combo_color.currentText()))
+        self.buttonplotSphere.setToolTip("Solve and plot picture")
 
-        buttonplotSphere = QPushButton('Plot Sphere')
-        buttonplotSphere.clicked.connect(lambda: self.plot_sphere(sc, self.combo_color.currentText()))
+
         buttonClear = QPushButton('Clear')
         buttonClear.clicked.connect(lambda: self.clear_inputs(sc))
         buttonClose = QPushButton('Close')
@@ -56,7 +65,7 @@ class WindowSphere(QWidget):
         
         hbox2 = QHBoxLayout()
         hbox2.addStretch(1)
-        hbox2.addWidget(buttonplotSphere)
+        hbox2.addWidget(self.buttonplotSphere)
         hbox2.addWidget(buttonClear)
         hbox2.addWidget(buttonClose)
 
