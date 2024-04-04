@@ -37,6 +37,7 @@ import pandas as pd
 import CircleCalc
 import Canvas
 import CheckCreateDirectory
+import SaveFig
 
 class WindowCircle(QWidget):
     """
@@ -67,7 +68,7 @@ class WindowCircle(QWidget):
 
         # Button to export the graph as an image
         self.buttonPicture = QPushButton('Graph Export')
-        self.buttonPicture.clicked.connect(lambda: self.save_fig())
+        self.buttonPicture.clicked.connect(lambda: SaveFig.save_fig(self, self.fig, 'Circle.png'))
         self.buttonPicture.setEnabled(False)
         
         # Button to export data to Excel 
@@ -258,7 +259,7 @@ class WindowCircle(QWidget):
         self.exportPictAction = QAction(self)
         self.exportPictAction.setToolTip("Save graph as picture")
         self.exportPictAction.setIcon(QIcon('SavePictureIcon.svg'))
-        self.exportPictAction.triggered.connect(self.save_fig)
+        self.exportPictAction.triggered.connect(lambda: SaveFig.save_fig(self, self.fig, 'Circle.png'))
         self.exportPictAction.setEnabled(False)
         toolbar.addAction(self.exportPictAction)
 
@@ -351,23 +352,6 @@ class WindowCircle(QWidget):
             self.buttonPicture.setEnabled(True)
             self.exportXlsxAction.setEnabled(True)
             self.buttonExport.setEnabled(True)
-
-    def save_fig(self):
-        """
-        Saves the current figure as a PNG image.
-
-        This method prompts the user to select a file name and location to save the
-        figure as a PNG image.
-        """
-        # self.fig.savefig('.\\Results\\circle_plot.png')
-        file_name, _ = QFileDialog.getSaveFileName(self, 'Save Figure', os.path.join(os.getcwd(), 'circle.png'), 'PNG (*.png)')
-
-        if file_name:
-            try:
-                self.fig.savefig(file_name)
-                QMessageBox.information(self, 'Success', 'Figure saved successfully.')
-            except Exception as e:
-                QMessageBox.warning(self, 'Error', f'An error occurred while saving the figure: {e}')
 
     def calculate_circle(self):
 

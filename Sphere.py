@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import (
+    QAction,
     QComboBox,
     QGridLayout,
     QGroupBox,
@@ -7,6 +8,7 @@ from PyQt5.QtWidgets import (
     QLineEdit,
     QMessageBox,
     QPushButton,
+    QToolBar,
     QVBoxLayout,
     QWidget,
 )
@@ -33,6 +35,8 @@ import SphereCalc
 
 import CanvasThreeD
 
+import SaveFig
+
 class WindowSphere(QWidget):
     def __init__(self):
         super().__init__()
@@ -53,27 +57,34 @@ class WindowSphere(QWidget):
         self.buttonplotSphere.clicked.connect(lambda: self.plot_sphere(sc, self.combo_color.currentText()))
         self.buttonplotSphere.setToolTip("Solve and plot picture")
 
+        # Button to export the graph as an image
+        self.buttonPicture = QPushButton('Graph Export')
+        self.buttonPicture.clicked.connect(lambda: SaveFig.save_fig(self, self.fig, 'Sphere.png'))
 
-        buttonClear = QPushButton('Clear')
-        buttonClear.clicked.connect(lambda: self.clear_inputs(sc))
-        buttonClose = QPushButton('Close')
-        buttonClose.clicked.connect(self.close)
+        # Button to clear all inputs, results, and the graph
+        self.buttonClear = QPushButton('Clear')
+        self.buttonClear.clicked.connect(lambda: self.clear_inputs(sc))
 
-        self.setFixedSize(800, 405)
+        # Button to close the window
+        self.buttonClose = QPushButton('Close')
+        self.buttonClose.clicked.connect(self.close)
+
+        # Create a toolbar for frequently used actions
+        toolbar = QToolBar()
+        toolbar.setIconSize(QtCore.QSize(50, 50))
+
+        self.setFixedSize(800, 458)
 
         hbox1 = QHBoxLayout()
         
         hbox2 = QHBoxLayout()
         hbox2.addStretch(1)
         hbox2.addWidget(self.buttonplotSphere)
-        hbox2.addWidget(buttonClear)
-        hbox2.addWidget(buttonClose)
+        hbox2.addWidget(self.buttonPicture)
+        # hbox2.addWidget(self.buttonExport)
+        hbox2.addWidget(self.buttonClear)
+        hbox2.addWidget(self.buttonClose)
 
-
-
-        vbox1 = QVBoxLayout()
-
-        vbox2 = QVBoxLayout()
 
         layout_param = QGridLayout()
         layout_res = QGridLayout()
@@ -83,12 +94,20 @@ class WindowSphere(QWidget):
         groupBoxParameters.setLayout(layout_param)
         groupBoxResults = QGroupBox("Results")
         groupBoxResults.setLayout(layout_res)
+
+        vbox1 = QVBoxLayout()
         vbox1.addWidget(groupBoxParameters)
         vbox1.addWidget(groupBoxResults)
 
         hbox1.addLayout(vbox1)
         hbox1.addWidget(sc)
 
+        # vertical box layout for:
+        # 1. menu
+        # 2. horizontal box layout for vbox1 with groupboxes and graph
+        # 3. horizontal box layout with buttons
+        vbox2 = QVBoxLayout()
+        vbox2.setMenuBar(toolbar)
         vbox2.addLayout(hbox1)
         vbox2.addStretch(1)
         vbox2.addLayout(hbox2)
@@ -102,8 +121,10 @@ class WindowSphere(QWidget):
         validator_double.setNotation(QDoubleValidator.StandardNotation)
         
         validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
+        validator_double = QRegExpValidator(QtCore.QRegExp(r'([-][1-9][0-9]{0,6})|([-][1-9][0-9]{0,6}[.])|([-][0][.][0-9]{1,6})|([-][1-9]{1,6}[.][0-9]{1,6})|([1-9][0-9]{0,6})|([1-9][0-9]{0,6}[.])|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
 
-        self.label_radius = QLabel("Radius:")
+        # Create input field for radius
+        self.label_radius = QLabel("Radius (r):")
         self.label_radius.setAlignment(QtCore.Qt.AlignLeft)
         self.label_radius.setFixedWidth(150)
         layout_param.addWidget(self.label_radius,0,0)
@@ -119,8 +140,8 @@ class WindowSphere(QWidget):
         self.label_dim_radius.setFixedWidth(30)
         layout_param.addWidget(self.label_dim_radius,0,2)
 
-
-        self.label_centerX = QLabel("Center - X coord.:")
+        # Create input field for center coordinate x₀
+        self.label_centerX = QLabel("X coordinate (x₀):")
         self.label_centerX.setAlignment(QtCore.Qt.AlignLeft)
         self.label_centerX.setFixedWidth(150)
         layout_param.addWidget(self.label_centerX,1,0)
@@ -136,7 +157,8 @@ class WindowSphere(QWidget):
         self.label_dim_x.setFixedWidth(30)
         layout_param.addWidget(self.label_dim_x,1,2)
 
-        self.label_centerY = QLabel("Center - Y coord.:")
+        # Create input field for center coordinate y₀
+        self.label_centerY = QLabel("Y coordinate (y₀):")
         self.label_centerY.setAlignment(QtCore.Qt.AlignLeft)
         self.label_centerY.setFixedWidth(150)
         layout_param.addWidget(self.label_centerY,2,0)
@@ -152,7 +174,8 @@ class WindowSphere(QWidget):
         self.label_dim_y.setFixedWidth(30)
         layout_param.addWidget(self.label_dim_y,2,2)
 
-        self.label_centerZ = QLabel("Center - Z coord.:")
+        # Create input field for center coordinate z₀
+        self.label_centerZ = QLabel("Z coordinate (z₀):")
         self.label_centerZ.setAlignment(QtCore.Qt.AlignLeft)
         self.label_centerZ.setFixedWidth(150)
         layout_param.addWidget(self.label_centerZ,3,0)
@@ -168,7 +191,7 @@ class WindowSphere(QWidget):
         self.label_dim_z.setFixedWidth(30)
         layout_param.addWidget(self.label_dim_z,3,2)
 
-        self.label_combo_color = QLabel("Circle Color:")
+        self.label_combo_color = QLabel("Sphere Color:")
         self.label_combo_color.setAlignment(QtCore.Qt.AlignLeft)
         self.label_combo_color.setFixedWidth(150)
         layout_param.addWidget(self.label_combo_color,4,0)
@@ -191,7 +214,8 @@ class WindowSphere(QWidget):
         self.combo_color.setFixedHeight(28)
         layout_param.addWidget(self.combo_color,4,1)
 
-        self.label_volume = QLabel("Sphere Volume:")
+        # Create field for result - Volume (V)
+        self.label_volume = QLabel("Sphere Volume (V):")
         self.label_volume.setAlignment(QtCore.Qt.AlignLeft)
         self.label_volume.setFixedWidth(150)
         layout_res.addWidget(self.label_volume,0,0)
@@ -207,8 +231,8 @@ class WindowSphere(QWidget):
         self.label_dim_vol.setFixedWidth(30)
         layout_res.addWidget(self.label_dim_vol,0,2)
 
-
-        self.label_surface = QLabel("Sphere Surface:")
+        # Create field for result - Surface (S)
+        self.label_surface = QLabel("Sphere Surface (S):")
         self.label_surface.setAlignment(QtCore.Qt.AlignLeft)
         self.label_surface.setFixedWidth(150)
         layout_res.addWidget(self.label_surface,1,0)
@@ -223,6 +247,48 @@ class WindowSphere(QWidget):
         self.label_dim_surface.setAlignment(QtCore.Qt.AlignLeft)
         self.label_dim_surface.setFixedWidth(30)
         layout_res.addWidget(self.label_dim_surface,1,2)
+
+
+        # Solve and plot picture - button in the top toolbar
+        self.exportPictAction = QAction(self)
+        self.exportPictAction.setToolTip("Solve and plot picture")
+        self.exportPictAction.setIcon(QIcon('CalculateIcon.svg'))
+        self.exportPictAction.triggered.connect(lambda: self.plot_sphere(sc, self.combo_color.currentText()))
+        toolbar.addAction(self.exportPictAction)
+
+        # Export graph as PNG - button in the top toolbar
+        self.exportPictAction = QAction(self)
+        self.exportPictAction.setToolTip("Save graph as picture")
+        self.exportPictAction.setIcon(QIcon('SavePictureIcon.svg'))
+        self.exportPictAction.triggered.connect(lambda: SaveFig.save_fig(self, self.fig, 'Sphere.png'))
+        self.exportPictAction.setEnabled(False)
+        toolbar.addAction(self.exportPictAction)
+
+        """
+        # Export inputs, results and graph into Excel file - button in the top toolbar
+        self.exportXlsxAction = QAction(self)
+        self.exportXlsxAction.setToolTip("Export input data, results\nand graph into Excel")
+        self.exportXlsxAction.setIcon(QIcon('ExportXLSIcon.svg'))
+        self.exportXlsxAction.triggered.connect(self.export_excel)
+        self.exportXlsxAction.setEnabled(False)
+        toolbar.addAction(self.exportXlsxAction)
+        """
+
+        # Clear all - inputs, results and graph - button in the top toolbar
+        # Button is disable, when result are not allowable
+        self.clearAction = QAction(self)
+        self.clearAction.setToolTip("Clear all data and results")
+        self.clearAction.setIcon(QIcon('ClearResultsIcon.svg'))
+        self.clearAction.triggered.connect(lambda: self.clear_inputs(sc))
+        self.clearAction.setEnabled(False)
+        toolbar.addAction(self.clearAction)
+
+        # Close window - - button in the top toolbar
+        self.closeAction = QAction(self)
+        self.closeAction.setToolTip("Close window")
+        self.closeAction.setIcon(QIcon('CloseAppIcon.svg'))
+        self.closeAction.triggered.connect(self.close)
+        toolbar.addAction(self.closeAction)
 
 
         self.edit_radius.textChanged.connect(self.check_state_rad)
@@ -281,7 +347,17 @@ class WindowSphere(QWidget):
 
             sphere_plot.axes.plot_surface(x, y, z, color=circle_color)
             sphere_plot.draw()
+
+            self.fig = sphere_plot.figure
+
             self.calculate_sphere()
+
+            self.clearAction.setEnabled(True)
+            self.buttonClear.setEnabled(True)
+            self.exportPictAction.setEnabled(True)
+            self.buttonPicture.setEnabled(True)
+            #self.exportXlsxAction.setEnabled(True)
+            #self.buttonExport.setEnabled(True)
 
     def calculate_sphere(self):
 
