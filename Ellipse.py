@@ -58,17 +58,35 @@ class WindowEllipse(QWidget):
         sc = Canvas.MplCanvas(self, width=6, height=6, dpi=100)
         self.setWindowIcon(QIcon('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png'))
 
-        # Button to solve and plot the circle
+        # Button to solve and plot the ellipse
         self.buttonplotEllipse = QPushButton('Solve and Plot')
         self.buttonplotEllipse.clicked.connect(lambda: self.plot_ellipse(sc, self.combo_color.currentText()))
         self.buttonplotEllipse.setToolTip("Solve and plot picture")
 
+        # Button to export the graph as an image
+        self.buttonPicture = QPushButton('Graph Export')
+        self.buttonPicture.clicked.connect(lambda: SaveFig.save_fig(self, self.fig, 'Ellipse.png'))
+        self.buttonPicture.setEnabled(False)
 
-        buttonClear = QPushButton('Clear')
-        buttonClear.clicked.connect(lambda: self.clear_inputs(sc))
-        buttonClose = QPushButton('Close')
-        buttonClose.clicked.connect(self.close)
+        # Button to export data to Excel 
+        self.buttonExport = QPushButton('Excel Export')
+        # self.buttonExport.clicked.connect(lambda: self.export_excel())
+        self.buttonExport.setEnabled(False)
 
+        # Button to clear all inputs, results, and the graph
+        self.buttonClear = QPushButton('Clear')
+        self.buttonClear.clicked.connect(lambda: self.clear_inputs(sc))
+        self.buttonClear.setEnabled(False)
+
+        # Button to close the window
+        self.buttonClose = QPushButton('Close')
+        self.buttonClose.clicked.connect(self.close)
+
+        # Create a toolbar for frequently used actions
+        toolbar = QToolBar()
+        toolbar.setIconSize(QtCore.QSize(50, 50))
+
+        # Set the window size
         self.setFixedSize(800, 458)
 
         hbox1 = QHBoxLayout()
@@ -76,29 +94,37 @@ class WindowEllipse(QWidget):
         hbox2 = QHBoxLayout()
         hbox2.addStretch(1)
         hbox2.addWidget(self.buttonplotEllipse)
-        hbox2.addWidget(buttonClear)
-        hbox2.addWidget(buttonClose)
+        hbox2.addWidget(self.buttonPicture)
+        hbox2.addWidget(self.buttonExport)
+        hbox2.addWidget(self.buttonClear)
+        hbox2.addWidget(self.buttonClose)
 
 
-
-        vbox1 = QVBoxLayout()
-
-        vbox2 = QVBoxLayout()
-
+        # Create layout and group box for input parameters
         layout_param = QGridLayout()
-        layout_res = QGridLayout()
-
-
         groupBoxParameters = QGroupBox("Parameters")
         groupBoxParameters.setLayout(layout_param)
+
+
+        # Create layout and group box for results
+        layout_res = QGridLayout()
         groupBoxResults = QGroupBox("Results")
         groupBoxResults.setLayout(layout_res)
+
+        vbox1 = QVBoxLayout()
         vbox1.addWidget(groupBoxParameters)
         vbox1.addWidget(groupBoxResults)
 
+        # Create horizontal layout for the graph and the group boxes with input/results
         hbox1.addLayout(vbox1)
         hbox1.addWidget(sc)
 
+        # vertical box layout for:
+        # 1. menu
+        # 2. horizontal box layout for vbox1 with groupboxes and graph
+        # 3. horizontal box layout with buttons
+        vbox2 = QVBoxLayout()
+        vbox2.setMenuBar(toolbar)
         vbox2.addLayout(hbox1)
         vbox2.addStretch(1)
         vbox2.addLayout(hbox2)
@@ -106,15 +132,11 @@ class WindowEllipse(QWidget):
         self.setLayout(vbox2)
         self.setWindowTitle('Ellipse')  
 
-        # validator_double = QDoubleValidator()
-        # locale = QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates)
-        # validator_double.setLocale(locale)
-        # validator_double.setNotation(QDoubleValidator.StandardNotation)
-
         validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
         validator_double = QRegExpValidator(QtCore.QRegExp(r'([-][1-9][0-9]{0,6})|([-][1-9][0-9]{0,6}[.])|([-][0][.][0-9]{1,6})|([-][1-9]{1,6}[.][0-9]{1,6})|([1-9][0-9]{0,6})|([1-9][0-9]{0,6}[.])|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
         
-        self.label_axis_a = QLabel("Semi-major axis a:")
+        # Create input field for Semi-major axis (a)
+        self.label_axis_a = QLabel("Semi-major axis (a):")
         self.label_axis_a.setAlignment(QtCore.Qt.AlignLeft)
         self.label_axis_a.setFixedWidth(150)
         layout_param.addWidget(self.label_axis_a,0,0)
@@ -130,8 +152,8 @@ class WindowEllipse(QWidget):
         self.label_dim_axis_a.setFixedWidth(30)
         layout_param.addWidget(self.label_dim_axis_a,0,2)
 
-
-        self.label_axis_b = QLabel("Semi-minor axis b:")
+        # Create input field for Semi-minor axis (a)
+        self.label_axis_b = QLabel("Semi-minor axis (b):")
         self.label_axis_b.setAlignment(QtCore.Qt.AlignLeft)
         self.label_axis_b.setFixedWidth(150)
         layout_param.addWidget(self.label_axis_b,1,0)
@@ -147,8 +169,8 @@ class WindowEllipse(QWidget):
         self.label_dim_axis_b.setFixedWidth(30)
         layout_param.addWidget(self.label_dim_axis_b,1,2)
 
-
-        self.label_centerX = QLabel("Center - X coord.:")
+        # Create input field for center coordinate x₀
+        self.label_centerX = QLabel("X coordinate (x₀):")
         self.label_centerX.setAlignment(QtCore.Qt.AlignLeft)
         self.label_centerX.setFixedWidth(150)
         layout_param.addWidget(self.label_centerX,2,0)
@@ -164,7 +186,8 @@ class WindowEllipse(QWidget):
         self.label_dim_x.setFixedWidth(30)
         layout_param.addWidget(self.label_dim_x,2,2)
 
-        self.label_centerY = QLabel("Center - Y coord.:")
+        # Create input field for center coordinate y₀
+        self.label_centerY = QLabel("Y coordinate (y₀):")
         self.label_centerY.setAlignment(QtCore.Qt.AlignLeft)
         self.label_centerY.setFixedWidth(150)
         layout_param.addWidget(self.label_centerY,3,0)
@@ -204,8 +227,8 @@ class WindowEllipse(QWidget):
         self.combo_color.setFixedHeight(28)
         layout_param.addWidget(self.combo_color,4,1)
         
-
-        self.label_perimeter = QLabel("Ellipse Perimeter:")
+        # Create field for result - Circumference (c)
+        self.label_perimeter = QLabel("Circumference (c):")
         self.label_perimeter.setAlignment(QtCore.Qt.AlignLeft)
         self.label_perimeter.setFixedWidth(150)
         layout_res.addWidget(self.label_perimeter,0,0)
@@ -221,8 +244,8 @@ class WindowEllipse(QWidget):
         self.label_dim_per.setFixedWidth(30)
         layout_res.addWidget(self.label_dim_per,0,2)
 
-
-        self.label_area = QLabel("Ellipse  Area:")
+        # Create field for result - Area (A)
+        self.label_area = QLabel("Area (A):")
         self.label_area.setAlignment(QtCore.Qt.AlignLeft)
         self.label_area.setFixedWidth(150)
         layout_res.addWidget(self.label_area,1,0)
@@ -238,6 +261,47 @@ class WindowEllipse(QWidget):
         self.label_dim_area.setAlignment(QtCore.Qt.AlignLeft)
         self.label_dim_area.setFixedWidth(30)
         layout_res.addWidget(self.label_dim_area,1,2)
+
+        # Solve and plot picture - button in the top toolbar
+        self.exportPictAction = QAction(self)
+        self.exportPictAction.setToolTip("Solve and plot picture")
+        self.exportPictAction.setIcon(QIcon('CalculateIcon.svg'))
+        self.exportPictAction.triggered.connect(lambda: self.plot_circle(sc, self.combo_color.currentText()))
+        toolbar.addAction(self.exportPictAction)
+
+        # Export graph as PNG - button in the top toolbar
+        self.exportPictAction = QAction(self)
+        self.exportPictAction.setToolTip("Save graph as picture")
+        self.exportPictAction.setIcon(QIcon('SavePictureIcon.svg'))
+        self.exportPictAction.triggered.connect(lambda: SaveFig.save_fig(self, self.fig, 'Circle.png'))
+        self.exportPictAction.setEnabled(False)
+        toolbar.addAction(self.exportPictAction)
+
+        # Export inputs, results and graph into Excel file - button in the top toolbar
+        self.exportXlsxAction = QAction(self)
+        self.exportXlsxAction.setToolTip("Export input data, results\nand graph into Excel")
+        self.exportXlsxAction.setIcon(QIcon('ExportXLSIcon.svg'))
+        # self.exportXlsxAction.triggered.connect(self.export_excel)
+        self.exportXlsxAction.setEnabled(False)
+        toolbar.addAction(self.exportXlsxAction)
+
+        # Clear all - inputs, results and graph - button in the top toolbar
+        # Button is disable, when result are not allowable
+        self.clearAction = QAction(self)
+        self.clearAction.setToolTip("Clear all data and results")
+        self.clearAction.setIcon(QIcon('ClearResultsIcon.svg'))
+        self.clearAction.triggered.connect(lambda: self.clear_inputs(sc))
+        self.clearAction.setEnabled(False)
+        toolbar.addAction(self.clearAction)
+
+        # Close window - - button in the top toolbar
+        self.closeAction = QAction(self)
+        self.closeAction.setToolTip("Close window")
+        self.closeAction.setIcon(QIcon('CloseAppIcon.svg'))
+        self.closeAction.triggered.connect(self.close)
+        toolbar.addAction(self.closeAction)
+
+
 
 
         self.edit_axis_a.textChanged.connect(self.check_state_axis_a)
