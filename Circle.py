@@ -488,7 +488,7 @@ class WindowCircle(QWidget):
 
         df = pd.DataFrame(data)
 
-        file_name, _ = QFileDialog.getSaveFileName(self, 'Export to Excel', os.path.join(os.getcwd(), 'circle.xlsx'), 'Excel (*.xlsx)')
+        file_name, _ = QFileDialog.getSaveFileName(self, 'Export to Excel', os.path.join(os.getcwd(), 'Results', 'circle.xlsx'), 'Excel (*.xlsx)')
 
         if file_name:
             try:
