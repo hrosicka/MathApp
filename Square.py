@@ -1,5 +1,9 @@
+import os
+
 from PyQt5.QtWidgets import (
+    QAction, 
     QComboBox,
+    QFileDialog,
     QGridLayout,
     QGroupBox,
     QHBoxLayout,
@@ -7,13 +11,13 @@ from PyQt5.QtWidgets import (
     QLineEdit,
     QMessageBox,
     QPushButton,
+    QToolBar,
     QVBoxLayout,
     QWidget,
 )
 
 from PyQt5 import QtCore
 from PyQt5.QtGui import (
-    QDoubleValidator,
     QIcon,
     QPixmap,
     QRegExpValidator,
@@ -32,34 +36,70 @@ import numpy as np
 import SquareCalc
 
 import Canvas
+import SaveFig
 
 
 class WindowSquare(QWidget):
+    """
+    This class represents the main window of the square calculation application.
+
+    It handles the user interface elements, input validation, calculation logic,
+    and interaction with external libraries for plotting and data export.
+    """
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
-        
+        """
+        Initializes the user interface of the window.
+
+        This method sets up the window layout, widgets, and their connections.
+        """
+        # Create a Matplotlib canvas for plotting the square
         sc = Canvas.MplCanvas(self, width=6, height=6, dpi=100)
         self.setWindowIcon(QIcon('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png'))
 
-        buttonplotSquare = QPushButton('Plot Square')
-        buttonplotSquare.clicked.connect(lambda: self.plot_square(sc, self.combo_color.currentText()))
-        buttonClear = QPushButton('Clear')
-        buttonClear.clicked.connect(lambda: self.clear_inputs())
-        buttonClose = QPushButton('Close')
-        buttonClose.clicked.connect(self.close)
+        # Button to solve and plot the square
+        self.buttonplotSquare = QPushButton('Solve and Plot')
+        self.buttonplotSquare.clicked.connect(lambda: self.plot_square(sc, self.combo_color.currentText()))
+        self.buttonplotSquare.setToolTip("Solve and plot picture")
 
-        self.setFixedSize(800, 365)
+        # Button to export the graph as an image
+        self.buttonPicture = QPushButton('Graph Export')
+        self.buttonPicture.clicked.connect(lambda: SaveFig.save_fig(self, self.fig, 'Circle.png'))
+        self.buttonPicture.setEnabled(False)
+        
+        # Button to export data to Excel 
+        self.buttonExport = QPushButton('Excel Export')
+        # self.buttonExport.clicked.connect(lambda: self.export_excel())
+        self.buttonExport.setEnabled(False)
+                
+        # Button to clear all inputs, results, and the graph
+        self.buttonClear = QPushButton('Clear')
+        self.buttonClear.clicked.connect(lambda: self.clear_inputs(sc))
+        self.buttonClear.setEnabled(False)
+        
+        # Button to close the window
+        self.buttonClose = QPushButton('Close')
+        self.buttonClose.clicked.connect(self.close)
+
+        # Create a toolbar for frequently used actions
+        toolbar = QToolBar()
+        toolbar.setIconSize(QtCore.QSize(50, 50))
+
+        # Set the window size
+        self.setFixedSize(800, 428)
 
         hbox1 = QHBoxLayout()
         
         hbox2 = QHBoxLayout()
         hbox2.addStretch(1)
-        hbox2.addWidget(buttonplotSquare)
-        hbox2.addWidget(buttonClear)
-        hbox2.addWidget(buttonClose)
+        hbox2.addWidget(self.buttonplotSquare)
+        hbox2.addWidget(self.buttonPicture)
+        hbox2.addWidget(self.buttonExport)
+        hbox2.addWidget(self.buttonClear)
+        hbox2.addWidget(self.buttonClose)
 
 
 
@@ -67,14 +107,17 @@ class WindowSquare(QWidget):
 
         vbox2 = QVBoxLayout()
 
+        # Create layout and group box for input parameters
         layout_param = QGridLayout()
-        layout_res = QGridLayout()
-
-
         groupBoxParameters = QGroupBox("Parameters")
         groupBoxParameters.setLayout(layout_param)
+
+        # Create layout and group box for results
+        layout_res = QGridLayout()
         groupBoxResults = QGroupBox("Results")
         groupBoxResults.setLayout(layout_res)
+
+        
         vbox1.addWidget(groupBoxParameters)
         vbox1.addWidget(groupBoxResults)
 
