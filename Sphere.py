@@ -60,6 +60,12 @@ class WindowSphere(QWidget):
         # Button to export the graph as an image
         self.buttonPicture = QPushButton('Graph Export')
         self.buttonPicture.clicked.connect(lambda: SaveFig.save_fig(self, self.fig, 'Sphere.png'))
+        self.buttonPicture.setEnabled(False)
+
+        # Button to export data to Excel 
+        self.buttonExport = QPushButton('Excel Export')
+        # self.buttonExport.clicked.connect(lambda: self.export_excel())
+        self.buttonExport.setEnabled(False)
 
         # Button to clear all inputs, results, and the graph
         self.buttonClear = QPushButton('Clear')
@@ -81,17 +87,17 @@ class WindowSphere(QWidget):
         hbox2.addStretch(1)
         hbox2.addWidget(self.buttonplotSphere)
         hbox2.addWidget(self.buttonPicture)
-        # hbox2.addWidget(self.buttonExport)
+        hbox2.addWidget(self.buttonExport)
         hbox2.addWidget(self.buttonClear)
         hbox2.addWidget(self.buttonClose)
 
-
+        # Create layout and group box for input parameters
         layout_param = QGridLayout()
-        layout_res = QGridLayout()
-
-
         groupBoxParameters = QGroupBox("Parameters")
         groupBoxParameters.setLayout(layout_param)
+
+        # Create layout and group box for results
+        layout_res = QGridLayout()
         groupBoxResults = QGroupBox("Results")
         groupBoxResults.setLayout(layout_res)
 
@@ -99,6 +105,7 @@ class WindowSphere(QWidget):
         vbox1.addWidget(groupBoxParameters)
         vbox1.addWidget(groupBoxResults)
 
+        # Create horizontal layout for the graph and the group boxes with input/results
         hbox1.addLayout(vbox1)
         hbox1.addWidget(sc)
 
@@ -264,15 +271,15 @@ class WindowSphere(QWidget):
         self.exportPictAction.setEnabled(False)
         toolbar.addAction(self.exportPictAction)
 
-        """
+        
         # Export inputs, results and graph into Excel file - button in the top toolbar
         self.exportXlsxAction = QAction(self)
         self.exportXlsxAction.setToolTip("Export input data, results\nand graph into Excel")
         self.exportXlsxAction.setIcon(QIcon('ExportXLSIcon.svg'))
-        self.exportXlsxAction.triggered.connect(self.export_excel)
+        # self.exportXlsxAction.triggered.connect(self.export_excel)
         self.exportXlsxAction.setEnabled(False)
         toolbar.addAction(self.exportXlsxAction)
-        """
+        
 
         # Clear all - inputs, results and graph - button in the top toolbar
         # Button is disable, when result are not allowable
@@ -292,16 +299,22 @@ class WindowSphere(QWidget):
 
 
         self.edit_radius.textChanged.connect(self.check_state_rad)
+        self.edit_radius.textChanged.connect(lambda: self.clear_results(sc))
         self.edit_radius.textChanged.emit(self.edit_radius.text())
 
         self.edit_centerX.textChanged.connect(self.check_state_centerX)
+        self.edit_centerX.textChanged.connect(lambda: self.clear_results(sc))
         self.edit_centerX.textChanged.emit(self.edit_centerX.text())
 
         self.edit_centerY.textChanged.connect(self.check_state_centerY)
+        self.edit_centerY.textChanged.connect(lambda: self.clear_results(sc))
         self.edit_centerY.textChanged.emit(self.edit_centerY.text())
 
         self.edit_centerZ.textChanged.connect(self.check_state_centerZ)
+        self.edit_centerZ.textChanged.connect(lambda: self.clear_results(sc))
         self.edit_centerZ.textChanged.emit(self.edit_centerZ.text())
+
+        self.combo_color.currentIndexChanged.connect(lambda: self.clear_results(sc))
 
 
     def plot_sphere(self, sphere_plot, circle_color):
@@ -356,8 +369,8 @@ class WindowSphere(QWidget):
             self.buttonClear.setEnabled(True)
             self.exportPictAction.setEnabled(True)
             self.buttonPicture.setEnabled(True)
-            #self.exportXlsxAction.setEnabled(True)
-            #self.buttonExport.setEnabled(True)
+            self.exportXlsxAction.setEnabled(True)
+            self.buttonExport.setEnabled(True)
 
     def calculate_sphere(self):
 
@@ -379,6 +392,29 @@ class WindowSphere(QWidget):
         self.edit_centerZ.clear()
         self.label_res_surface.setText("0.0")
         self.label_res_volume.setText("0.0")
+
+    
+    def clear_results(self, sc):
+        """
+        Clears all inputs, results, and the graph.
+
+        This method clears the text in the radius, x coordinate, and y coordinate
+        fields, as well as the result fields for diameter, circumference, and area.
+        It also clears the plot on the Matplotlib canvas.
+
+        Args:
+            sc: The Matplotlib canvas object used for plotting.
+        """
+        sc.axes.cla()
+        sc.draw()
+        self.label_res_surface.setText("0.0")
+        self.label_res_volume.setText("0.0")
+        self.clearAction.setEnabled(False)
+        self.exportPictAction.setEnabled(False)
+        self.buttonPicture.setEnabled(False)
+        self.exportXlsxAction.setEnabled(False)
+        self.buttonExport.setEnabled(False)
+        self.buttonClear.setEnabled(False)
         
     def check_state_rad(self, *args, **kwargs):
         sender = self.sender()

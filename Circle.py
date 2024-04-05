@@ -296,7 +296,7 @@ class WindowCircle(QWidget):
         self.edit_centerX.textChanged.emit(self.edit_centerX.text())
         
         self.edit_centerY.textChanged.connect(self.check_state_and_set_color)
-        self.edit_centerX.textChanged.connect(lambda: self.clear_results(sc))
+        self.edit_centerY.textChanged.connect(lambda: self.clear_results(sc))
         self.edit_centerY.textChanged.emit(self.edit_centerY.text())
 
         self.combo_color.currentIndexChanged.connect(lambda: self.clear_results(sc))
