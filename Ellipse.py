@@ -1,22 +1,25 @@
+import os
+
 from PyQt5.QtWidgets import (
+    QAction, 
     QComboBox,
+    QFileDialog,
     QGridLayout,
     QGroupBox,
     QHBoxLayout,
     QLabel,
     QLineEdit,
+    QMessageBox,
     QPushButton,
+    QToolBar,
     QVBoxLayout,
     QWidget,
-    QMessageBox,
 )
 
 from PyQt5 import QtCore
 from PyQt5.QtGui import (
     QValidator,
-    QDoubleValidator,
     QIcon,
-    QPixmap,
     QRegExpValidator,
 )
 
@@ -30,34 +33,49 @@ from matplotlib.patches import Ellipse
 import numpy as np
 
 import EllipseCalc
-
 import Canvas
-
+import SaveFig
 
 class WindowEllipse(QWidget):
+    """
+    This class represents the main window of the circle calculation application.
+
+    It handles the user interface elements, input validation, calculation logic,
+    and interaction with external libraries for plotting and data export.
+    """
+
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
-        
+        """
+        Initializes the user interface of the window.
+
+        This method sets up the window layout, widgets, and their connections.
+        """
+        # Create a Matplotlib canvas for plotting the circle
         sc = Canvas.MplCanvas(self, width=6, height=6, dpi=100)
         self.setWindowIcon(QIcon('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png'))
 
-        buttonplotEllipse = QPushButton('Plot Ellipse')
-        buttonplotEllipse.clicked.connect(lambda: self.plot_ellipse(sc, self.combo_color.currentText()))
+        # Button to solve and plot the circle
+        self.buttonplotEllipse = QPushButton('Solve and Plot')
+        self.buttonplotEllipse.clicked.connect(lambda: self.plot_ellipse(sc, self.combo_color.currentText()))
+        self.buttonplotEllipse.setToolTip("Solve and plot picture")
+
+
         buttonClear = QPushButton('Clear')
         buttonClear.clicked.connect(lambda: self.clear_inputs(sc))
         buttonClose = QPushButton('Close')
         buttonClose.clicked.connect(self.close)
 
-        self.setFixedSize(800, 405)
+        self.setFixedSize(800, 458)
 
         hbox1 = QHBoxLayout()
         
         hbox2 = QHBoxLayout()
         hbox2.addStretch(1)
-        hbox2.addWidget(buttonplotEllipse)
+        hbox2.addWidget(self.buttonplotEllipse)
         hbox2.addWidget(buttonClear)
         hbox2.addWidget(buttonClose)
 
