@@ -316,12 +316,12 @@ class WindowCircle(QWidget):
             messagebox.exec_()
 
         elif self.edit_centerX.text() in ["", "+", "-"]:
-            messagebox = QMessageBox(QMessageBox.Warning, "Error", "Center - X coord. is missing!", buttons = QMessageBox.Ok, parent=self)
+            messagebox = QMessageBox(QMessageBox.Warning, "Error", "X coordinate (x₀) is missing!", buttons = QMessageBox.Ok, parent=self)
             messagebox.setIconPixmap(QPixmap('stop_writing.png'))
             messagebox.exec_()
 
         elif self.edit_centerY.text() in ["", "+", "-"]:
-            messagebox = QMessageBox(QMessageBox.Warning, "Error", "Center - Y coord. is missing!", buttons = QMessageBox.Ok, parent=self)
+            messagebox = QMessageBox(QMessageBox.Warning, "Error", "Y coordinate (y₀) is missing!", buttons = QMessageBox.Ok, parent=self)
             messagebox.setIconPixmap(QPixmap('stop_writing.png'))
             messagebox.exec_()
 
