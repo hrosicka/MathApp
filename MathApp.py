@@ -1,4 +1,5 @@
 import sys
+from pathlib import Path
 
 from PyQt5.QtWidgets import (
     QApplication,
@@ -64,11 +65,11 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle('PyQt Math App')
 
-        self.setMinimumWidth(400)
-        self.setMinimumHeight(400)
+        self.setMinimumWidth(500)
+        self.setMinimumHeight(500)
 
-        self.setMaximumWidth(800)
-        self.setMaximumHeight(800)
+        self.setMaximumWidth(500)
+        self.setMaximumHeight(500)
 
         buttonClose = QPushButton('Close')
         buttonClose.clicked.connect(app.closeAllWindows)
@@ -214,4 +215,5 @@ class MainWindow(QMainWindow):
 app = QApplication(sys.argv)
 w = MainWindow()
 w.show()
+app.setStyleSheet(Path('style.qss').read_text())
 app.exec()
