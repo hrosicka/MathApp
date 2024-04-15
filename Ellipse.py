@@ -87,7 +87,7 @@ class WindowEllipse(QWidget):
         toolbar.setIconSize(QtCore.QSize(50, 50))
 
         # Set the window size
-        self.setFixedSize(800, 458)
+        self.setFixedSize(850, 488)
 
         hbox1 = QHBoxLayout()
         
@@ -234,7 +234,6 @@ class WindowEllipse(QWidget):
         layout_res.addWidget(self.label_perimeter,0,0)
 
         self.label_res_perimeter = QLabel('0.0')
-        self.label_res_perimeter.setStyleSheet("background-color : white; color : darkblue")
         self.label_res_perimeter.setAlignment(QtCore.Qt.AlignRight)
         self.label_res_perimeter.setFixedWidth(150)
         layout_res.addWidget(self.label_res_perimeter,0,1)
@@ -252,7 +251,6 @@ class WindowEllipse(QWidget):
 
         self.label_res_area = QLabel('0.0')
         # self.label_res_area.setFont(QFont('Arial', 12))
-        self.label_res_area.setStyleSheet("background-color : white; color : darkblue")
         self.label_res_area.setAlignment(QtCore.Qt.AlignRight)
         self.label_res_area.setFixedWidth(150)
         layout_res.addWidget(self.label_res_area,1,1)
@@ -355,6 +353,12 @@ class WindowEllipse(QWidget):
             ellipse_plot.draw()
 
             self.calculate_ellipse()
+            self.clearAction.setEnabled(True)
+            self.buttonClear.setEnabled(True)
+            self.exportPictAction.setEnabled(True)
+            self.buttonPicture.setEnabled(True)
+            self.exportXlsxAction.setEnabled(True)
+            self.buttonExport.setEnabled(True)
 
     def calculate_ellipse(self):
 

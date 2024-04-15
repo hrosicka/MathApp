@@ -79,7 +79,7 @@ class WindowSphere(QWidget):
         toolbar = QToolBar()
         toolbar.setIconSize(QtCore.QSize(50, 50))
 
-        self.setFixedSize(800, 458)
+        self.setFixedSize(850, 488)
 
         hbox1 = QHBoxLayout()
         
@@ -228,7 +228,6 @@ class WindowSphere(QWidget):
         layout_res.addWidget(self.label_volume,0,0)
 
         self.label_res_volume = QLabel('0.0')
-        self.label_res_volume.setStyleSheet("background-color : white; color : darkblue")
         self.label_res_volume.setAlignment(QtCore.Qt.AlignRight)
         self.label_res_volume.setFixedWidth(150)
         layout_res.addWidget(self.label_res_volume,0,1)
@@ -245,7 +244,6 @@ class WindowSphere(QWidget):
         layout_res.addWidget(self.label_surface,1,0)
 
         self.label_res_surface = QLabel('0.0')
-        self.label_res_surface.setStyleSheet("background-color : white; color : darkblue")
         self.label_res_surface.setAlignment(QtCore.Qt.AlignRight)
         self.label_res_surface.setFixedWidth(150)
         layout_res.addWidget(self.label_res_surface,1,1)
