@@ -34,10 +34,6 @@ matplotlib.use('Qt5Agg')
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
-from matplotlib import pyplot as plt
-
-import numpy as np
-
 
 class MplCanvas(FigureCanvasQTAgg):
 
