@@ -94,5 +94,42 @@ Calculation and plotting square
 
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/SquareCalculation.PNG)
 
+## Unit Tests
+### Circle
+ Tests cover various aspects of the class, including:
+
+#### Initialization Validation:
+- Verifies successful object creation with valid positive radii.
+- Raises errors for invalid inputs like zero, negative, or non-numeric radii.
+
+#### Method Functionality:
+- Validates the circumference method for various radii using the formula 2 * pi * radius.
+- Confirms the accuracy of the area method for different circle sizes using pi * radius**2.
+
+#### get_description Method Evaluation:
+- Asserts that get_description generates clear and informative descriptions of circumference and area.
+- Verifies that the returned descriptions accurately reflect the calculated values.
+
+### Ellipse
+Tests cover various aspects of the ellipse's behavior:
+
+#### Initialization Validation:
+- Confirms successful object creation with valid positive values for both semi-major and semi-minor axes.
+- Raises ValueError exceptions for invalid inputs:
+  - Zero or negative values for either axis length.
+  - Non-numeric values (e.g., strings) for axis lengths.
+    
+#### Edge Case Testing:
+- Handles very small positive values for the major axis (approaching zero).
+- Tests initialization with very large major axis values.
+  
+#### Method Functionality:
+- Validates the circumference method for various ellipse dimensions using the formula: circumference = pi * sqrt(2 * (a^2 + b^2)), where a is the semi-major axis and b is the semi-minor axis.
+- Verifies the accuracy of the area method for different ellipses using the formula: area = pi * a * b.
+#### get_description Method Evaluation:
+- Asserts that get_description generates clear and informative descriptions of the ellipse's properties, including its circumference and area, formatted using the actual axis lengths.
+- Confirms that the returned descriptions accurately reflect the calculated values obtained from the circumference and area methods.
+
 [MIT LICENSE](https://github.com/hrosicka/MathApp?tab=MIT-1-ov-file#readme)
+
 
