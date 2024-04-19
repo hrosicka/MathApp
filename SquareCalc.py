@@ -59,8 +59,8 @@ class Square:
             tuple[str, str]: A tuple containing strings that describe the square's circumference 
             and area in a user-friendly format.
         """
-        info_circumference = "Square with side length {} cm has circumference {} cm.".format(self.side_length, self.circumference())
-        info_area = "Square with side length {} cm has area {} cm2.".format(self.side_length, self.area())
+        info_circumference = "Square with side length {} cm has circumference {} cm.".format(self.side_length, round(self.circumference(), 3))
+        info_area = "Square with side length {} cm has area {} cm2.".format(self.side_length, round(self.area(), 3))
         return(info_circumference, info_area)
     
-# help(Ctverec)
+# help(Square)
