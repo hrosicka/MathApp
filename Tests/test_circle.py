@@ -66,6 +66,12 @@ class CircleTest(unittest.TestCase):
         expected_area = round(pi * (0.000001**2), 5)
         self.assertAlmostEqual(circle.area(), expected_area, places=5)
 
+    def test_area_very_large_radius(self):
+        """Tests area calculation for a very large positive radius."""
+        circle = Circle(1000000.0)  # Extremely large radius
+        expected_area = round(pi * (1000000.0**2), 5)
+        self.assertAlmostEqual(circle.area(), expected_area, places=5)
+
     def test_get_description(self):
         """Tests get_description for different radii."""
         circle = Circle(4.0)
