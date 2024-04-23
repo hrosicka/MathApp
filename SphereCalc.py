@@ -49,7 +49,7 @@ class Sphere:
             float: The volume of the sphere in cubic centimeters, 
             rounded to 5 decimal places.
         """
-        volume = 4 * math.pi*pow(self.radius, 3) / 3
+        volume = (4.0 / 3.0) * math.pi*pow(self.radius, 3) 
         return round(volume,5)
 
     def get_description(self):
@@ -61,8 +61,8 @@ class Sphere:
             tuple[str, str]: A tuple containing strings that describe the sphere's 
             surface area and volume in a user-friendly format.
         """
-        surface_area_info = "Sphere with radius {} cm has surface area {} cm2.".format(self.radius, round(self.surface_area(),3))
-        volume_info = "Sphere with radius {} cm has volume {} cm3.".format(self.radius, round(self.volume(),3))
+        surface_area_info = "Sphere with radius {} cm has surface area {:.3f} cm2.".format(self.radius, round(self.surface_area(),3))
+        volume_info = "Sphere with radius {} cm has volume {:.3f} cm3.".format(self.radius, round(self.volume(),3))
         return(surface_area_info, volume_info)
 
 # help(Sphere)

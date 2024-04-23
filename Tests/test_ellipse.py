@@ -99,7 +99,7 @@ class EllipseTest(unittest.TestCase):
         expected_area = "Ellipse with axis {} a {} cm and has area {:.3f} cm2.".format(ellipse.semi_major_axis, ellipse.semi_minor_axis, round(ellipse.area(), 3))
         self.assertEqual(ellipse.get_description(), (expected_circumference, expected_area))
 
-        ellipse = Ellipse(2.5, 1.5)
+        ellipse = Ellipse(2.5, 1.125)
         expected_circumference = "Ellipse with axis {} and {} cm has circumference {:.3f} cm.".format(ellipse.semi_major_axis, ellipse.semi_minor_axis, round(ellipse.circumference(), 3))
         expected_area = "Ellipse with axis {} a {} cm and has area {:.3f} cm2.".format(ellipse.semi_major_axis, ellipse.semi_minor_axis, round(ellipse.area(), 3))
         self.assertEqual(ellipse.get_description(), (expected_circumference, expected_area))
