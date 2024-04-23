@@ -64,6 +64,6 @@ class Ellipse:
             tuple[str, str]: A tuple containing user-friendly descriptions of the ellipse's circumference 
                             and area in centimeters and square centimeters respectively.
         """
-        info_circumference = "Ellipse with axis {} and {} cm has circumference {} cm.".format(self.semi_major_axis, self.semi_minor_axis, round(self.circumference(), 3))
-        info_area = "Ellipse with axis {} a {} cm and has area {} cm2.".format(self.semi_major_axis, self.semi_minor_axis, round(self.area(), 3))
+        info_circumference = "Ellipse with axis {} and {} cm has circumference {:.3f} cm.".format(self.semi_major_axis, self.semi_minor_axis, round(self.circumference(), 3))
+        info_area = "Ellipse with axis {} a {} cm and has area {:.3f} cm2.".format(self.semi_major_axis, self.semi_minor_axis, round(self.area(), 3))
         return(info_circumference, info_area)
