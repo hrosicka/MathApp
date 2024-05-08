@@ -13,11 +13,13 @@ from PyQt5.QtWidgets import (
     QMenuBar,
     QMenu,
     QAction,
+    QShortcut,
 )
 
 from PyQt5.QtGui import (
     QPixmap, 
     QIcon,
+    QKeySequence,
 )
 
 from PyQt5 import QtCore
@@ -158,30 +160,37 @@ class MainWindow(QMainWindow):
         self.closeAction = QAction(self)
         self.closeAction.setText("&Close")
         self.closeAction.triggered.connect(app.closeAllWindows)
+        self.closeAction.setShortcut("Ctrl+W")
 
         self.circleAction = QAction(self)
         self.circleAction.setText("&Circle")
         self.circleAction.triggered.connect(lambda checked: self.toggle_window(self.window1))
+        self.circleAction.setShortcut("Ctrl+1")
 
         self.sphereAction = QAction(self)
         self.sphereAction.setText("&Sphere")
         self.sphereAction.triggered.connect(lambda checked: self.toggle_window(self.window2))
+        self.sphereAction.setShortcut("Ctrl+2")
 
         self.ellipseAction = QAction(self)
         self.ellipseAction.setText("&Ellipse")
         self.ellipseAction.triggered.connect(lambda checked: self.toggle_window(self.window3))
+        self.ellipseAction.setShortcut("Ctrl+3")
 
         self.ellipsoidAction = QAction(self)
         self.ellipsoidAction.setText("&Ellipsoid")
         self.ellipsoidAction.triggered.connect(lambda checked: self.toggle_window(self.window4))
+        self.ellipsoidAction.setShortcut("Ctrl+4")
 
         self.squareAction = QAction(self)
         self.squareAction.setText("&Square")
         self.squareAction.triggered.connect(lambda checked: self.toggle_window(self.window5))
+        self.squareAction.setShortcut("Ctrl+5")
 
         self.cubeAction = QAction(self)
         self.cubeAction.setText("&Cube")
         self.cubeAction.triggered.connect(lambda checked: self.toggle_window(self.window6))
+        self.cubeAction.setShortcut("Ctrl+6")
 
 
     def _createMenuBar(self):
