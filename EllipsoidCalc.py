@@ -71,6 +71,6 @@ class Ellipsoid:
             tuple[str, str]: A tuple containing user-friendly descriptions of the ellipse's circumference 
                             and area in centimeters and square centimeters respectively.
         """
-        surface_area_info = "Surface area of the ellipsoid with axis {} and {} and {} cm is {} cm2.".format(self.semi_axis_a, self.semi_axis_b, self.semi_axis_c, round(self.surface_area(), 3))
-        volume_info = "Volume of the ellipsoid with axis {} and {} and {} cm is {} cm3.".format(self.semi_axis_a, self.semi_axis_b, self.semi_axis_c, round(self.volume(), 3))
+        surface_area_info = "Surface area of the ellipsoid with axis {} and {} and {} cm is {:.3f} cm2.".format(self.semi_axis_a, self.semi_axis_b, self.semi_axis_c, round(self.surface_area(), 3))
+        volume_info = "Volume of the ellipsoid with axis {} and {} and {} cm is {:.3f} cm3.".format(self.semi_axis_a, self.semi_axis_b, self.semi_axis_c, round(self.volume(), 3))
         return(surface_area_info, volume_info)
