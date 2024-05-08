@@ -13,6 +13,21 @@ This interactive application allows you to visualize and learn about various geo
 
 ![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/MainWindow.PNG)
 
+### Menu
+
+![](https://github.com/hrosicka/PyQtMathApp/blob/master/doc/Menu.png)
+
+### Shortcuts:
+Using keyboard shortcuts in this menu allows for quick and efficient shape drawing. Instead of navigating through the menu and finding the desired option, you can instantly select the desired shape by pressing a few keys. This can be particularly beneficial when drawing shapes repeatedly.
+- **Close (Ctrl+W):** Close the application window.
+- **Circle (Ctrl+1):** Open Circle. Press "1" while holding Ctrl for a quick circle!
+- **Sphere (Ctrl+2):** Open Sphere. Feeling spherical? Hit Ctrl+2!
+- **Ellipse (Ctrl+3):** Open Ellipse. Need an oval shape? Ctrl+3 is your friend.
+- **Ellipsoid (Ctrl+4):** Open Ellipsoid. Feeling 3D? Ellipsoid it is with Ctrl+4.
+- **Square (Ctrl+5):** Draw a square. Feeling boxy? Create a square with Ctrl+5.
+- **Cube (Ctrl+6):** Draw a cube. Feeling cubic? Ctrl+6 to the rescue!
+
+
 ## Circle
 
 ### The application allows you to:
