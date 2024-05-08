@@ -1,5 +1,7 @@
 QWidget{background-color: #EAF1FF;}
 
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */  
+
 QPushButton {background-color: #EAF1FF; 
     color: #355691; 
     border-radius: 15px; 
@@ -15,3 +17,29 @@ QPushButton {background-color: #EAF1FF;
         color: #909090; }
 
 QLineEdit{ border-radius: 5px; min-width: 40px; }
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */  
+
+QMenuBar::item {
+    spacing: 3px;
+    padding: 2px 10px;
+    background-color: #EAF1FF;
+    color: #000000;
+}
+QMenuBar::item:selected {
+    background-color: #A5D8FF;
+}
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */  
+
+QMenu {
+    background-color: #EAF1FF;
+    color: #000000;
+}
+QMenu::item {
+    background-color: transparent;
+}
+QMenu::item:selected { 
+    background-color: #A5D8FF;
+}
+
