@@ -38,8 +38,9 @@ import CircleCalc
 import Canvas
 import CheckCreateDirectory
 import SaveFig
+from Shape import *
 
-class WindowCircle(QWidget):
+class WindowCircle(QWidget, ShapeFunctionality):
     """
     This class represents the main window of the circle calculation application.
 
@@ -408,49 +409,6 @@ class WindowCircle(QWidget):
         self.exportXlsxAction.setEnabled(False)
         self.buttonExport.setEnabled(False)
         self.buttonClear.setEnabled(False)
-
-
-    def check_state_and_set_color(self, sender):
-        """
-        This function checks the validation state of a QLineEdit sender and sets its background color accordingly.
-
-        Args:
-            sender (QtWidgets.QLineEdit): The QLineEdit widget whose state and color need to be updated.
-        """
-        sender = self.sender()
-        validator = sender.validator()
-        state = validator.validate(sender.text(), 0)[0]
-        color = '#f6989d'  # Default color (red)
-
-        if sender.text() == "":
-            color = '#f6989d'  # Empty field remains red
-        elif state == QValidator.Acceptable or sender.text() == "0":
-            color = '#c4df9b'  # Valid input turns green
-        elif state == QValidator.Intermediate:
-            color = '#fff79a'  # Intermediate state turns yellow
-
-        sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
-    
-    def check_state_rad_and_set_color(self):
-        """
-        This function checks the validation state of a QLineEdit sender and sets its background color accordingly.
-
-        Args:
-            sender (QtWidgets.QLineEdit): The QLineEdit widget whose state and color need to be updated.
-        """
-        sender = self.sender()
-        validator = sender.validator()
-        state = validator.validate(sender.text(), 0)[0]
-
-        if sender.text() == "0" or sender.text() == "":
-            color = '#f6989d' # Empty or "0" field remains red
-        elif state == QValidator.Acceptable:
-            color = '#c4df9b' # Valid input turns green
-        elif state == QValidator.Intermediate:
-            color = '#fff79a' # Intermediate state turns yellow
-        else:
-            color = '#f6989d' # red
-        sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
 
     def export_excel(self):
 

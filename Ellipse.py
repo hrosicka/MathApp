@@ -36,7 +36,9 @@ import EllipseCalc
 import Canvas
 import SaveFig
 
-class WindowEllipse(QWidget):
+from Shape import *
+
+class WindowEllipse(QWidget, ShapeFunctionality):
     """
     This class represents the main window of the circle calculation application.
 
@@ -299,19 +301,16 @@ class WindowEllipse(QWidget):
         self.closeAction.triggered.connect(self.close)
         toolbar.addAction(self.closeAction)
 
-
-
-
-        self.edit_axis_a.textChanged.connect(self.check_state_axis_a)
+        self.edit_axis_a.textChanged.connect(self.check_state_rad_and_set_color)
         self.edit_axis_a.textChanged.emit(self.edit_axis_a.text())
 
-        self.edit_axis_b.textChanged.connect(self.check_state_axis_b)
+        self.edit_axis_b.textChanged.connect(self.check_state_rad_and_set_color)
         self.edit_axis_b.textChanged.emit(self.edit_axis_b.text())
 
-        self.edit_centerX.textChanged.connect(self.check_state_centerX)
+        self.edit_centerX.textChanged.connect(self.check_state_and_set_color)
         self.edit_centerX.textChanged.emit(self.edit_centerX.text())
 
-        self.edit_centerY.textChanged.connect(self.check_state_centerY)
+        self.edit_centerY.textChanged.connect(self.check_state_and_set_color)
         self.edit_centerY.textChanged.emit(self.edit_centerY.text())
 
 
@@ -381,66 +380,6 @@ class WindowEllipse(QWidget):
         self.edit_centerY.clear()
         self.label_res_area.setText("0.0")
         self.label_res_perimeter.setText("0.0")
-
-
-    def check_state_axis_a(self, *args, **kwargs):
-        sender = self.sender()
-        validator = sender.validator()
-        state = validator.validate(sender.text(), 0)[0]
-        if self.edit_axis_a.text() == "0" or self.edit_axis_a.text() == "":
-            color = '#f6989d' # red
-        elif state == QValidator.Acceptable:
-            color = '#c4df9b' # green
-        elif state == QValidator.Intermediate:
-            color = '#fff79a' # yellow
-        else:
-            color = '#f6989d' # red
-        sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
-
-
-    def check_state_axis_b(self, *args, **kwargs):
-        sender = self.sender()
-        validator = sender.validator()
-        state = validator.validate(sender.text(), 0)[0]
-        if self.edit_axis_b.text() == "0" or self.edit_axis_b.text() == "":
-            color = '#f6989d' # red
-        elif state == QValidator.Acceptable:
-            color = '#c4df9b' # green
-        elif state == QValidator.Intermediate:
-            color = '#fff79a' # yellow
-        else:
-            color = '#f6989d' # red
-        sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
-
-
-    def check_state_centerX(self, *args, **kwargs):
-        sender = self.sender()
-        validator = sender.validator()
-        state = validator.validate(sender.text(), 0)[0]
-        if self.edit_centerX.text() == "":
-            color = '#f6989d' # red
-        elif state == QValidator.Acceptable:
-            color = '#c4df9b' # green
-        elif state == QValidator.Intermediate:
-            color = '#fff79a' # yellow
-        else:
-            color = '#f6989d' # red
-        sender.setStyleSheet('QLineEdit { background-color: %s }' % color)   
-
-
-    def check_state_centerY(self, *args, **kwargs):
-        sender = self.sender()
-        validator = sender.validator()
-        state = validator.validate(sender.text(), 0)[0]
-        if self.edit_centerY.text() == "":
-            color = '#f6989d' # red
-        elif state == QValidator.Acceptable:
-            color = '#c4df9b' # green
-        elif state == QValidator.Intermediate:
-            color = '#fff79a' # yellow
-        else:
-            color = '#f6989d' # red
-        sender.setStyleSheet('QLineEdit { background-color: %s }' % color) 
     
 
         

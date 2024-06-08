@@ -40,8 +40,10 @@ import SquareCalc
 import Canvas
 import SaveFig
 
+from Shape import *
 
-class WindowSquare(QWidget):
+
+class WindowSquare(QWidget, ShapeFunctionality):
     """
     This class represents the main window of the square calculation application.
 
@@ -291,15 +293,15 @@ class WindowSquare(QWidget):
 
 
 
-        self.edit_side.textChanged.connect(self.check_state_side)
+        self.edit_side.textChanged.connect(self.check_state_rad_and_set_color)
         self.edit_side.textChanged.connect(lambda: self.clear_results(sc))
         self.edit_side.textChanged.emit(self.edit_side.text())
 
-        self.edit_centerX.textChanged.connect(self.check_state_centerX)
+        self.edit_centerX.textChanged.connect(self.check_state_and_set_color)
         self.edit_centerX.textChanged.connect(lambda: self.clear_results(sc))
         self.edit_centerX.textChanged.emit(self.edit_centerX.text())
 
-        self.edit_centerY.textChanged.connect(self.check_state_centerY)
+        self.edit_centerY.textChanged.connect(self.check_state_and_set_color)
         self.edit_centerY.textChanged.connect(lambda: self.clear_results(sc))
         self.edit_centerY.textChanged.emit(self.edit_centerY.text())
 
@@ -408,52 +410,6 @@ class WindowSquare(QWidget):
         self.buttonExport.setEnabled(False)
         self.buttonClear.setEnabled(False)
 
-
-    def check_state_side(self, *args, **kwargs):
-        sender = self.sender()
-        validator = sender.validator()
-        state = validator.validate(sender.text(), 0)[0]
-        if self.edit_side.text() == "0" or self.edit_side.text() == "":
-            color = '#f6989d' # red
-        elif state == QValidator.Acceptable:
-            color = '#c4df9b' # green
-        elif state == QValidator.Intermediate:
-            color = '#fff79a' # yellow
-        else:
-            color = '#f6989d' # red
-        sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
-
-
-    def check_state_centerX(self, *args, **kwargs):
-        sender = self.sender()
-        validator = sender.validator()
-        state = validator.validate(sender.text(), 0)[0]
-        if self.edit_centerX.text() == "":
-            color = '#f6989d' # red
-        elif state == QValidator.Acceptable:
-            color = '#c4df9b' # green
-        elif state == QValidator.Intermediate:
-            color = '#fff79a' # yellow
-        else:
-            color = '#f6989d' # red
-        sender.setStyleSheet('QLineEdit { background-color: %s }' % color)   
-
-
-    def check_state_centerY(self, *args, **kwargs):
-        sender = self.sender()
-        validator = sender.validator()
-        state = validator.validate(sender.text(), 0)[0]
-        if self.edit_centerY.text() == "":
-            color = '#f6989d' # red
-        elif state == QValidator.Acceptable:
-            color = '#c4df9b' # green
-        elif state == QValidator.Intermediate:
-            color = '#fff79a' # yellow
-        else:
-            color = '#f6989d' # red
-        sender.setStyleSheet('QLineEdit { background-color: %s }' % color) 
-
-    
     def export_excel(self):
 
         path = ".\\Results"
