@@ -30,14 +30,12 @@ from matplotlib.figure import Figure
 from matplotlib import pyplot as plt
 
 import numpy as np
-
 import SphereCalc
-
 import CanvasThreeD
-
 import SaveFig
+from Shape import *
 
-class WindowSphere(QWidget):
+class WindowSphere(QWidget, ShapeFunctionality):
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -296,19 +294,19 @@ class WindowSphere(QWidget):
         toolbar.addAction(self.closeAction)
 
 
-        self.edit_radius.textChanged.connect(self.check_state_rad)
+        self.edit_radius.textChanged.connect(self.check_state_rad_and_set_color)
         self.edit_radius.textChanged.connect(lambda: self.clear_results(sc))
         self.edit_radius.textChanged.emit(self.edit_radius.text())
 
-        self.edit_centerX.textChanged.connect(self.check_state_centerX)
+        self.edit_centerX.textChanged.connect(self.check_state_and_set_color)
         self.edit_centerX.textChanged.connect(lambda: self.clear_results(sc))
         self.edit_centerX.textChanged.emit(self.edit_centerX.text())
 
-        self.edit_centerY.textChanged.connect(self.check_state_centerY)
+        self.edit_centerY.textChanged.connect(self.check_state_and_set_color)
         self.edit_centerY.textChanged.connect(lambda: self.clear_results(sc))
         self.edit_centerY.textChanged.emit(self.edit_centerY.text())
 
-        self.edit_centerZ.textChanged.connect(self.check_state_centerZ)
+        self.edit_centerZ.textChanged.connect(self.check_state_and_set_color)
         self.edit_centerZ.textChanged.connect(lambda: self.clear_results(sc))
         self.edit_centerZ.textChanged.emit(self.edit_centerZ.text())
 
@@ -413,62 +411,3 @@ class WindowSphere(QWidget):
         self.exportXlsxAction.setEnabled(False)
         self.buttonExport.setEnabled(False)
         self.buttonClear.setEnabled(False)
-        
-    def check_state_rad(self, *args, **kwargs):
-        sender = self.sender()
-        validator = sender.validator()
-        state = validator.validate(sender.text(), 0)[0]
-        if self.edit_radius.text() == "0" or self.edit_radius.text() == "":
-            color = '#f6989d' # red
-        elif state == QValidator.Acceptable:
-            color = '#c4df9b' # green
-        elif state == QValidator.Intermediate:
-            color = '#fff79a' # yellow
-        else:
-            color = '#f6989d' # red
-        sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
-
-
-    def check_state_centerX(self, *args, **kwargs):
-        sender = self.sender()
-        validator = sender.validator()
-        state = validator.validate(sender.text(), 0)[0]
-        if self.edit_centerX.text() == "":
-            color = '#f6989d' # red
-        elif state == QValidator.Acceptable:
-            color = '#c4df9b' # green
-        elif state == QValidator.Intermediate:
-            color = '#fff79a' # yellow
-        else:
-            color = '#f6989d' # red
-        sender.setStyleSheet('QLineEdit { background-color: %s }' % color)   
-
-
-    def check_state_centerY(self, *args, **kwargs):
-        sender = self.sender()
-        validator = sender.validator()
-        state = validator.validate(sender.text(), 0)[0]
-        if self.edit_centerY.text() == "":
-            color = '#f6989d' # red
-        elif state == QValidator.Acceptable:
-            color = '#c4df9b' # green
-        elif state == QValidator.Intermediate:
-            color = '#fff79a' # yellow
-        else:
-            color = '#f6989d' # red
-        sender.setStyleSheet('QLineEdit { background-color: %s }' % color) 
-
-
-    def check_state_centerZ(self, *args, **kwargs):
-        sender = self.sender()
-        validator = sender.validator()
-        state = validator.validate(sender.text(), 0)[0]
-        if self.edit_centerZ.text() == "":
-            color = '#f6989d' # red
-        elif state == QValidator.Acceptable:
-            color = '#c4df9b' # green
-        elif state == QValidator.Intermediate:
-            color = '#fff79a' # yellow
-        else:
-            color = '#f6989d' # red
-        sender.setStyleSheet('QLineEdit { background-color: %s }' % color) 
