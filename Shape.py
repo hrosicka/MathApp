@@ -1,8 +1,21 @@
+from PyQt5.QtWidgets import (
+    QMessageBox,
+)
+
 from PyQt5.QtGui import (
     QValidator,
-)  
+)
+
+from PyQt5.QtGui import (
+    QPixmap,
+)
 
 class ShapeFunctionality:
+
+    def custom_messagebox(self, text="Error!"):
+        messagebox = QMessageBox(QMessageBox.Warning, "Error", text, buttons = QMessageBox.Ok, parent=self)
+        messagebox.setIconPixmap(QPixmap('stop_writing.png'))
+        messagebox.exec_()
 
     def check_state_and_set_color(self, sender):
         """

@@ -310,19 +310,13 @@ class WindowSquare(QWidget, ShapeFunctionality):
     def plot_square(self, square_plot, square_color):
 
         if self.edit_side.text() in ["", "0", "0.", "+", "-"]:
-            messagebox = QMessageBox(QMessageBox.Warning, "Error", "Side can be only a possitive number!", buttons = QMessageBox.Ok, parent=self)
-            messagebox.setIconPixmap(QPixmap('stop_writing.png'))
-            messagebox.exec_()
+            self.custom_messagebox("Side can be only a possitive number!")
 
         elif self.edit_centerX.text() in ["", "+", "-"]:
-            messagebox = QMessageBox(QMessageBox.Warning, "Error", "Center - X coord. is missing!", buttons = QMessageBox.Ok, parent=self)
-            messagebox.setIconPixmap(QPixmap('stop_writing.png'))
-            messagebox.exec_()
+            self.custom_messagebox("X coordinate (x₀) is missing!")
 
         elif self.edit_centerY.text() in ["", "+", "-"]:
-            messagebox = QMessageBox(QMessageBox.Warning, "Error", "Center - Y coord. is missing!", buttons = QMessageBox.Ok, parent=self)
-            messagebox.setIconPixmap(QPixmap('stop_writing.png'))
-            messagebox.exec_()
+            self.custom_messagebox("Y coordinate (y₀) is missing!")
 
         else:
             

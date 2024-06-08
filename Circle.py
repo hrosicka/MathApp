@@ -310,19 +310,13 @@ class WindowCircle(QWidget, ShapeFunctionality):
         
 
         if self.edit_radius.text() in ["", "0", "0.", "+", "-"]:
-            messagebox = QMessageBox(QMessageBox.Warning, "Error", "Radius can be only a positive number!", buttons = QMessageBox.Ok, parent=self)
-            messagebox.setIconPixmap(QPixmap('stop_writing.png'))
-            messagebox.exec_()
+            self.custom_messagebox("Radius can be only a positive number!")
 
         elif self.edit_centerX.text() in ["", "+", "-"]:
-            messagebox = QMessageBox(QMessageBox.Warning, "Error", "X coordinate (x₀) is missing!", buttons = QMessageBox.Ok, parent=self)
-            messagebox.setIconPixmap(QPixmap('stop_writing.png'))
-            messagebox.exec_()
+            self.custom_messagebox("X coordinate (x₀) is missing!")
 
         elif self.edit_centerY.text() in ["", "+", "-"]:
-            messagebox = QMessageBox(QMessageBox.Warning, "Error", "Y coordinate (y₀) is missing!", buttons = QMessageBox.Ok, parent=self)
-            messagebox.setIconPixmap(QPixmap('stop_writing.png'))
-            messagebox.exec_()
+            self.custom_messagebox("Y coordinate (y₀) is missing!")
 
         else:
             Drawing_colored_circle = plt.Circle((float(self.edit_centerX.text()),(float(self.edit_centerY.text()))),float(self.edit_radius.text()))

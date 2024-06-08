@@ -324,16 +324,16 @@ class WindowEllipse(QWidget, ShapeFunctionality):
         
 
         if self.edit_axis_a.text() == "0" or self.edit_axis_a.text() == "":
-            QMessageBox.about(self, 'Error','Major axis can be only a possitive number')
+            self.custom_messagebox("Semi-major axis (a) can be only a possitive number!")
 
         elif self.edit_axis_b.text() == "0" or self.edit_axis_b.text() == "":
-            QMessageBox.about(self, 'Error','Minor axis can be only a possitive number')
+            self.custom_messagebox("Semi-minor axis (b) can be only a possitive number!")
 
         elif self.edit_centerX.text() == "":
-            QMessageBox.about(self, 'Error','Center - X coord. is missing')
+            self.custom_messagebox("X coordinate (x₀) is missing!")
 
         elif self.edit_centerY.text() == "":
-            QMessageBox.about(self, 'Error','Center - Y coord. is missing')
+            self.custom_messagebox("Y coordinate (y₀) is missing!")
 
         else:
 
