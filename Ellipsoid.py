@@ -30,7 +30,7 @@ from matplotlib.figure import Figure
 from matplotlib import pyplot as plt
 
 import numpy as np
-import SphereCalc
+import EllipsoidCalc
 import CanvasThreeD
 import SaveFig
 from Shape import *
@@ -289,6 +289,26 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         self.label_dim_surface.setFixedWidth(30)
         layout_res.addWidget(self.label_dim_surface,1,2)
 
+
+        self.edit_axis_a.textChanged.connect(self.check_state_rad_and_set_color)
+        self.edit_axis_a.textChanged.emit(self.edit_axis_a.text())
+
+        self.edit_axis_b.textChanged.connect(self.check_state_rad_and_set_color)
+        self.edit_axis_b.textChanged.emit(self.edit_axis_b.text())
+
+        self.edit_axis_c.textChanged.connect(self.check_state_rad_and_set_color)
+        self.edit_axis_c.textChanged.emit(self.edit_axis_c.text())
+
+        self.edit_centerX.textChanged.connect(self.check_state_and_set_color)
+        self.edit_centerX.textChanged.emit(self.edit_centerX.text())
+
+        self.edit_centerY.textChanged.connect(self.check_state_and_set_color)
+        self.edit_centerY.textChanged.emit(self.edit_centerY.text())
+
+        self.edit_centerZ.textChanged.connect(self.check_state_and_set_color)
+        self.edit_centerZ.textChanged.emit(self.edit_centerZ.text())
+
+
     def plot_ellipsoid(self, sphere_plot, circle_color):
         
         sphere_plot.axes.cla()
@@ -342,8 +362,19 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
             #self.exportXlsxAction.setEnabled(True)
             self.buttonExport.setEnabled(True)
 
+
     def calculate_ellipsoid(self):
-        a = 10
+
+        semi_axis_a = float(self.edit_axis_a.text())
+        semi_axis_b = float(self.edit_axis_b.text())
+        semi_axis_c = float(self.edit_axis_c.text())
+
+        myEllipsoid = EllipsoidCalc.Ellipsoid(semi_axis_a, semi_axis_b, semi_axis_c)
+        ellipsoid_volume = round(myEllipsoid.volume(),5)
+        ellipsoid_surface = round(myEllipsoid.surface_area(),5)
+
+        self.label_res_volume.setText(str(ellipsoid_volume))
+        self.label_res_surface.setText(str(ellipsoid_surface))
 
 
 
