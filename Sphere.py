@@ -322,24 +322,16 @@ class WindowSphere(QWidget, ShapeFunctionality):
         
 
         if self.edit_radius.text() in ["", "0", "0.", "+", "-"]:
-            messagebox = QMessageBox(QMessageBox.Warning, "Error", "Radius can be only a possitive number!", buttons = QMessageBox.Ok, parent=self)
-            messagebox.setIconPixmap(QPixmap('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\stop_writing.png'))
-            messagebox.exec_()
+            self.custom_messagebox("Radius can be only a positive number!")
 
         elif self.edit_centerX.text() in ["", "+", "-"]:
-            messagebox = QMessageBox(QMessageBox.Warning, "Error", "Center - X coord. is missing!", buttons = QMessageBox.Ok, parent=self)
-            messagebox.setIconPixmap(QPixmap('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\stop_writing.png'))
-            messagebox.exec_()
+            self.custom_messagebox("X coordinate (x₀) is missing!")
 
         elif self.edit_centerY.text() in ["", "+", "-"]:
-            messagebox = QMessageBox(QMessageBox.Warning, "Error", "Center - Y coord. is missing!", buttons = QMessageBox.Ok, parent=self)
-            messagebox.setIconPixmap(QPixmap('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\stop_writing.png'))
-            messagebox.exec_()
+            self.custom_messagebox("Y coordinate (y₀) is missing!")
 
         elif self.edit_centerZ.text() in ["", "+", "-"]:
-            messagebox = QMessageBox(QMessageBox.Warning, "Error", "Center - Z coord. is missing!", buttons = QMessageBox.Ok, parent=self)
-            messagebox.setIconPixmap(QPixmap('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\stop_writing.png'))
-            messagebox.exec_()
+            self.custom_messagebox("Z coordinate (z₀) is missing!")
  
         else:
 

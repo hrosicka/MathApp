@@ -154,7 +154,7 @@ class WindowEllipse(QWidget, ShapeFunctionality):
         self.label_dim_axis_a.setFixedWidth(30)
         layout_param.addWidget(self.label_dim_axis_a,0,2)
 
-        # Create input field for Semi-minor axis (a)
+        # Create input field for Semi-minor axis (b)
         self.label_axis_b = QLabel("Semi-minor axis (b):")
         self.label_axis_b.setAlignment(QtCore.Qt.AlignLeft)
         self.label_axis_b.setFixedWidth(150)
