@@ -330,8 +330,6 @@ class WindowCircle(QWidget, ShapeFunctionality):
 
             self.fig = circle_plot.figure
             
-            # self.save_fig()
-
             self.calculate_circle()
             self.clearAction.setEnabled(True)
             self.buttonClear.setEnabled(True)
@@ -356,7 +354,7 @@ class WindowCircle(QWidget, ShapeFunctionality):
         Clears all inputs, results, and the graph.
 
         This method clears the text in the radius, x coordinate, and y coordinate
-        fields, as well as the result fields for diameter, circumference, and area.
+        fields, as well as the result fields for circumference, and area.
         It also clears the plot on the Matplotlib canvas.
 
         Args:
@@ -400,59 +398,54 @@ class WindowCircle(QWidget, ShapeFunctionality):
 
     def export_excel(self):
 
-        path = ".\\Results"
-        # CheckCreateDirectory.check_create_dir(path)
-
-        # Creating Excel Writer Object from Pandas  
-        writer = pd.ExcelWriter('.\\Results\\output_circle.xlsx',engine='xlsxwriter')   
-        workbook = writer.book
-        worksheet = workbook.add_worksheet('Circle Calculation')
-        writer.sheets['Circle Calculation'] = worksheet
-         
-        data = {
-        'Property': [self.label_radius.text(),
-                     self.label_centerX.text(),
-                     self.label_centerY.text()],
-        'Value': [self.edit_radius.text(), 
-                  self.edit_centerX.text(),
-                  self.edit_centerY.text()],
-        'Unit': ['cm', 
-                 'cm',
-                 'cm']
-        }
-
-        results = {
-        'Result': [self.label_perimeter.text(),
-                     self.label_area.text()],
-        'Value': [self.label_res_perimeter.text(), 
-                  self.label_res_area.text()],
-        'Unit': ['cm', 
-                 'cm^2']
-        }
-
-        df = pd.DataFrame(data)
-
+        # Get custom filename from user
         file_name, _ = QFileDialog.getSaveFileName(self, 'Export to Excel', os.path.join(os.getcwd(), 'Results', 'circle.xlsx'), 'Excel (*.xlsx)')
 
-        if file_name:
-            try:
+        if not file_name:
+            return  # User canceled the file selection dialog
 
-                df.to_excel(writer,sheet_name='Circle Calculation',startrow=0 , startcol=0)
+        try:
+            # Create Pandas DataFrame objects
+            data = {
+            'Property': [self.label_radius.text(),
+                        self.label_centerX.text(),
+                        self.label_centerY.text()],
+            'Value': [self.edit_radius.text(), 
+                    self.edit_centerX.text(),
+                    self.edit_centerY.text()],
+            'Unit': ['cm', 
+                    'cm',
+                    'cm']
+            }
 
-                df_res = pd.DataFrame(results)
-                df_res.to_excel(writer,sheet_name='Circle Calculation',startrow=5 , startcol=0) 
+            results = {
+            'Result': [self.label_perimeter.text(),
+                        self.label_area.text()],
+            'Value': [self.label_res_perimeter.text(), 
+                    self.label_res_area.text()],
+            'Unit': ['cm', 
+                    'cm^2']
+            }
 
-                # Get the xlsxwriter workbook and worksheet objects.
-                workbook  = writer.book
-                worksheet = writer.sheets['Circle Calculation']
+            df = pd.DataFrame(data)
+            df_res = pd.DataFrame(results)
 
-                # Insert an image.
-                self.fig.savefig('.\\Results\\circle_plot.png')
-                worksheet.insert_image('F2', '.\\Results\\circle_plot.png')
+            # Create Excel writer with custom filename
+            writer = pd.ExcelWriter(file_name, engine='xlsxwriter')
+            workbook = writer.book
+            worksheet = workbook.add_worksheet('Circle Calculation')
 
-                writer.close()
+            # Write data to Excel
+            df.to_excel(writer, sheet_name='Circle Calculation', startrow=0, startcol=0)
+            df_res.to_excel(writer, sheet_name='Circle Calculation', startrow=5, startcol=0)
 
-                QMessageBox.information(self, 'Success', 'Data exported to Excel successfully.')
+            # Save the image (assuming self.fig is a Matplotlib figure)
+            self.fig.savefig(f'.\\Results\\circle_plot.png')  # Adjust path if needed
+            worksheet.insert_image('F2', f'.\\Results\\circle_plot.png')  # Adjust cell location if needed
 
-            except Exception as e:
-                QMessageBox.warning(self, 'Error', f'An error occurred while exporting the data: {e}')
+            writer.close()
+
+            QMessageBox.information(self, 'Success', 'Data exported to Excel successfully.')
+
+        except Exception as e:
+            QMessageBox.warning(self, 'Error', f'An error occurred while exporting the data: {e}')
