@@ -435,13 +435,26 @@ class WindowCircle(QWidget, ShapeFunctionality):
             workbook = writer.book
             worksheet = workbook.add_worksheet('Circle Calculation')
 
+            # Define header format with background color
+            header_format = workbook.add_format({
+                'bg_color': '#EAF1FF',
+                'bold': True,
+                'align': 'center',
+                'valign': 'vcenter',
+                'border': 1
+            })
+
             # Write data to Excel
-            df.to_excel(writer, sheet_name='Circle Calculation', startrow=0, startcol=0)
-            df_res.to_excel(writer, sheet_name='Circle Calculation', startrow=5, startcol=0)
+            df.to_excel(writer, sheet_name='Circle Calculation', startrow=0, startcol=0, index=False)
+            df_res.to_excel(writer, sheet_name='Circle Calculation', startrow=5, startcol=0, index=False)
+            for col_idx, col in enumerate(df.columns):
+                worksheet.write(0, col_idx, col, header_format)
 
             # Save the image (assuming self.fig is a Matplotlib figure)
             self.fig.savefig(f'.\\Results\\circle_plot.png')  # Adjust path if needed
             worksheet.insert_image('F2', f'.\\Results\\circle_plot.png')  # Adjust cell location if needed
+            for col_idx, col in enumerate(df_res.columns):
+                worksheet.write(5, col_idx, col, header_format)
 
             writer.close()
 
