@@ -28,14 +28,12 @@ matplotlib.use('Qt5Agg')
 
 
 from matplotlib import pyplot as plt
+import pandas as pd
 from matplotlib.patches import Ellipse
-
-import numpy as np
 
 import EllipseCalc
 import Canvas
 import SaveFig
-
 from Shape import *
 
 class WindowEllipse(QWidget, ShapeFunctionality):
@@ -72,7 +70,7 @@ class WindowEllipse(QWidget, ShapeFunctionality):
 
         # Button to export data to Excel 
         self.buttonExport = QPushButton('Excel Export')
-        # self.buttonExport.clicked.connect(lambda: self.export_excel())
+        self.buttonExport.clicked.connect(lambda: self.export_excel())
         self.buttonExport.setEnabled(False)
 
         # Button to clear all inputs, results, and the graph
@@ -281,7 +279,7 @@ class WindowEllipse(QWidget, ShapeFunctionality):
         self.exportXlsxAction = QAction(self)
         self.exportXlsxAction.setToolTip("Export input data, results\nand graph into Excel")
         self.exportXlsxAction.setIcon(QIcon('ExportXLSIcon.svg'))
-        # self.exportXlsxAction.triggered.connect(self.export_excel)
+        self.exportXlsxAction.triggered.connect(self.export_excel)
         self.exportXlsxAction.setEnabled(False)
         toolbar.addAction(self.exportXlsxAction)
 
@@ -302,17 +300,22 @@ class WindowEllipse(QWidget, ShapeFunctionality):
         toolbar.addAction(self.closeAction)
 
         self.edit_axis_a.textChanged.connect(self.check_state_rad_and_set_color)
+        self.edit_axis_a.textChanged.connect(lambda: self.clear_results(sc))
         self.edit_axis_a.textChanged.emit(self.edit_axis_a.text())
 
         self.edit_axis_b.textChanged.connect(self.check_state_rad_and_set_color)
+        self.edit_axis_b.textChanged.connect(lambda: self.clear_results(sc))
         self.edit_axis_b.textChanged.emit(self.edit_axis_b.text())
 
         self.edit_centerX.textChanged.connect(self.check_state_and_set_color)
+        self.edit_centerX.textChanged.connect(lambda: self.clear_results(sc))
         self.edit_centerX.textChanged.emit(self.edit_centerX.text())
 
         self.edit_centerY.textChanged.connect(self.check_state_and_set_color)
+        self.edit_centerY.textChanged.connect(lambda: self.clear_results(sc))
         self.edit_centerY.textChanged.emit(self.edit_centerY.text())
 
+        self.combo_color.currentIndexChanged.connect(lambda: self.clear_results(sc))
 
 
     def plot_ellipse(self, ellipse_plot, ellipse_color):
@@ -351,6 +354,8 @@ class WindowEllipse(QWidget, ShapeFunctionality):
             ellipse_plot.axes.add_artist(Drawing_colored_ellipse)
             ellipse_plot.draw()
 
+            self.fig = ellipse_plot.figure
+
             self.calculate_ellipse()
             self.clearAction.setEnabled(True)
             self.buttonClear.setEnabled(True)
@@ -372,6 +377,16 @@ class WindowEllipse(QWidget, ShapeFunctionality):
 
 
     def clear_inputs(self, sc):
+        """
+        Clears all inputs, results, and the graph.
+
+        This method clears the text in the a axis, b axis, x coordinate, and y coordinate
+        fields, as well as the result fields for circumference, and area.
+        It also clears the plot on the Matplotlib canvas.
+
+        Args:
+            sc: The Matplotlib canvas object used for plotting.
+        """
         sc.axes.cla()
         sc.draw()
         self.edit_axis_a.clear()
@@ -380,9 +395,88 @@ class WindowEllipse(QWidget, ShapeFunctionality):
         self.edit_centerY.clear()
         self.label_res_area.setText("0.0")
         self.label_res_perimeter.setText("0.0")
+        self.clearAction.setEnabled(False)
+        self.exportPictAction.setEnabled(False)
+        self.buttonPicture.setEnabled(False)
+        self.exportXlsxAction.setEnabled(False)
+        self.buttonExport.setEnabled(False)
+        self.buttonClear.setEnabled(False)
+
+    def clear_results(self, sc):
+        """
+        Clears all inputs, results, and the graph.
+
+        This method clears the text in the a axis, b axis, x coordinate, and y coordinate
+        fields, as well as the result fields for diameter, circumference, and area.
+        It also clears the plot on the Matplotlib canvas.
+
+        Args:
+            sc: The Matplotlib canvas object used for plotting.
+        """
+        sc.axes.cla()
+        sc.draw()
+        self.label_res_area.setText("0.0")
+        self.label_res_perimeter.setText("0.0")
+        self.clearAction.setEnabled(False)
+        self.exportPictAction.setEnabled(False)
+        self.buttonPicture.setEnabled(False)
+        self.exportXlsxAction.setEnabled(False)
+        self.buttonExport.setEnabled(False)
+        self.buttonClear.setEnabled(False)
     
+    def export_excel(self):
 
-        
+        # Get custom filename from user
+        file_name, _ = QFileDialog.getSaveFileName(self, 'Export to Excel', os.path.join(os.getcwd(), 'Results', 'ellipse.xlsx'), 'Excel (*.xlsx)')
 
+        if not file_name:
+            return  # User canceled the file selection dialog
 
-        
+        try:
+            # Create Pandas DataFrame objects
+            data = {
+            'Property': [self.label_axis_a.text(),
+                        self.label_axis_b.text(),
+                        self.label_centerX.text(),
+                        self.label_centerY.text()],
+            'Value': [self.edit_axis_a.text(),
+                    self.edit_axis_b.text(), 
+                    self.edit_centerX.text(),
+                    self.edit_centerY.text()],
+            'Unit': ['cm', 
+                    'cm',
+                    'cm',
+                    'cm']
+            }
+
+            results = {
+            'Result': [self.label_perimeter.text(),
+                        self.label_area.text()],
+            'Value': [self.label_res_perimeter.text(), 
+                    self.label_res_area.text()],
+            'Unit': ['cm', 
+                    'cm^2']
+            }
+            
+            df = pd.DataFrame(data)
+            df_res = pd.DataFrame(results)
+
+            # Create Excel writer with custom filename
+            writer = pd.ExcelWriter(file_name, engine='xlsxwriter')
+            workbook = writer.book
+            worksheet = workbook.add_worksheet('Ellipse Calculation')
+
+            # Write data to Excel
+            df.to_excel(writer, sheet_name='Ellipse Calculation', startrow=0, startcol=0)
+            df_res.to_excel(writer, sheet_name='Ellipse Calculation', startrow=6, startcol=0)
+
+            # Save the image (assuming self.fig is a Matplotlib figure)
+            self.fig.savefig(f'.\\Results\\ellipse_plot.png')  # Adjust path if needed
+            worksheet.insert_image('F2', f'.\\Results\\ellipse_plot.png')  # Adjust cell location if needed
+
+            writer.close()
+
+            QMessageBox.information(self, 'Success', 'Data exported to Excel successfully.')
+
+        except Exception as e:
+            QMessageBox.warning(self, 'Error', f'An error occurred while exporting the data: {e}')
