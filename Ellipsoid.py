@@ -6,7 +6,6 @@ from PyQt5.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QLineEdit,
-    QMessageBox,
     QPushButton,
     QToolBar,
     QVBoxLayout,
@@ -17,17 +16,11 @@ from PyQt5 import QtCore
 from PyQt5.QtGui import (
     QDoubleValidator,
     QIcon,
-    QPixmap,
     QRegExpValidator,
-    QValidator,
 )  
 
 import matplotlib
 matplotlib.use('Qt5Agg')
-
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
-from matplotlib.figure import Figure
-from matplotlib import pyplot as plt
 
 import numpy as np
 import EllipsoidCalc
@@ -57,7 +50,7 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
 
         # Button to export the graph as an image
         self.buttonPicture = QPushButton('Graph Export')
-        self.buttonPicture.clicked.connect(lambda: SaveFig.save_fig(self, self.fig, 'Sphere.png'))
+        self.buttonPicture.clicked.connect(lambda: SaveFig.save_fig(self, self.fig, 'Ellipsoid.png'))
         self.buttonPicture.setEnabled(False)
 
         # Button to export data to Excel 
@@ -77,7 +70,7 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         toolbar = QToolBar()
         toolbar.setIconSize(QtCore.QSize(50, 50))
 
-        self.setFixedSize(800, 400)
+        self.setFixedSize(850, 568)
 
         hbox1 = QHBoxLayout()
         
@@ -89,26 +82,30 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         hbox2.addWidget(self.buttonClear)
         hbox2.addWidget(self.buttonClose)
 
-
-
-        vbox1 = QVBoxLayout()
-
-        vbox2 = QVBoxLayout()
-
+        # Create layout and group box for input parameters
         layout_param = QGridLayout()
-        layout_res = QGridLayout()
-
-
         groupBoxParameters = QGroupBox("Parameters")
         groupBoxParameters.setLayout(layout_param)
+
+        # Create layout and group box for results
+        layout_res = QGridLayout()
         groupBoxResults = QGroupBox("Results")
         groupBoxResults.setLayout(layout_res)
+
+        vbox1 = QVBoxLayout()
         vbox1.addWidget(groupBoxParameters)
         vbox1.addWidget(groupBoxResults)
 
+        # Create horizontal layout for the graph and the group boxes with input/results
         hbox1.addLayout(vbox1)
         hbox1.addWidget(sc)
 
+        # vertical box layout for:
+        # 1. menu
+        # 2. horizontal box layout for vbox1 with groupboxes and graph
+        # 3. horizontal box layout with buttons
+        vbox2 = QVBoxLayout()
+        vbox2.setMenuBar(toolbar)
         vbox2.addLayout(hbox1)
         vbox2.addStretch(1)
         vbox2.addLayout(hbox2)
@@ -116,9 +113,12 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         self.setLayout(vbox2)
         self.setWindowTitle('Ellipsoid')
 
+        validator_double = QDoubleValidator(-10000000,10000000,5)
+        locale = QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates)
+        validator_double.setLocale(locale)
+        validator_double.setNotation(QDoubleValidator.StandardNotation)
 
-        # validators - regular expression
-        validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([0])|([0][.][1-9][0-9]{0,6})|([1-9][0-9]{0,6}[.][1-9][0-9]{0,6})'))
+        validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
         validator_double = QRegExpValidator(QtCore.QRegExp(r'([-][1-9][0-9]{0,6})|([-][1-9][0-9]{0,6}[.])|([-][0][.][0-9]{1,6})|([-][1-9]{1,6}[.][0-9]{1,6})|([1-9][0-9]{0,6})|([1-9][0-9]{0,6}[.])|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
 
         # Create input field for Semi-major axis (a)
@@ -138,7 +138,6 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         self.label_dim_axis_a.setFixedWidth(30)
         layout_param.addWidget(self.label_dim_axis_a,0,2)
 
-        
         # Create input field for Semi-minor axis (b)
         self.label_axis_b = QLabel("Semi axis (b):")
         self.label_axis_b.setAlignment(QtCore.Qt.AlignLeft)
@@ -248,21 +247,17 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
                   "violet", 
                   "yellow"]
         self.combo_color.addItems(colors)
-        
         self.combo_color.setFixedWidth(150)
         self.combo_color.setFixedHeight(28)
         layout_param.addWidget(self.combo_color,6,1)
 
-
-
-
+        # Create field for result - Volume (V)
         self.label_volume = QLabel("Ellipsoid Volume:")
         self.label_volume.setAlignment(QtCore.Qt.AlignLeft)
         self.label_volume.setFixedWidth(150)
         layout_res.addWidget(self.label_volume,0,0)
 
         self.label_res_volume = QLabel('0.0')
-        self.label_res_volume.setStyleSheet("background-color : white; color : darkblue")
         self.label_res_volume.setAlignment(QtCore.Qt.AlignRight)
         self.label_res_volume.setFixedWidth(150)
         layout_res.addWidget(self.label_res_volume,0,1)
@@ -272,14 +267,13 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         self.label_dim_vol.setFixedWidth(30)
         layout_res.addWidget(self.label_dim_vol,0,2)
 
-
+        # Create field for result - Surface (S)
         self.label_surface = QLabel("Ellipsoid Surface:")
         self.label_surface.setAlignment(QtCore.Qt.AlignLeft)
         self.label_surface.setFixedWidth(150)
         layout_res.addWidget(self.label_surface,1,0)
 
         self.label_res_surface = QLabel('0.0')
-        self.label_res_surface.setStyleSheet("background-color : white; color : darkblue")
         self.label_res_surface.setAlignment(QtCore.Qt.AlignRight)
         self.label_res_surface.setFixedWidth(150)
         layout_res.addWidget(self.label_res_surface,1,1)
@@ -288,6 +282,23 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         self.label_dim_surface.setAlignment(QtCore.Qt.AlignLeft)
         self.label_dim_surface.setFixedWidth(30)
         layout_res.addWidget(self.label_dim_surface,1,2)
+
+        # Solve and plot picture - button in the top toolbar
+        self.exportPictAction = QAction(self)
+        self.exportPictAction.setToolTip("Solve and plot picture")
+        self.exportPictAction.setIcon(QIcon('CalculateIcon.svg'))
+        self.exportPictAction.triggered.connect(lambda: self.plot_ellipsoid(sc, self.combo_color.currentText()))
+        toolbar.addAction(self.exportPictAction)
+
+        # Export graph as PNG - button in the top toolbar
+        self.exportPictAction = QAction(self)
+        self.exportPictAction.setToolTip("Save graph as picture")
+        self.exportPictAction.setIcon(QIcon('SavePictureIcon.svg'))
+        self.exportPictAction.triggered.connect(lambda: SaveFig.save_fig(self, self.fig, 'Ellipsoid.png'))
+        self.exportPictAction.setEnabled(False)
+        toolbar.addAction(self.exportPictAction)
+
+
 
 
         self.edit_axis_a.textChanged.connect(self.check_state_rad_and_set_color)

@@ -6,7 +6,6 @@ from PyQt5.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QLineEdit,
-    QMessageBox,
     QPushButton,
     QToolBar,
     QVBoxLayout,
@@ -17,17 +16,11 @@ from PyQt5 import QtCore
 from PyQt5.QtGui import (
     QDoubleValidator,
     QIcon,
-    QPixmap,
     QRegExpValidator,
-    QValidator,
 )  
 
 import matplotlib
 matplotlib.use('Qt5Agg')
-
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
-from matplotlib.figure import Figure
-from matplotlib import pyplot as plt
 
 import numpy as np
 import SphereCalc
@@ -214,7 +207,6 @@ class WindowSphere(QWidget, ShapeFunctionality):
                   "violet", 
                   "yellow"]
         self.combo_color.addItems(colors)
-        
         self.combo_color.setFixedWidth(150)
         self.combo_color.setFixedHeight(28)
         layout_param.addWidget(self.combo_color,4,1)
@@ -267,7 +259,6 @@ class WindowSphere(QWidget, ShapeFunctionality):
         self.exportPictAction.setEnabled(False)
         toolbar.addAction(self.exportPictAction)
 
-        
         # Export inputs, results and graph into Excel file - button in the top toolbar
         self.exportXlsxAction = QAction(self)
         self.exportXlsxAction.setToolTip("Export input data, results\nand graph into Excel")

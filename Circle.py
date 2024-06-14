@@ -19,9 +19,7 @@ from PyQt5.QtWidgets import (
 from PyQt5 import QtCore
 from PyQt5.QtGui import (
     QIcon,
-    QPixmap,
     QRegExpValidator,
-    QValidator,
 )  
 
 import matplotlib
@@ -29,14 +27,10 @@ matplotlib.use('Qt5Agg')
 
 
 from matplotlib import pyplot as plt
-
-import numpy as np
-
 import pandas as pd
 
 import CircleCalc
 import Canvas
-import CheckCreateDirectory
 import SaveFig
 from Shape import *
 
