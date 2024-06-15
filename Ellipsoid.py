@@ -351,15 +351,28 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
             center_x = float(self.edit_centerX.text())
             center_y = float(self.edit_centerY.text())
             center_z = float(self.edit_centerZ.text())
-            r = float(self.edit_axis_a.text())
+            rx = float(self.edit_axis_a.text())
+            ry = float(self.edit_axis_b.text())
+            rz = float(self.edit_axis_c.text())
 
             u, v = np.mgrid[0:2 * np.pi:30j, 0:np.pi:30j]
             
-            x = r * np.outer(np.cos(u), np.sin(v)) + center_x
-            y = r * np.outer(np.sin(u), np.sin(v)) + center_y
-            z = r * np.outer(np.ones(np.size(u)), np.cos(v)) + center_z
+            x = rx * np.outer(np.cos(u), np.sin(v)) + center_x
+            y = ry * np.outer(np.sin(u), np.sin(v)) + center_y
+            z = rz * np.outer(np.ones(np.size(u)), np.cos(v)) + center_z
 
-            sphere_plot.axes.plot_surface(x, y, z, color=circle_color)
+            minus_x = float(self.edit_centerX.text())-1.5*float(self.edit_axis_a.text())
+            plus_x = float(self.edit_centerX.text())+1.5*float(self.edit_axis_a.text())
+            minus_y = float(self.edit_centerY.text())-2*float(self.edit_axis_b.text())
+            plus_y = float(self.edit_centerY.text())+2*float(self.edit_axis_b.text())
+            minus_z = float(self.edit_centerZ.text())-2*float(self.edit_axis_c.text())
+            plus_z = float(self.edit_centerZ.text())+2*float(self.edit_axis_c.text())
+
+            sphere_plot.axes.set_xlim(minus_x, plus_x)
+            sphere_plot.axes.set_ylim(minus_x, plus_x)
+            sphere_plot.axes.set_zlim(minus_x, plus_x)
+
+            sphere_plot.axes.plot_wireframe(x, y, z, rstride=20, cstride=20, color=circle_color)
             sphere_plot.draw()
 
             self.fig = sphere_plot.figure
