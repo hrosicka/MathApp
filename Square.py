@@ -406,59 +406,67 @@ class WindowSquare(QWidget, ShapeFunctionality):
 
     def export_excel(self):
 
-        path = ".\\Results"
-        # CheckCreateDirectory.check_create_dir(path)
-
-        # Creating Excel Writer Object from Pandas  
-        writer = pd.ExcelWriter('.\\Results\\output_square.xlsx',engine='xlsxwriter')   
-        workbook = writer.book
-        worksheet = workbook.add_worksheet('Square Calculation')
-        writer.sheets['Square Calculation'] = worksheet
-         
-        data = {
-        'Property': [self.label_side.text(),
-                     self.label_centerX.text(),
-                     self.label_centerY.text()],
-        'Value': [self.edit_side.text(), 
-                  self.edit_centerX.text(),
-                  self.edit_centerY.text()],
-        'Unit': ['cm', 
-                 'cm',
-                 'cm']
-        }
-
-        results = {
-        'Result': [self.label_perimeter.text(),
-                     self.label_area.text()],
-        'Value': [self.label_res_perimeter.text(), 
-                  self.label_res_area.text()],
-        'Unit': ['cm', 
-                 'cm^2']
-        }
-
-        df = pd.DataFrame(data)
-
+        # Get custom filename from user
         file_name, _ = QFileDialog.getSaveFileName(self, 'Export to Excel', os.path.join(os.getcwd(), 'Results', 'square.xlsx'), 'Excel (*.xlsx)')
 
-        if file_name:
-            try:
+        if not file_name:
+            return  # User canceled the file selection dialog
 
-                df.to_excel(writer,sheet_name='Square Calculation',startrow=0 , startcol=0)
+        try:
+            # Create Pandas DataFrame objects
+            data = {
+            'Property': [self.label_side.text(),
+                        self.label_centerX.text(),
+                        self.label_centerY.text()],
+            'Value': [float(self.edit_side.text()), 
+                    float(self.edit_centerX.text()),
+                    float(self.edit_centerY.text())],
+            'Unit': ['cm', 
+                    'cm',
+                    'cm']
+            }
 
-                df_res = pd.DataFrame(results)
-                df_res.to_excel(writer,sheet_name='Square Calculation',startrow=5 , startcol=0) 
+            results = {
+            'Result': [self.label_perimeter.text(),
+                        self.label_area.text()],
+            'Value': [float(self.label_res_perimeter.text()), 
+                    float(self.label_res_area.text())],
+            'Unit': ['cm', 
+                    'cm^2']
+            }
 
-                # Get the xlsxwriter workbook and worksheet objects.
-                workbook  = writer.book
-                worksheet = writer.sheets['Square Calculation']
+            df = pd.DataFrame(data)
+            df_res = pd.DataFrame(results)
 
-                # Insert an image.
-                self.fig.savefig('.\\Results\\square_plot.png')
-                worksheet.insert_image('F2', '.\\Results\\square_plot.png')
+            # Create Excel writer with custom filename
+            writer = pd.ExcelWriter(file_name, engine='xlsxwriter')
+            workbook = writer.book
+            worksheet = workbook.add_worksheet('Square Calculation')
 
-                writer.close()
+            # Define header format with background color
+            header_format = workbook.add_format({
+                'bg_color': '#EAF1FF',
+                'bold': True,
+                'align': 'center',
+                'valign': 'vcenter',
+                'border': 1
+            })
 
-                QMessageBox.information(self, 'Success', 'Data exported to Excel successfully.')
+            # Write data to Excel
+            df.to_excel(writer, sheet_name='Square Calculation', startrow=0, startcol=0, index=False)
+            df_res.to_excel(writer, sheet_name='Square Calculation', startrow=5, startcol=0, index=False)
+            for col_idx, col in enumerate(df.columns):
+                worksheet.write(0, col_idx, col, header_format)
 
-            except Exception as e:
-                QMessageBox.warning(self, 'Error', f'An error occurred while exporting the data: {e}')
+            # Save the image (assuming self.fig is a Matplotlib figure)
+            self.fig.savefig(f'.\\Results\\square_plot.png')  # Adjust path if needed
+            worksheet.insert_image('F2', f'.\\Results\\square_plot.png')  # Adjust cell location if needed
+            for col_idx, col in enumerate(df_res.columns):
+                worksheet.write(5, col_idx, col, header_format)
+
+            writer.close()
+
+            QMessageBox.information(self, 'Success', 'Data exported to Excel successfully.')
+
+        except Exception as e:
+            QMessageBox.warning(self, 'Error', f'An error occurred while exporting the data: {e}')

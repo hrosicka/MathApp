@@ -439,10 +439,10 @@ class WindowEllipse(QWidget, ShapeFunctionality):
                         self.label_axis_b.text(),
                         self.label_centerX.text(),
                         self.label_centerY.text()],
-            'Value': [self.edit_axis_a.text(),
-                    self.edit_axis_b.text(), 
-                    self.edit_centerX.text(),
-                    self.edit_centerY.text()],
+            'Value': [float(self.edit_axis_a.text()),
+                    float(self.edit_axis_b.text()), 
+                    float(self.edit_centerX.text()),
+                    float(self.edit_centerY.text())],
             'Unit': ['cm', 
                     'cm',
                     'cm',
@@ -452,8 +452,8 @@ class WindowEllipse(QWidget, ShapeFunctionality):
             results = {
             'Result': [self.label_perimeter.text(),
                         self.label_area.text()],
-            'Value': [self.label_res_perimeter.text(), 
-                    self.label_res_area.text()],
+            'Value': [float(self.label_res_perimeter.text()), 
+                    float(self.label_res_area.text())],
             'Unit': ['cm', 
                     'cm^2']
             }

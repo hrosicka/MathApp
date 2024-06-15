@@ -410,9 +410,9 @@ class WindowCircle(QWidget, ShapeFunctionality):
             'Property': [self.label_radius.text(),
                         self.label_centerX.text(),
                         self.label_centerY.text()],
-            'Value': [self.edit_radius.text(), 
-                    self.edit_centerX.text(),
-                    self.edit_centerY.text()],
+            'Value': [float(self.edit_radius.text()), 
+                    float(self.edit_centerX.text()),
+                    float(self.edit_centerY.text())],
             'Unit': ['cm', 
                     'cm',
                     'cm']
@@ -421,8 +421,8 @@ class WindowCircle(QWidget, ShapeFunctionality):
             results = {
             'Result': [self.label_perimeter.text(),
                         self.label_area.text()],
-            'Value': [self.label_res_perimeter.text(), 
-                    self.label_res_area.text()],
+            'Value': [float(self.label_res_perimeter.text()), 
+                    float(self.label_res_area.text())],
             'Unit': ['cm', 
                     'cm^2']
             }
