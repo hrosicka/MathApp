@@ -1,11 +1,15 @@
+import os
+
 from PyQt5.QtWidgets import (
-    QAction,
+    QAction, 
     QComboBox,
+    QFileDialog,
     QGridLayout,
     QGroupBox,
     QHBoxLayout,
     QLabel,
     QLineEdit,
+    QMessageBox,
     QPushButton,
     QToolBar,
     QVBoxLayout,
@@ -19,8 +23,8 @@ from PyQt5.QtGui import (
     QRegExpValidator,
 )  
 
-import matplotlib
-matplotlib.use('Qt5Agg')
+from matplotlib import pyplot as plt
+import pandas as pd
 
 import numpy as np
 import SphereCalc
@@ -39,11 +43,11 @@ class WindowSphere(QWidget, ShapeFunctionality):
 
         This method sets up the window layout, widgets, and their connections.
         """
-        # Create a 3D Matplotlib canvas for plotting the circle
+        # Create a 3D Matplotlib canvas for plotting the sphere
         sc = CanvasThreeD.MplCanvas(self, width=6, height=5, dpi=100)
         self.setWindowIcon(QIcon('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png'))
         
-        # Button to solve and plot the circle
+        # Button to solve and plot the sphere
         self.buttonplotSphere = QPushButton('Solve and Plot')
         self.buttonplotSphere.clicked.connect(lambda: self.plot_sphere(sc, self.combo_color.currentText()))
         self.buttonplotSphere.setToolTip("Solve and plot picture")
@@ -55,7 +59,7 @@ class WindowSphere(QWidget, ShapeFunctionality):
 
         # Button to export data to Excel 
         self.buttonExport = QPushButton('Excel Export')
-        # self.buttonExport.clicked.connect(lambda: self.export_excel())
+        self.buttonExport.clicked.connect(lambda: self.export_excel())
         self.buttonExport.setEnabled(False)
 
         # Button to clear all inputs, results, and the graph
@@ -263,7 +267,7 @@ class WindowSphere(QWidget, ShapeFunctionality):
         self.exportXlsxAction = QAction(self)
         self.exportXlsxAction.setToolTip("Export input data, results\nand graph into Excel")
         self.exportXlsxAction.setIcon(QIcon('ExportXLSIcon.svg'))
-        # self.exportXlsxAction.triggered.connect(self.export_excel)
+        self.exportXlsxAction.triggered.connect(self.export_excel)
         self.exportXlsxAction.setEnabled(False)
         toolbar.addAction(self.exportXlsxAction)
         
@@ -304,7 +308,7 @@ class WindowSphere(QWidget, ShapeFunctionality):
         self.combo_color.currentIndexChanged.connect(lambda: self.clear_results(sc))
 
 
-    def plot_sphere(self, sphere_plot, circle_color):
+    def plot_sphere(self, sphere_plot, sphere_color):
         
         sphere_plot.axes.cla()
         sphere_plot.draw()
@@ -337,7 +341,7 @@ class WindowSphere(QWidget, ShapeFunctionality):
             y = r * np.outer(np.sin(u), np.sin(v)) + center_y
             z = r * np.outer(np.ones(np.size(u)), np.cos(v)) + center_z
 
-            sphere_plot.axes.plot_surface(x, y, z, color=circle_color)
+            sphere_plot.axes.plot_surface(x, y, z, color=sphere_color)
             sphere_plot.draw()
 
             self.fig = sphere_plot.figure
@@ -400,3 +404,74 @@ class WindowSphere(QWidget, ShapeFunctionality):
         self.exportXlsxAction.setEnabled(False)
         self.buttonExport.setEnabled(False)
         self.buttonClear.setEnabled(False)
+
+    def export_excel(self):
+
+        # Get custom filename from user
+        file_name, _ = QFileDialog.getSaveFileName(self, 'Export to Excel', os.path.join(os.getcwd(), 'Results', 'sphere.xlsx'), 'Excel (*.xlsx)')
+
+        if not file_name:
+            return  # User canceled the file selection dialog
+
+        try:
+            # Create Pandas DataFrame objects
+            data = {
+            'Property': [self.label_radius.text(),
+                        self.label_centerX.text(),
+                        self.label_centerY.text(),
+                        self.label_centerZ.text()],
+            'Value': [float(self.edit_radius.text()), 
+                    float(self.edit_centerX.text()),
+                    float(self.edit_centerY.text()),
+                    float(self.edit_centerZ.text())],
+            'Unit': ['cm',
+                    'cm',
+                    'cm',
+                    'cm']
+            }
+
+            results = {
+            'Result': [self.label_surface.text(),
+                        self.label_volume.text()],
+            'Value': [float(self.label_res_surface.text()), 
+                    float(self.label_res_volume.text())],
+            'Unit': ['cm^2', 
+                    'cm^3']
+            }
+
+            df = pd.DataFrame(data)
+            df_res = pd.DataFrame(results)
+
+            # Create Excel writer with custom filename
+            writer = pd.ExcelWriter(file_name, engine='xlsxwriter')
+            workbook = writer.book
+            worksheet = workbook.add_worksheet('Sphere Calculation')
+
+            # Define header format with background color
+            header_format = workbook.add_format({
+                'bg_color': '#EAF1FF',
+                'bold': True,
+                'align': 'center',
+                'valign': 'vcenter',
+                'border': 1
+            })
+
+            # Write data to Excel
+            df.to_excel(writer, sheet_name='Sphere Calculation', startrow=0, startcol=0, index=False)
+            df_res.to_excel(writer, sheet_name='Sphere Calculation', startrow=6, startcol=0, index=False)
+            for col_idx, col in enumerate(df.columns):
+                worksheet.write(0, col_idx, col, header_format)
+
+            # Save the image (assuming self.fig is a Matplotlib figure)
+            self.fig.savefig(f'.\\Results\\sphere_plot.png')  # Adjust path if needed
+            worksheet.insert_image('F2', f'.\\Results\\sphere_plot.png')  # Adjust cell location if needed
+            for col_idx, col in enumerate(df_res.columns):
+                worksheet.write(6, col_idx, col, header_format)
+
+            writer.close()
+
+            QMessageBox.information(self, 'Success', 'Data exported to Excel successfully.')
+
+        except Exception as e:
+            QMessageBox.warning(self, 'Error', f'An error occurred while exporting the data: {e}')
+    
