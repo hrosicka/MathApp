@@ -298,8 +298,29 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         self.exportPictAction.setEnabled(False)
         toolbar.addAction(self.exportPictAction)
 
+        # Export inputs, results and graph into Excel file - button in the top toolbar
+        self.exportXlsxAction = QAction(self)
+        self.exportXlsxAction.setToolTip("Export input data, results\nand graph into Excel")
+        self.exportXlsxAction.setIcon(QIcon('ExportXLSIcon.svg'))
+        # self.exportXlsxAction.triggered.connect(self.export_excel)
+        self.exportXlsxAction.setEnabled(False)
+        toolbar.addAction(self.exportXlsxAction)
 
+        # Clear all - inputs, results and graph - button in the top toolbar
+        # Button is disable, when result are not allowable
+        self.clearAction = QAction(self)
+        self.clearAction.setToolTip("Clear all data and results")
+        self.clearAction.setIcon(QIcon('ClearResultsIcon.svg'))
+        self.clearAction.triggered.connect(lambda: self.clear_inputs(sc))
+        self.clearAction.setEnabled(False)
+        toolbar.addAction(self.clearAction)
 
+        # Close window - - button in the top toolbar
+        self.closeAction = QAction(self)
+        self.closeAction.setToolTip("Close window")
+        self.closeAction.setIcon(QIcon('CloseAppIcon.svg'))
+        self.closeAction.triggered.connect(self.close)
+        toolbar.addAction(self.closeAction)
 
         self.edit_axis_a.textChanged.connect(self.check_state_rad_and_set_color)
         self.edit_axis_a.textChanged.emit(self.edit_axis_a.text())
@@ -379,11 +400,11 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
 
             self.calculate_ellipsoid()
 
-            #self.clearAction.setEnabled(True)
+            self.clearAction.setEnabled(True)
             self.buttonClear.setEnabled(True)
-            #self.exportPictAction.setEnabled(True)
+            self.exportPictAction.setEnabled(True)
             self.buttonPicture.setEnabled(True)
-            #self.exportXlsxAction.setEnabled(True)
+            self.exportXlsxAction.setEnabled(True)
             self.buttonExport.setEnabled(True)
 
 
@@ -401,6 +422,45 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         self.label_res_surface.setText(str(ellipsoid_surface))
 
 
+    def clear_inputs(self, sc):
+        sc.axes.cla()
+        sc.draw()
+        self.edit_axis_a.clear()
+        self.edit_axis_b.clear()
+        self.edit_axis_c.clear()
+        self.edit_centerX.clear()
+        self.edit_centerY.clear()
+        self.edit_centerZ.clear()
+        self.label_res_surface.setText("0.0")
+        self.label_res_volume.setText("0.0")
+        self.clearAction.setEnabled(False)
+        self.exportPictAction.setEnabled(False)
+        self.buttonPicture.setEnabled(False)
+        self.exportXlsxAction.setEnabled(False)
+        self.buttonExport.setEnabled(False)
+        self.buttonClear.setEnabled(False)
 
+    
+    def clear_results(self, sc):
+        """
+        Clears all inputs, results, and the graph.
+
+        This method clears the text in the radius, x coordinate, and y coordinate
+        fields, as well as the result fields for diameter, circumference, and area.
+        It also clears the plot on the Matplotlib canvas.
+
+        Args:
+            sc: The Matplotlib canvas object used for plotting.
+        """
+        sc.axes.cla()
+        sc.draw()
+        self.label_res_surface.setText("0.0")
+        self.label_res_volume.setText("0.0")
+        self.clearAction.setEnabled(False)
+        self.exportPictAction.setEnabled(False)
+        self.buttonPicture.setEnabled(False)
+        self.exportXlsxAction.setEnabled(False)
+        self.buttonExport.setEnabled(False)
+        self.buttonClear.setEnabled(False)
         
       

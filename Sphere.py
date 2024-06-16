@@ -371,6 +371,12 @@ class WindowSphere(QWidget, ShapeFunctionality):
         self.edit_centerZ.clear()
         self.label_res_surface.setText("0.0")
         self.label_res_volume.setText("0.0")
+        self.clearAction.setEnabled(False)
+        self.exportPictAction.setEnabled(False)
+        self.buttonPicture.setEnabled(False)
+        self.exportXlsxAction.setEnabled(False)
+        self.buttonExport.setEnabled(False)
+        self.buttonClear.setEnabled(False)
 
     
     def clear_results(self, sc):
