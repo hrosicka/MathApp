@@ -119,6 +119,7 @@ class WindowSquare(QWidget, ShapeFunctionality):
         vbox1 = QVBoxLayout()
         vbox1.addWidget(groupBoxParameters)
         vbox1.addWidget(groupBoxResults)
+        vbox1.addStretch(1)
 
         # Create horizontal layout for the graph and the group boxes with input/results
         hbox1.addLayout(vbox1)
