@@ -75,6 +75,7 @@ class WindowCube(QWidget):
         groupBoxResults.setLayout(layout_res)
         vbox1.addWidget(groupBoxParameters)
         vbox1.addWidget(groupBoxResults)
+        vbox1.addStretch(1)
 
         hbox1.addLayout(vbox1)
         hbox1.addWidget(sc)
