@@ -2,7 +2,6 @@ import os
 
 from PyQt5.QtWidgets import (
     QAction, 
-    QComboBox,
     QFileDialog,
     QGridLayout,
     QGroupBox,
@@ -33,6 +32,7 @@ import CircleCalc
 import Canvas
 import SaveFig
 from Shape import *
+from CustomCombo import *
 
 class WindowCircle(QWidget, ShapeFunctionality):
     """
@@ -192,21 +192,7 @@ class WindowCircle(QWidget, ShapeFunctionality):
         layout_param.addWidget(self.label_combo_color,3,0)
 
         # Create combo for color
-        self.combo_color = QComboBox(self)
-        colors = ["black", 
-                  "blue", 
-                  "gray", 
-                  "green", 
-                  "magenta", 
-                  "orange", 
-                  "pink", 
-                  "red", 
-                  "violet", 
-                  "yellow"]
-        self.combo_color.addItems(colors)
-
-        self.combo_color.setFixedWidth(150)
-        self.combo_color.setFixedHeight(28)
+        self.combo_color = custom_combo(self)
         layout_param.addWidget(self.combo_color,3,1)
         
         # Create field for result - Circumference (c)
