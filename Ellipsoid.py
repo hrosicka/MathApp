@@ -1,6 +1,5 @@
 from PyQt5.QtWidgets import (
     QAction,
-    QComboBox,
     QGridLayout,
     QGroupBox,
     QHBoxLayout,
@@ -27,6 +26,7 @@ import EllipsoidCalc
 import CanvasThreeD
 import SaveFig
 from Shape import *
+from CustomCombo import *
 
 class WindowEllipsoid(QWidget, ShapeFunctionality):
     def __init__(self):
@@ -235,21 +235,8 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         self.label_combo_color.setFixedWidth(150)
         layout_param.addWidget(self.label_combo_color,6,0)
 
-
-        self.combo_color = QComboBox(self)
-        colors = ["black", 
-                  "blue", 
-                  "gray", 
-                  "green", 
-                  "magenta", 
-                  "orange", 
-                  "pink", 
-                  "red", 
-                  "violet", 
-                  "yellow"]
-        self.combo_color.addItems(colors)
-        self.combo_color.setFixedWidth(150)
-        self.combo_color.setFixedHeight(28)
+        # Create combo for color
+        self.combo_color = custom_combo(self)
         layout_param.addWidget(self.combo_color,6,1)
 
         # Create field for result - Volume (V)

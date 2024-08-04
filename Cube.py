@@ -1,37 +1,31 @@
-import sys
-from random import randint
-
 from PyQt5.QtWidgets import (
-    QApplication,
-    QComboBox,
     QGridLayout,
     QGroupBox,
     QHBoxLayout,
     QLabel,
     QLineEdit,
-    QMainWindow,
     QPushButton,
     QVBoxLayout,
     QWidget,
 )
 
 from PyQt5 import QtCore
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import (
+    QDoubleValidator,
+    QIcon,
+    QRegExpValidator,
+)  
 
 import matplotlib
 matplotlib.use('Qt5Agg')
 
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
-from matplotlib.figure import Figure
 from matplotlib import pyplot as plt
 
 import numpy as np
-
 import CubeCalc
-
 import CanvasThreeD
 
-import random
+from CustomCombo import *
 
 class WindowCube(QWidget):
     def __init__(self):
@@ -39,8 +33,14 @@ class WindowCube(QWidget):
         self.initUI()
 
     def initUI(self):
-        
+        """
+        Initializes the user interface of the window.
+
+        This method sets up the window layout, widgets, and their connections.
+        """
+        # Create a 3D Matplotlib canvas for plotting the sphere
         sc = CanvasThreeD.MplCanvas(self, width=6, height=5, dpi=100)
+        self.setWindowIcon(QIcon('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png'))
 
         buttonplotCube = QPushButton('Plot Cube')
         buttonplotCube.clicked.connect(lambda: self.plot_cube(sc))
@@ -87,6 +87,13 @@ class WindowCube(QWidget):
         self.setLayout(vbox2)
         self.setWindowTitle('Cube')
 
+        validator_double = QDoubleValidator(-10000000,10000000,5)
+        locale = QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates)
+        validator_double.setLocale(locale)
+        validator_double.setNotation(QDoubleValidator.StandardNotation)
+        
+        validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
+        validator_double = QRegExpValidator(QtCore.QRegExp(r'([-][1-9][0-9]{0,6})|([-][1-9][0-9]{0,6}[.])|([-][0][.][0-9]{1,6})|([-][1-9]{1,6}[.][0-9]{1,6})|([1-9][0-9]{0,6})|([1-9][0-9]{0,6}[.])|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
 
         self.label_side = QLabel("Side Length:")
         self.label_side.setAlignment(QtCore.Qt.AlignLeft)
@@ -149,20 +156,13 @@ class WindowCube(QWidget):
         self.label_dim_z.setFixedWidth(30)
         layout_param.addWidget(self.label_dim_z,3,2)
 
-        self.combo_color = QComboBox(self)
-        colors = ["black", 
-                  "blue", 
-                  "gray", 
-                  "green", 
-                  "magenta", 
-                  "orange", 
-                  "pink", 
-                  "red", 
-                  "violet", 
-                  "yellow"]
-        self.combo_color.addItems(colors)
-        
-        self.combo_color.setFixedWidth(150)
+        self.label_combo_color = QLabel("Cube Color:")
+        self.label_combo_color.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_combo_color.setFixedWidth(150)
+        layout_param.addWidget(self.label_combo_color,4,0)
+
+        # Create combo for color
+        self.combo_color = custom_combo(self)
         layout_param.addWidget(self.combo_color,4,1)
 
         self.label_volume = QLabel("Cube Volume:")
