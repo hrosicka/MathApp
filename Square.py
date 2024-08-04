@@ -2,7 +2,6 @@ import os
 
 from PyQt5.QtWidgets import (
     QAction, 
-    QComboBox,
     QFileDialog,
     QGridLayout,
     QGroupBox,
@@ -19,28 +18,20 @@ from PyQt5.QtWidgets import (
 from PyQt5 import QtCore
 from PyQt5.QtGui import (
     QIcon,
-    QPixmap,
     QRegExpValidator,
-    QValidator,
 )  
 
 import matplotlib
 matplotlib.use('Qt5Agg')
 
-
-from matplotlib import pyplot as plt
 import matplotlib.patches as patches
-
-import numpy as np
-
 import pandas as pd
 
 import SquareCalc
-
 import Canvas
 import SaveFig
-
 from Shape import *
+from CustomCombo import *
 
 
 class WindowSquare(QWidget, ShapeFunctionality):
@@ -201,22 +192,8 @@ class WindowSquare(QWidget, ShapeFunctionality):
         self.label_combo_color.setFixedWidth(150)
         layout_param.addWidget(self.label_combo_color,3,0)
 
-
-        self.combo_color = QComboBox(self)
-        colors = ["black", 
-                  "blue", 
-                  "gray", 
-                  "green", 
-                  "magenta", 
-                  "orange", 
-                  "pink", 
-                  "red", 
-                  "violet", 
-                  "yellow"]
-        self.combo_color.addItems(colors)
-        
-        self.combo_color.setFixedWidth(150)
-        self.combo_color.setFixedHeight(28)
+        # Create combo for color
+        self.combo_color = custom_combo(self)
         layout_param.addWidget(self.combo_color,3,1)
         
         # Create field for result - Circumference (c)

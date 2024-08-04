@@ -13,13 +13,11 @@ from PyQt5.QtWidgets import (
     QMenuBar,
     QMenu,
     QAction,
-    QShortcut,
 )
 
 from PyQt5.QtGui import (
     QPixmap, 
     QIcon,
-    QKeySequence,
 )
 
 from PyQt5 import QtCore

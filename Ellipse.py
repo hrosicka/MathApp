@@ -17,7 +17,6 @@ from PyQt5.QtWidgets import (
 
 from PyQt5 import QtCore
 from PyQt5.QtGui import (
-    QValidator,
     QIcon,
     QRegExpValidator,
 )
@@ -25,8 +24,6 @@ from PyQt5.QtGui import (
 import matplotlib
 matplotlib.use('Qt5Agg')
 
-
-from matplotlib import pyplot as plt
 import pandas as pd
 from matplotlib.patches import Ellipse
 
