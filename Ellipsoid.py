@@ -26,7 +26,6 @@ import EllipsoidCalc
 import CanvasThreeD
 import SaveFig
 from Shape import *
-from CustomCombo import *
 
 class WindowEllipsoid(QWidget, ShapeFunctionality):
     def __init__(self):
@@ -236,7 +235,7 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         layout_param.addWidget(self.label_combo_color,6,0)
 
         # Create combo for color
-        self.combo_color = custom_combo(self)
+        self.combo_color = self.custom_combo()
         layout_param.addWidget(self.combo_color,6,1)
 
         # Create field for result - Volume (V)

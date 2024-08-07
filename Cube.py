@@ -25,9 +25,9 @@ import numpy as np
 import CubeCalc
 import CanvasThreeD
 
-from CustomCombo import *
+from Shape import *
 
-class WindowCube(QWidget):
+class WindowCube(QWidget, ShapeFunctionality):
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -162,7 +162,7 @@ class WindowCube(QWidget):
         layout_param.addWidget(self.label_combo_color,4,0)
 
         # Create combo for color
-        self.combo_color = custom_combo(self)
+        self.combo_color = self.custom_combo()
         layout_param.addWidget(self.combo_color,4,1)
 
         self.label_volume = QLabel("Cube Volume:")
