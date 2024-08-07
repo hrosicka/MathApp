@@ -32,7 +32,6 @@ import CircleCalc
 import Canvas
 import SaveFig
 from Shape import *
-from CustomCombo import *
 
 class WindowCircle(QWidget, ShapeFunctionality):
     """
@@ -192,7 +191,7 @@ class WindowCircle(QWidget, ShapeFunctionality):
         layout_param.addWidget(self.label_combo_color,3,0)
 
         # Create combo for color
-        self.combo_color = custom_combo(self)
+        self.combo_color = self.custom_combo()
         layout_param.addWidget(self.combo_color,3,1)
         
         # Create field for result - Circumference (c)

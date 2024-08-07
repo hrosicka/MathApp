@@ -31,7 +31,6 @@ import EllipseCalc
 import Canvas
 import SaveFig
 from Shape import *
-from CustomCombo import *
 
 class WindowEllipse(QWidget, ShapeFunctionality):
     """
@@ -208,7 +207,7 @@ class WindowEllipse(QWidget, ShapeFunctionality):
         layout_param.addWidget(self.label_combo_color,4,0)
 
         # Create combo for color
-        self.combo_color = custom_combo(self)
+        self.combo_color = self.custom_combo()
         layout_param.addWidget(self.combo_color,4,1)
         
         # Create field for result - Circumference (c)
