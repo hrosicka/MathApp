@@ -383,15 +383,25 @@ class WindowCircle(QWidget, ShapeFunctionality):
         self.buttonClear.setEnabled(False)
 
     def export_excel(self):
+        """
+        Exports circle calculation data and plot to an Excel file.
 
-        # Get custom filename from user
+        This function retrieves data from the user interface, creates Pandas DataFrames,
+        and writes them to a new Excel file with formatting. It also saves the circle plot
+        (assuming it's a Matplotlib figure) as an image and inserts it into the Excel sheet.
+
+        Raises:
+            Exception: If an error occurs during the export process.
+        """
+        # Get a custom filename from the user for saving the Excel file
         file_name, _ = QFileDialog.getSaveFileName(self, 'Export to Excel', os.path.join(os.getcwd(), 'Results', 'circle.xlsx'), 'Excel (*.xlsx)')
 
         if not file_name:
             return  # User canceled the file selection dialog
 
+        # Prepare data for the Excel sheet
         try:
-            # Create Pandas DataFrame objects
+            # Create dictionaries containing circle property data and calculation results
             data = {
             'Property': [self.label_radius.text(),
                         self.label_centerX.text(),
@@ -413,15 +423,18 @@ class WindowCircle(QWidget, ShapeFunctionality):
                     'cm^2']
             }
 
+            # Create Pandas DataFrames from the dictionaries
             df = pd.DataFrame(data)
             df_res = pd.DataFrame(results)
 
-            # Create Excel writer with custom filename
+            # Create an Excel writer object with the specified filename
             writer = pd.ExcelWriter(file_name, engine='xlsxwriter')
+
+            # Create a workbook and worksheet within the Excel writer
             workbook = writer.book
             worksheet = workbook.add_worksheet('Circle Calculation')
 
-            # Define header format with background color
+            # Define a header format with background color and styling
             header_format = workbook.add_format({
                 'bg_color': '#EAF1FF',
                 'bold': True,
@@ -430,9 +443,13 @@ class WindowCircle(QWidget, ShapeFunctionality):
                 'border': 1
             })
 
-            # Write data to Excel
+            # Write the circle property data to the Excel sheet
             df.to_excel(writer, sheet_name='Circle Calculation', startrow=0, startcol=0, index=False)
+
+            # Write the calculation results data to the Excel sheet with a starting row offset
             df_res.to_excel(writer, sheet_name='Circle Calculation', startrow=5, startcol=0, index=False)
+
+            # Write the column headers for both dataframes using the defined format
             for col_idx, col in enumerate(df.columns):
                 worksheet.write(0, col_idx, col, header_format)
 
