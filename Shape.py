@@ -1,19 +1,25 @@
 from PyQt5.QtWidgets import (
-    QMessageBox,
-    QComboBox,
+    QMessageBox,  # Import for creating message boxes
+    QComboBox,    # Import for creating combo boxes
 )
 
 from PyQt5.QtGui import (
-    QValidator,
+    QValidator,   # Import for input validation
 )
 
 from PyQt5.QtGui import (
-    QPixmap,
+    QPixmap,     # Import for loading images
 )
 
 class ShapeFunctionality:
 
     def custom_messagebox(self, text="Error!"):
+        """
+        Displays a custom message box with an error icon.
+
+        Args:
+            text (str, optional): The message to display. Defaults to "Error!".
+        """
         messagebox = QMessageBox(QMessageBox.Warning, "Error", text, buttons = QMessageBox.Ok, parent=self)
         messagebox.setIconPixmap(QPixmap('stop_writing.png'))
         messagebox.exec_()
@@ -45,8 +51,6 @@ class ShapeFunctionality:
 
         # Return the created QComboBox instance
         return custom_combo
-
-
 
     def check_state_and_set_color(self, sender):
         """
