@@ -453,9 +453,11 @@ class WindowCircle(QWidget, ShapeFunctionality):
             for col_idx, col in enumerate(df.columns):
                 worksheet.write(0, col_idx, col, header_format)
 
-            # Save the image (assuming self.fig is a Matplotlib figure)
+            # Save the Matplotlib figure (assuming self.fig is a valid figure) as an image
             self.fig.savefig(f'.\\Results\\circle_plot.png')  # Adjust path if needed
-            worksheet.insert_image('F2', f'.\\Results\\circle_plot.png')  # Adjust cell location if needed
+
+            # Insert the saved image into the worksheet at cell E2 (adjust cell location if needed)
+            worksheet.insert_image('E2', f'.\\Results\\circle_plot.png')  # Adjust cell location if needed
             for col_idx, col in enumerate(df_res.columns):
                 worksheet.write(5, col_idx, col, header_format)
 
