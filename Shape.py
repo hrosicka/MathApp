@@ -1,4 +1,7 @@
+import os
+
 from PyQt5.QtWidgets import (
+    QFileDialog,
     QMessageBox,  # Import for creating message boxes
     QComboBox,    # Import for creating combo boxes
 )
@@ -10,6 +13,8 @@ from PyQt5.QtGui import (
 from PyQt5.QtGui import (
     QPixmap,     # Import for loading images
 )
+
+import pandas as pd
 
 class ShapeFunctionality:
 
@@ -93,3 +98,148 @@ class ShapeFunctionality:
         else:
             color = '#f6989d' # red
         sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
+
+    def export_excel(self, shape):
+        """
+        Exports shape calculation data and plot to an Excel file.
+
+        This function retrieves data from the user interface, creates Pandas DataFrames,
+        and writes them to a new Excel file with formatting. It also saves the shape plot
+        (assuming it's a Matplotlib figure) as an image and inserts it into the Excel sheet.
+
+        Raises:
+            Exception: If an error occurs during the export process.
+        """
+        file_name, _ = QFileDialog.getSaveFileName(
+        self, 'Export to Excel', os.path.join(os.getcwd(), 'Results', f"{shape}.xlsx"), 'Excel (*.xlsx)')
+
+        if not file_name:
+            return  # User canceled the file selection dialog
+
+        # Prepare data for the Excel sheet
+        try:
+            if shape == 'Circle':
+                # Create dictionaries containing circle property data and calculation results
+                data = {
+                'Property': [self.label_radius.text(),
+                            self.label_centerX.text(),
+                            self.label_centerY.text()],
+                'Value': [float(self.edit_radius.text()), 
+                        float(self.edit_centerX.text()),
+                        float(self.edit_centerY.text())],
+                'Unit': ['cm', 
+                        'cm',
+                        'cm']
+                }
+
+                results = {
+                'Result': [self.label_perimeter.text(),
+                            self.label_area.text()],
+                'Value': [float(self.label_res_perimeter.text()), 
+                        float(self.label_res_area.text())],
+                'Unit': ['cm', 
+                        'cm²']
+                }
+
+            elif shape == 'Ellipse':
+                # Create dictionaries containing ellipse property data and calculation results
+                data = {
+                'Property': [self.label_axis_a.text(),
+                            self.label_axis_b.text(),
+                            self.label_centerX.text(),
+                            self.label_centerY.text()],
+                'Value': [float(self.edit_axis_a.text()),
+                        float(self.edit_axis_b.text()), 
+                        float(self.edit_centerX.text()),
+                        float(self.edit_centerY.text())],
+                'Unit': ['cm', 
+                        'cm',
+                        'cm',
+                        'cm']
+                }
+
+                results = {
+                'Result': [self.label_perimeter.text(),
+                            self.label_area.text()],
+                'Value': [float(self.label_res_perimeter.text()), 
+                        float(self.label_res_area.text())],
+                'Unit': ['cm', 
+                        'cm²']
+                }
+
+            elif shape == 'Square':
+                # Create dictionaries containing square property data and calculation results
+                data = {
+                'Property': [self.label_side.text(),
+                            self.label_centerX.text(),
+                            self.label_centerY.text()],
+                'Value': [float(self.edit_side.text()), 
+                        float(self.edit_centerX.text()),
+                        float(self.edit_centerY.text())],
+                'Unit': ['cm', 
+                        'cm',
+                        'cm']
+                }
+
+                results = {
+                'Result': [self.label_perimeter.text(),
+                            self.label_area.text()],
+                'Value': [float(self.label_res_perimeter.text()), 
+                        float(self.label_res_area.text())],
+                'Unit': ['cm', 
+                        'cm^2']
+                }
+
+
+            # Create Pandas DataFrames from the dictionaries
+            df = pd.DataFrame(data)
+            df_res = pd.DataFrame(results)
+
+            # Create an Excel writer object with the specified filename
+            writer = pd.ExcelWriter(file_name, engine='xlsxwriter')
+
+            # Create a workbook and worksheet within the Excel writer
+            workbook = writer.book
+            worksheet = workbook.add_worksheet(f"{shape} Calculation")
+
+            # Define a header format with background color and styling
+            header_format = workbook.add_format({
+                'bg_color': '#EAF1FF',
+                'bold': True,
+                'align': 'center',
+                'valign': 'vcenter',
+                'border': 1
+            })
+
+            # Determine starting rows for property and result data
+            property_start_row = 0
+            result_start_row = 8
+
+            # Write the circle property data to the Excel sheet
+            df.to_excel(writer, sheet_name=f"{shape} Calculation", startrow=property_start_row, startcol=0, index=False)
+
+            # Write the calculation results data to the Excel sheet with a starting row offset
+            df_res.to_excel(writer, sheet_name=f"{shape} Calculation", startrow=result_start_row, startcol=0, index=False)
+
+
+            # Write the column headers for both dataframes using the defined format
+            for col_idx, col in enumerate(df.columns):
+                worksheet.write(0, col_idx, col, header_format)
+            for col_idx, col in enumerate(df_res.columns):
+                worksheet.write(8, col_idx, col, header_format)
+
+            image_file = f".\\Results\\{shape}_plot.png"
+            image_cell = 'E2'  # Adjust default image cell if needed
+
+            # Save the Matplotlib figure (assuming self.fig is a valid figure) as an image
+            self.fig.savefig(image_file)
+
+            # Insert the saved image into the worksheet at the specified cell
+            worksheet.insert_image(image_cell, image_file)
+            
+            writer.close()
+
+            QMessageBox.information(self, 'Success', 'Data exported to Excel successfully.')
+
+        except Exception as e:
+            QMessageBox.warning(self, 'Error', f'An error occurred while exporting the data: {e}')

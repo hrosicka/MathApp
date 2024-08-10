@@ -66,7 +66,7 @@ class WindowEllipse(QWidget, ShapeFunctionality):
 
         # Button to export data to Excel 
         self.buttonExport = QPushButton('Excel Export')
-        self.buttonExport.clicked.connect(lambda: self.export_excel())
+        self.buttonExport.clicked.connect(lambda: self.export_excel('Ellipse'))
         self.buttonExport.setEnabled(False)
 
         # Button to clear all inputs, results, and the graph
@@ -262,7 +262,7 @@ class WindowEllipse(QWidget, ShapeFunctionality):
         self.exportXlsxAction = QAction(self)
         self.exportXlsxAction.setToolTip("Export input data, results\nand graph into Excel")
         self.exportXlsxAction.setIcon(QIcon('ExportXLSIcon.svg'))
-        self.exportXlsxAction.triggered.connect(self.export_excel)
+        self.exportXlsxAction.triggered.connect(lambda: self.export_excel('Ellipse'))
         self.exportXlsxAction.setEnabled(False)
         toolbar.addAction(self.exportXlsxAction)
 
@@ -406,60 +406,3 @@ class WindowEllipse(QWidget, ShapeFunctionality):
         self.exportXlsxAction.setEnabled(False)
         self.buttonExport.setEnabled(False)
         self.buttonClear.setEnabled(False)
-    
-    def export_excel(self):
-
-        # Get custom filename from user
-        file_name, _ = QFileDialog.getSaveFileName(self, 'Export to Excel', os.path.join(os.getcwd(), 'Results', 'ellipse.xlsx'), 'Excel (*.xlsx)')
-
-        if not file_name:
-            return  # User canceled the file selection dialog
-
-        try:
-            # Create Pandas DataFrame objects
-            data = {
-            'Property': [self.label_axis_a.text(),
-                        self.label_axis_b.text(),
-                        self.label_centerX.text(),
-                        self.label_centerY.text()],
-            'Value': [float(self.edit_axis_a.text()),
-                    float(self.edit_axis_b.text()), 
-                    float(self.edit_centerX.text()),
-                    float(self.edit_centerY.text())],
-            'Unit': ['cm', 
-                    'cm',
-                    'cm',
-                    'cm']
-            }
-
-            results = {
-            'Result': [self.label_perimeter.text(),
-                        self.label_area.text()],
-            'Value': [float(self.label_res_perimeter.text()), 
-                    float(self.label_res_area.text())],
-            'Unit': ['cm', 
-                    'cm^2']
-            }
-            
-            df = pd.DataFrame(data)
-            df_res = pd.DataFrame(results)
-
-            # Create Excel writer with custom filename
-            writer = pd.ExcelWriter(file_name, engine='xlsxwriter')
-            workbook = writer.book
-            worksheet = workbook.add_worksheet('Ellipse Calculation')
-
-            # Write data to Excel
-            df.to_excel(writer, sheet_name='Ellipse Calculation', startrow=0, startcol=0)
-            df_res.to_excel(writer, sheet_name='Ellipse Calculation', startrow=6, startcol=0)
-
-            # Save the image (assuming self.fig is a Matplotlib figure)
-            self.fig.savefig(f'.\\Results\\ellipse_plot.png')  # Adjust path if needed
-            worksheet.insert_image('F2', f'.\\Results\\ellipse_plot.png')  # Adjust cell location if needed
-
-            writer.close()
-
-            QMessageBox.information(self, 'Success', 'Data exported to Excel successfully.')
-
-        except Exception as e:
-            QMessageBox.warning(self, 'Error', f'An error occurred while exporting the data: {e}')

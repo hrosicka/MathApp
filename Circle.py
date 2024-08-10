@@ -67,7 +67,7 @@ class WindowCircle(QWidget, ShapeFunctionality):
         
         # Button to export data to Excel 
         self.buttonExport = QPushButton('Excel Export')
-        self.buttonExport.clicked.connect(lambda: self.export_excel())
+        self.buttonExport.clicked.connect(lambda: self.export_excel('Circle'))
         self.buttonExport.setEnabled(False)
                 
         # Button to clear all inputs, results, and the graph
@@ -246,7 +246,7 @@ class WindowCircle(QWidget, ShapeFunctionality):
         self.exportXlsxAction = QAction(self)
         self.exportXlsxAction.setToolTip("Export input data, results\nand graph into Excel")
         self.exportXlsxAction.setIcon(QIcon('ExportXLSIcon.svg'))
-        self.exportXlsxAction.triggered.connect(self.export_excel)
+        self.exportXlsxAction.triggered.connect(lambda: self.export_excel('Circle'))
         self.exportXlsxAction.setEnabled(False)
         toolbar.addAction(self.exportXlsxAction)
 
@@ -381,89 +381,3 @@ class WindowCircle(QWidget, ShapeFunctionality):
         self.exportXlsxAction.setEnabled(False)
         self.buttonExport.setEnabled(False)
         self.buttonClear.setEnabled(False)
-
-    def export_excel(self):
-        """
-        Exports circle calculation data and plot to an Excel file.
-
-        This function retrieves data from the user interface, creates Pandas DataFrames,
-        and writes them to a new Excel file with formatting. It also saves the circle plot
-        (assuming it's a Matplotlib figure) as an image and inserts it into the Excel sheet.
-
-        Raises:
-            Exception: If an error occurs during the export process.
-        """
-        # Get a custom filename from the user for saving the Excel file
-        file_name, _ = QFileDialog.getSaveFileName(self, 'Export to Excel', os.path.join(os.getcwd(), 'Results', 'circle.xlsx'), 'Excel (*.xlsx)')
-
-        if not file_name:
-            return  # User canceled the file selection dialog
-
-        # Prepare data for the Excel sheet
-        try:
-            # Create dictionaries containing circle property data and calculation results
-            data = {
-            'Property': [self.label_radius.text(),
-                        self.label_centerX.text(),
-                        self.label_centerY.text()],
-            'Value': [float(self.edit_radius.text()), 
-                    float(self.edit_centerX.text()),
-                    float(self.edit_centerY.text())],
-            'Unit': ['cm', 
-                    'cm',
-                    'cm']
-            }
-
-            results = {
-            'Result': [self.label_perimeter.text(),
-                        self.label_area.text()],
-            'Value': [float(self.label_res_perimeter.text()), 
-                    float(self.label_res_area.text())],
-            'Unit': ['cm', 
-                    'cm^2']
-            }
-
-            # Create Pandas DataFrames from the dictionaries
-            df = pd.DataFrame(data)
-            df_res = pd.DataFrame(results)
-
-            # Create an Excel writer object with the specified filename
-            writer = pd.ExcelWriter(file_name, engine='xlsxwriter')
-
-            # Create a workbook and worksheet within the Excel writer
-            workbook = writer.book
-            worksheet = workbook.add_worksheet('Circle Calculation')
-
-            # Define a header format with background color and styling
-            header_format = workbook.add_format({
-                'bg_color': '#EAF1FF',
-                'bold': True,
-                'align': 'center',
-                'valign': 'vcenter',
-                'border': 1
-            })
-
-            # Write the circle property data to the Excel sheet
-            df.to_excel(writer, sheet_name='Circle Calculation', startrow=0, startcol=0, index=False)
-
-            # Write the calculation results data to the Excel sheet with a starting row offset
-            df_res.to_excel(writer, sheet_name='Circle Calculation', startrow=5, startcol=0, index=False)
-
-            # Write the column headers for both dataframes using the defined format
-            for col_idx, col in enumerate(df.columns):
-                worksheet.write(0, col_idx, col, header_format)
-
-            # Save the Matplotlib figure (assuming self.fig is a valid figure) as an image
-            self.fig.savefig(f'.\\Results\\circle_plot.png')  # Adjust path if needed
-
-            # Insert the saved image into the worksheet at cell E2 (adjust cell location if needed)
-            worksheet.insert_image('E2', f'.\\Results\\circle_plot.png')  # Adjust cell location if needed
-            for col_idx, col in enumerate(df_res.columns):
-                worksheet.write(5, col_idx, col, header_format)
-
-            writer.close()
-
-            QMessageBox.information(self, 'Success', 'Data exported to Excel successfully.')
-
-        except Exception as e:
-            QMessageBox.warning(self, 'Error', f'An error occurred while exporting the data: {e}')
