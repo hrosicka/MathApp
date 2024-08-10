@@ -54,7 +54,7 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
 
         # Button to export data to Excel 
         self.buttonExport = QPushButton('Excel Export')
-        # self.buttonExport.clicked.connect(lambda: self.export_excel())
+        self.buttonExport.clicked.connect(lambda: self.export_excel('Ellipsoid'))
         self.buttonExport.setEnabled(False)
 
         # Button to clear all inputs, results, and the graph
@@ -289,7 +289,7 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         self.exportXlsxAction = QAction(self)
         self.exportXlsxAction.setToolTip("Export input data, results\nand graph into Excel")
         self.exportXlsxAction.setIcon(QIcon('ExportXLSIcon.svg'))
-        # self.exportXlsxAction.triggered.connect(self.export_excel)
+        self.exportXlsxAction.triggered.connect(lambda: self.export_excel('Ellipsoid'))
         self.exportXlsxAction.setEnabled(False)
         toolbar.addAction(self.exportXlsxAction)
 
@@ -449,5 +449,3 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         self.exportXlsxAction.setEnabled(False)
         self.buttonExport.setEnabled(False)
         self.buttonClear.setEnabled(False)
-        
-      
