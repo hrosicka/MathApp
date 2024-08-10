@@ -187,9 +187,34 @@ class ShapeFunctionality:
                 'Value': [float(self.label_res_perimeter.text()), 
                         float(self.label_res_area.text())],
                 'Unit': ['cm', 
-                        'cm^2']
+                        'cm²']
                 }
 
+            elif shape == 'Sphere':
+                # Create dictionaries containing square property data and calculation results
+                data = {
+                'Property': [self.label_radius.text(),
+                            self.label_centerX.text(),
+                            self.label_centerY.text(),
+                            self.label_centerZ.text()],
+                'Value': [float(self.edit_radius.text()), 
+                        float(self.edit_centerX.text()),
+                        float(self.edit_centerY.text()),
+                        float(self.edit_centerZ.text())],
+                'Unit': ['cm',
+                        'cm',
+                        'cm',
+                        'cm']
+                }
+
+                results = {
+                'Result': [self.label_surface.text(),
+                            self.label_volume.text()],
+                'Value': [float(self.label_res_surface.text()), 
+                        float(self.label_res_volume.text())],
+                'Unit': ['cm²', 
+                        'cm³']
+                }
 
             # Create Pandas DataFrames from the dictionaries
             df = pd.DataFrame(data)
