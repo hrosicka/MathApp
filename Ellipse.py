@@ -63,20 +63,24 @@ class WindowEllipse(QWidget, ShapeFunctionality):
         self.buttonPicture = QPushButton('Graph Export')
         self.buttonPicture.clicked.connect(lambda: SaveFig.save_fig(self, self.fig, 'Ellipse.png'))
         self.buttonPicture.setEnabled(False)
+        self.buttonPicture.setToolTip("Save graph as picture")
 
         # Button to export data to Excel 
         self.buttonExport = QPushButton('Excel Export')
         self.buttonExport.clicked.connect(lambda: self.export_excel('Ellipse'))
         self.buttonExport.setEnabled(False)
+        self.buttonExport.setToolTip("Save inputs, results and graph into Excel")
 
         # Button to clear all inputs, results, and the graph
         self.buttonClear = QPushButton('Clear')
         self.buttonClear.clicked.connect(lambda: self.clear_inputs(sc))
         self.buttonClear.setEnabled(False)
+        self.buttonClear.setToolTip("Clear all data and results")
 
         # Button to close the window
         self.buttonClose = QPushButton('Close')
         self.buttonClose.clicked.connect(self.close)
+        self.buttonClose.setToolTip("Close window")
 
         # Create a toolbar for frequently used actions
         toolbar = QToolBar()
@@ -129,6 +133,7 @@ class WindowEllipse(QWidget, ShapeFunctionality):
         self.setLayout(vbox2)
         self.setWindowTitle('Ellipse')  
 
+        # validators - regular expression
         validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
         validator_double = QRegExpValidator(QtCore.QRegExp(r'([-][1-9][0-9]{0,6})|([-][1-9][0-9]{0,6}[.])|([-][0][.][0-9]{1,6})|([-][1-9]{1,6}[.][0-9]{1,6})|([1-9][0-9]{0,6})|([1-9][0-9]{0,6}[.])|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
         
@@ -244,11 +249,11 @@ class WindowEllipse(QWidget, ShapeFunctionality):
         layout_res.addWidget(self.label_dim_area,1,2)
 
         # Solve and plot picture - button in the top toolbar
-        self.exportPictAction = QAction(self)
-        self.exportPictAction.setToolTip("Solve and plot picture")
-        self.exportPictAction.setIcon(QIcon('CalculateIcon.svg'))
-        self.exportPictAction.triggered.connect(lambda: self.plot_circle(sc, self.combo_color.currentText()))
-        toolbar.addAction(self.exportPictAction)
+        self.solveAction = QAction(self)
+        self.solveAction.setToolTip("Solve and plot picture")
+        self.solveAction.setIcon(QIcon('CalculateIcon.svg'))
+        self.solveAction.triggered.connect(lambda: self.plot_circle(sc, self.combo_color.currentText()))
+        toolbar.addAction(self.solveAction)
 
         # Export graph as PNG - button in the top toolbar
         self.exportPictAction = QAction(self)
@@ -302,9 +307,32 @@ class WindowEllipse(QWidget, ShapeFunctionality):
 
 
     def plot_ellipse(self, ellipse_plot, ellipse_color):
+        """Plots an ellipse on the provided Matplotlib figure and updates display elements.
+
+        This method performs the following actions:
+        1. Clears the existing plot on `ellipse_plot`.
+        2. Resets the ellipse area and perimeter labels to "0.0".
+        3. Validates user input for semi-axis lengths (a, b) and center coordinates (x, y):
+        - Displays a custom message box using `self.custom_messagebox` if:
+            - Semi-major axis (a) is 0 or empty.
+            - Semi-minor axis (b) is 0 or empty.
+            - X coordinate (x₀) is missing.
+            - Y coordinate (y₀) is missing.
+        4. If all input is valid:
+        - Creates an `Ellipse` object with the specified center, width, height, and color.
+        - Sets the plot's X and Y limits to ensure the entire ellipse is visible.
+        - Adds the ellipse object to the plot's artist list.
+        - Redraws the plot.
+        - Updates `self.fig` to reference the Matplotlib figure for potential future use.
+        - Calls `self.calculate_ellipse()` to calculate and display ellipse properties.
+        - Enables the "Clear" and "Export" buttons for user interaction.
+
+        Args:
+            ellipse_plot (matplotlib.pyplot.Figure): The Matplotlib figure to plot the ellipse on.
+            ellipse_color (str): The color of the ellipse to be plotted.
+        """
         
         ellipse_plot.axes.cla()
-        ellipse_plot.draw()
         self.label_res_area.setText("0.0")
         self.label_res_perimeter.setText("0.0")
         
@@ -323,23 +351,21 @@ class WindowEllipse(QWidget, ShapeFunctionality):
 
         else:
 
-            Drawing_colored_ellipse = Ellipse((float(self.edit_centerX.text()),(float(self.edit_centerY.text()))),2*float(self.edit_axis_a.text()),2*float(self.edit_axis_b.text()))
-            Drawing_colored_ellipse.set_color(ellipse_color)
+            center_x = float(self.edit_centerX.text())
+            center_y = float(self.edit_centerY.text())
+            width = 2 * float(self.edit_axis_a.text())
+            height = 2 * float(self.edit_axis_b.text())
+            Drawing_colored_ellipse = Ellipse((center_x, center_y), width, height, color=ellipse_color)
 
-            minus_x = float(self.edit_centerX.text())-2*float(self.edit_axis_a.text())
-            plus_x = float(self.edit_centerX.text())+2*float(self.edit_axis_a.text())
-            minus_y = float(self.edit_centerY.text())-2*float(self.edit_axis_b.text())
-            plus_y = float(self.edit_centerY.text())+2*float(self.edit_axis_b.text())
-
-            ellipse_plot.axes.set_xlim(minus_x, plus_x)
-            ellipse_plot.axes.set_ylim(minus_y, plus_y)
+            ellipse_plot.axes.set_xlim(center_x - width, center_x + width)
+            ellipse_plot.axes.set_ylim(center_y - height, center_y + height)
 
             ellipse_plot.axes.add_artist(Drawing_colored_ellipse)
             ellipse_plot.draw()
 
             self.fig = ellipse_plot.figure
-
             self.calculate_ellipse()
+
             self.clearAction.setEnabled(True)
             self.buttonClear.setEnabled(True)
             self.exportPictAction.setEnabled(True)
@@ -348,9 +374,24 @@ class WindowEllipse(QWidget, ShapeFunctionality):
             self.buttonExport.setEnabled(True)
 
     def calculate_ellipse(self):
+        """Calculates the perimeter and area of an ellipse.
 
-        axis_a = float(self.edit_axis_a.text())
-        axis_b = float(self.edit_axis_b.text())
+        This method retrieves the semi-axis lengths (a, b) from the user interface,
+        creates an `EllipseCalc.Ellipse` object, calculates the ellipse's perimeter
+        and area rounded to five decimal places, and updates the corresponding
+        labels with the results.
+
+        Raises:
+            ValueError: If any of the entered semi-axis lengths are non-numeric.
+        """
+
+        try:
+            axis_a = float(self.edit_axis_a.text())
+            axis_b = float(self.edit_axis_b.text())
+        except ValueError:
+            # Handle non-numeric input gracefully (e.g., display an error message)
+            raise ValueError("Please enter valid numeric values for both semi-axis lengths.")
+
         myEllipse = EllipseCalc.Ellipse(axis_a, axis_b)
         ellipse_perimeter = round(myEllipse.circumference(),5)
         ellipse_area = round(myEllipse.area(),5)
