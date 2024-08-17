@@ -1,10 +1,12 @@
 from PyQt5.QtWidgets import (
+    QAction,
     QGridLayout,
     QGroupBox,
     QHBoxLayout,
     QLabel,
     QLineEdit,
     QPushButton,
+    QToolBar,
     QVBoxLayout,
     QWidget,
 )
@@ -19,12 +21,10 @@ from PyQt5.QtGui import (
 import matplotlib
 matplotlib.use('Qt5Agg')
 
-from matplotlib import pyplot as plt
-
 import numpy as np
 import CubeCalc
 import CanvasThreeD
-
+import SaveFig
 from Shape import *
 
 class WindowCube(QWidget, ShapeFunctionality):
@@ -42,8 +42,16 @@ class WindowCube(QWidget, ShapeFunctionality):
         sc = CanvasThreeD.MplCanvas(self, width=6, height=5, dpi=100)
         self.setWindowIcon(QIcon('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png'))
 
-        buttonplotCube = QPushButton('Plot Cube')
-        buttonplotCube.clicked.connect(lambda: self.plot_cube(sc))
+        # Button to solve and plot Cube
+        self.buttonplotCube = QPushButton('Solve and Plot')
+        self.buttonplotCube.clicked.connect(lambda: self.plot_cube(sc))
+        self.buttonplotCube.setToolTip("Solve and plot picture")
+
+        # Button to export the graph as an image
+        self.buttonPicture = QPushButton('Graph Export')
+        self.buttonPicture.clicked.connect(lambda: SaveFig.save_fig(self, self.fig, 'Cube.png'))
+        self.buttonPicture.setEnabled(False)
+
         buttonClear = QPushButton('Clear')
         buttonClear.clicked.connect(lambda: self.clear_inputs())
         buttonClose = QPushButton('Close')
@@ -55,7 +63,8 @@ class WindowCube(QWidget, ShapeFunctionality):
         
         hbox2 = QHBoxLayout()
         hbox2.addStretch(1)
-        hbox2.addWidget(buttonplotCube)
+        hbox2.addWidget(self.buttonplotCube)
+        hbox2.addWidget(self.buttonPicture)
         hbox2.addWidget(buttonClear)
         hbox2.addWidget(buttonClose)
 
@@ -206,12 +215,17 @@ class WindowCube(QWidget, ShapeFunctionality):
         y = 2 * np.sin(u) * np.sin(v)
         z = 2 * np.cos(v)
 
-        cube_plot.axes.plot_surface(x, y, z, cmap=plt.cm.Pastel2_r)
+        cube_plot.axes.plot_surface(x, y, z, color='red')
         # YlGnBu_r
 
         cube_plot.draw()
 
+        self.fig = cube_plot.figure
+
         self.calculate_sphere()
+
+        self.buttonPicture.setEnabled(True)
+
 
     def calculate_sphere(self):
 
@@ -229,4 +243,5 @@ class WindowCube(QWidget, ShapeFunctionality):
         self.edit_centerX.clear()
         self.edit_centerY.clear()
         self.label_res_surface.setText("0.0")
-        self.label_res_volume.setText("0.0") 
+        self.label_res_volume.setText("0.0")
+        self.buttonPicture.setEnabled(False)
