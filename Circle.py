@@ -64,20 +64,24 @@ class WindowCircle(QWidget, ShapeFunctionality):
         self.buttonPicture = QPushButton('Graph Export')
         self.buttonPicture.clicked.connect(lambda: SaveFig.save_fig(self, self.fig, 'Circle.png'))
         self.buttonPicture.setEnabled(False)
+        self.buttonPicture.setToolTip("Save graph as picture")
         
         # Button to export data to Excel 
         self.buttonExport = QPushButton('Excel Export')
         self.buttonExport.clicked.connect(lambda: self.export_excel('Circle'))
         self.buttonExport.setEnabled(False)
+        self.buttonExport.setToolTip("Save inputs, results and graph into Excel")
                 
         # Button to clear all inputs, results, and the graph
         self.buttonClear = QPushButton('Clear')
         self.buttonClear.clicked.connect(lambda: self.clear_inputs(sc))
         self.buttonClear.setEnabled(False)
+        self.buttonClear.setToolTip("Clear all data and results")
         
         # Button to close the window
         self.buttonClose = QPushButton('Close')
         self.buttonClose.clicked.connect(self.close)
+        self.buttonClose.setToolTip("Close window")
 
         # Create a toolbar for frequently used actions
         toolbar = QToolBar()
@@ -228,11 +232,11 @@ class WindowCircle(QWidget, ShapeFunctionality):
 
         
         # Solve and plot picture - button in the top toolbar
-        self.exportPictAction = QAction(self)
-        self.exportPictAction.setToolTip("Solve and plot picture")
-        self.exportPictAction.setIcon(QIcon('CalculateIcon.svg'))
-        self.exportPictAction.triggered.connect(lambda: self.plot_circle(sc, self.combo_color.currentText()))
-        toolbar.addAction(self.exportPictAction)
+        self.solveAction = QAction(self)
+        self.solveAction.setToolTip("Solve and plot picture")
+        self.solveAction.setIcon(QIcon('CalculateIcon.svg'))
+        self.solveAction.triggered.connect(lambda: self.plot_circle(sc, self.combo_color.currentText()))
+        toolbar.addAction(self.solveAction)
 
         # Export graph as PNG - button in the top toolbar
         self.exportPictAction = QAction(self)
