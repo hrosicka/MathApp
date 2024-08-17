@@ -282,13 +282,38 @@ class WindowCircle(QWidget, ShapeFunctionality):
 
 
     def plot_circle(self, circle_plot, circle_color):
+        """Plots a circle on the provided Matplotlib figure and updates display elements.
 
+        This method performs the following actions:
+
+        1. Clears the existing plot on `circle_plot`.
+        2. Resets the circle area and perimeter labels to "0.0".
+        3. Validates user input for radius, X-center, and Y-center coordinates:
+        - Displays a custom message box using `self.custom_messagebox` if:
+            - Radius is empty, zero, zero with a decimal point, "+" or "-".
+            - X-center coordinate is empty, "+" or "-".
+            - Y-center coordinate is empty, "+" or "-".
+        4. If all input is valid:
+        - Creates a `plt.Circle` object with the specified radius, center coordinates,
+            and color.
+        - Sets the plot's X and Y limits to ensure the entire circle is visible.
+        - Adds the circle object to the plot's artist list.
+        - Redraws the plot.
+        - Updates `self.fig` to reference the Matplotlib figure for potential future use.
+        - Calls `self.calculate_circle()` to calculate and display circle properties.
+        - Enables the "Clear" and "Export" buttons for user interaction.
+
+        Args:
+            circle_plot (matplotlib.pyplot.Figure): The Matplotlib figure to plot the circle on.
+            circle_color (str): The color of the circle to be plotted.
+        """
+
+        # Clear existing plot and reset labels
         circle_plot.axes.cla()
-        circle_plot.draw()
         self.label_res_area.setText("0.0")
         self.label_res_perimeter.setText("0.0")
         
-
+        # Validate user input
         if self.edit_radius.text() in ["", "0", "0.", "+", "-"]:
             self.custom_messagebox("Radius can be only a positive number!")
 
@@ -299,23 +324,27 @@ class WindowCircle(QWidget, ShapeFunctionality):
             self.custom_messagebox("Y coordinate (y₀) is missing!")
 
         else:
-            Drawing_colored_circle = plt.Circle((float(self.edit_centerX.text()),(float(self.edit_centerY.text()))),float(self.edit_radius.text()))
-            Drawing_colored_circle.set_color(circle_color)
+            # Create and configure circle object
+            center_x = float(self.edit_centerX.text())
+            center_y = float(self.edit_centerY.text())
+            radius = float(self.edit_radius.text())
+            Drawing_colored_circle = plt.Circle((center_x, center_y),radius, color=circle_color)
 
-            minus_x = float(self.edit_centerX.text())-2*float(self.edit_radius.text())
-            plus_x = float(self.edit_centerX.text())+2*float(self.edit_radius.text())
-            minus_y = float(self.edit_centerY.text())-2*float(self.edit_radius.text())
-            plus_y = float(self.edit_centerY.text())+2*float(self.edit_radius.text())
+            # Set plot limits for visibility
+            minus_x = center_x - 2*radius
+            plus_x = center_x + 2*radius
+            minus_y = center_y - 2*radius
+            plus_y = center_y + 2*radius
 
             circle_plot.axes.set_xlim(minus_x, plus_x)
             circle_plot.axes.set_ylim(minus_y, plus_y)
 
+            # Add circle to plot and redraw
             circle_plot.axes.add_artist(Drawing_colored_circle)
-            
             circle_plot.draw()
 
+            # Update figure reference and perform additional actions
             self.fig = circle_plot.figure
-            
             self.calculate_circle()
             self.clearAction.setEnabled(True)
             self.buttonClear.setEnabled(True)
@@ -325,8 +354,23 @@ class WindowCircle(QWidget, ShapeFunctionality):
             self.buttonExport.setEnabled(True)
 
     def calculate_circle(self):
+        """Calculates the perimeter and area of a circle based on user input.
 
-        radius_circle = float(self.edit_radius.text())
+        This method retrieves the radius value entered by the user in the `edit_radius` text field,
+        creates a `CircleCalc.Circle` object with that radius, calculates the circle's perimeter and area
+        rounded to five decimal places, and updates the corresponding labels (`label_res_perimeter` and
+        `label_res_area`) with the results.
+
+        Raises:
+        ValueError: If the user enters a non-numeric value for the radius.
+        """
+        try:
+            radius_circle = float(self.edit_radius.text())
+
+        except ValueError:
+            # Handle non-numeric input gracefully (e.g., display an error message)
+            raise ValueError("Please enter a valid numeric value for the radius.")
+    
         myCircle = CircleCalc.Circle(radius_circle)
         circle_perimeter = round(myCircle.circumference(),5)
         circle_area = round(myCircle.area(),5)
