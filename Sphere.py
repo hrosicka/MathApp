@@ -277,32 +277,43 @@ class WindowSphere(QWidget, ShapeFunctionality):
 
 
         self.edit_radius.textChanged.connect(self.check_state_rad_and_set_color)
-        self.edit_radius.textChanged.connect(lambda: self.clear_results(sc))
+        self.edit_radius.textChanged.connect(lambda: self.clear_results_3D(sc))
         self.edit_radius.textChanged.emit(self.edit_radius.text())
 
         self.edit_centerX.textChanged.connect(self.check_state_and_set_color)
-        self.edit_centerX.textChanged.connect(lambda: self.clear_results(sc))
+        self.edit_centerX.textChanged.connect(lambda: self.clear_results_3D(sc))
         self.edit_centerX.textChanged.emit(self.edit_centerX.text())
 
         self.edit_centerY.textChanged.connect(self.check_state_and_set_color)
-        self.edit_centerY.textChanged.connect(lambda: self.clear_results(sc))
+        self.edit_centerY.textChanged.connect(lambda: self.clear_results_3D(sc))
         self.edit_centerY.textChanged.emit(self.edit_centerY.text())
 
         self.edit_centerZ.textChanged.connect(self.check_state_and_set_color)
-        self.edit_centerZ.textChanged.connect(lambda: self.clear_results(sc))
+        self.edit_centerZ.textChanged.connect(lambda: self.clear_results_3D(sc))
         self.edit_centerZ.textChanged.emit(self.edit_centerZ.text())
 
-        self.combo_color.currentIndexChanged.connect(lambda: self.clear_results(sc))
+        self.combo_color.currentIndexChanged.connect(lambda: self.clear_results_3D(sc))
 
 
     def plot_sphere(self, sphere_plot, sphere_color):
-        
+        """
+        Plots a sphere based on user input and updates related UI elements.
+
+        This method clears the plot, resets the result labels, and performs input validation. If all inputs
+        are valid, it calculates sphere coordinates, plots the sphere, updates the figure reference,
+        calculates sphere properties, and enables relevant UI elements.
+
+        Args:
+            sphere_plot: The plot object to be used for drawing the sphere.
+            sphere_color: The color of the plotted sphere.
+        """
+        # Clear the plot and reset result labels
         sphere_plot.axes.cla()
         sphere_plot.draw()
         self.label_res_surface.setText("0.0")
         self.label_res_volume.setText("0.0")
         
-
+        # Input validation
         if self.edit_radius.text() in ["", "0", "0.", "+", "-"]:
             self.custom_messagebox("Radius can be only a positive number!")
 
@@ -316,25 +327,25 @@ class WindowSphere(QWidget, ShapeFunctionality):
             self.custom_messagebox("Z coordinate (z₀) is missing!")
  
         else:
-
+            # Convert input values to floats
             center_x = float(self.edit_centerX.text())
             center_y = float(self.edit_centerY.text())
             center_z = float(self.edit_centerZ.text())
             r = float(self.edit_radius.text())
 
+            # Generate sphere coordinates
             u, v = np.mgrid[0:2 * np.pi:30j, 0:np.pi:30j]
-            
             x = r * np.outer(np.cos(u), np.sin(v)) + center_x
             y = r * np.outer(np.sin(u), np.sin(v)) + center_y
             z = r * np.outer(np.ones(np.size(u)), np.cos(v)) + center_z
 
+            # Plot the sphere
             sphere_plot.axes.plot_surface(x, y, z, color=sphere_color)
             sphere_plot.draw()
 
+            # Update figure reference and perform additional actions
             self.fig = sphere_plot.figure
-
             self.calculate_sphere()
-
             self.clearAction.setEnabled(True)
             self.buttonClear.setEnabled(True)
             self.exportPictAction.setEnabled(True)
@@ -343,51 +354,51 @@ class WindowSphere(QWidget, ShapeFunctionality):
             self.buttonExport.setEnabled(True)
 
     def calculate_sphere(self):
+        """
+        Calculates the volume and surface area of a sphere based on user input.
 
-        radius_sphere = float(self.edit_radius.text())
+        This method retrieves the radius value entered by the user in the `edit_radius` text field,
+        creates a `SphereCalc.Sphere` object with that radius, calculates the sphere's volume and surface area
+        rounded to five decimal places, and updates the corresponding labels (`label_res_volume` and
+        `label_res_surface`) with the results.
+
+        Raises:
+            ValueError: If the user enters a non-numeric value for the radius.
+        """
+
+        try:
+            # Get the radius from the UI as a float
+            radius_sphere = float(self.edit_radius.text())
+        except ValueError:
+            # Handle non-numeric input gracefully (e.g., display an error message)
+            raise ValueError("Please enter a valid numeric value for the radius.")
+
+        # Create a Sphere object with the given radius
         mySphere = SphereCalc.Sphere(radius_sphere)
+
+        # Calculate the volume and surface area, rounding to 5 decimal places
         sphere_volume = round(mySphere.volume(),5)
         sphere_surface = round(mySphere.surface_area(),5)
 
+        # Update the UI with the calculated results
         self.label_res_volume.setText(str(sphere_volume))
         self.label_res_surface.setText(str(sphere_surface))
 
 
     def clear_inputs(self, sc):
-        sc.axes.cla()
-        sc.draw()
-        self.edit_radius.clear()
-        self.edit_centerX.clear()
-        self.edit_centerY.clear()
-        self.edit_centerZ.clear()
-        self.label_res_surface.setText("0.0")
-        self.label_res_volume.setText("0.0")
-        self.clearAction.setEnabled(False)
-        self.exportPictAction.setEnabled(False)
-        self.buttonPicture.setEnabled(False)
-        self.exportXlsxAction.setEnabled(False)
-        self.buttonExport.setEnabled(False)
-        self.buttonClear.setEnabled(False)
-
-    
-    def clear_results(self, sc):
         """
-        Clears all inputs, results, and the graph.
+        Clears input fields.
 
-        This method clears the text in the radius, x coordinate, and y coordinate
-        fields, as well as the result fields for diameter, circumference, and area.
-        It also clears the plot on the Matplotlib canvas.
+        This method clears the text in the radius, x, y and z coordinate fields.
+        It then calls the `clear_results_3D` method to clear the results and plot.
 
         Args:
             sc: The Matplotlib canvas object used for plotting.
         """
-        sc.axes.cla()
-        sc.draw()
-        self.label_res_surface.setText("0.0")
-        self.label_res_volume.setText("0.0")
-        self.clearAction.setEnabled(False)
-        self.exportPictAction.setEnabled(False)
-        self.buttonPicture.setEnabled(False)
-        self.exportXlsxAction.setEnabled(False)
-        self.buttonExport.setEnabled(False)
-        self.buttonClear.setEnabled(False)
+        self.edit_radius.clear()
+        self.edit_centerX.clear()
+        self.edit_centerY.clear()
+        self.edit_centerZ.clear()
+
+        # Clears results and the plot using a helper function
+        self.clear_results_3D(sc)
