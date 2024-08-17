@@ -1,14 +1,10 @@
-import os
-
 from PyQt5.QtWidgets import (
     QAction, 
-    QFileDialog,
     QGridLayout,
     QGroupBox,
     QHBoxLayout,
     QLabel,
     QLineEdit,
-    QMessageBox,
     QPushButton,
     QToolBar,
     QVBoxLayout,
@@ -24,9 +20,7 @@ from PyQt5.QtGui import (
 import matplotlib
 matplotlib.use('Qt5Agg')
 
-
 from matplotlib import pyplot as plt
-import pandas as pd
 
 import CircleCalc
 import Canvas

@@ -1,14 +1,10 @@
-import os
-
 from PyQt5.QtWidgets import (
     QAction, 
-    QFileDialog,
     QGridLayout,
     QGroupBox,
     QHBoxLayout,
     QLabel,
     QLineEdit,
-    QMessageBox,
     QPushButton,
     QToolBar,
     QVBoxLayout,
@@ -25,7 +21,6 @@ import matplotlib
 matplotlib.use('Qt5Agg')
 
 import matplotlib.patches as patches
-import pandas as pd
 
 import SquareCalc
 import Canvas

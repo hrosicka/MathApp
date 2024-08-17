@@ -1,14 +1,10 @@
-import os
-
 from PyQt5.QtWidgets import (
     QAction, 
-    QFileDialog,
     QGridLayout,
     QGroupBox,
     QHBoxLayout,
     QLabel,
     QLineEdit,
-    QMessageBox,
     QPushButton,
     QToolBar,
     QVBoxLayout,
@@ -24,7 +20,6 @@ from PyQt5.QtGui import (
 import matplotlib
 matplotlib.use('Qt5Agg')
 
-import pandas as pd
 from matplotlib.patches import Ellipse
 
 import EllipseCalc
