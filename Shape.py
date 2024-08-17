@@ -300,3 +300,27 @@ class ShapeFunctionality:
 
         except Exception as e:
             QMessageBox.warning(self, 'Error', f'An error occurred while exporting the data: {e}')
+
+
+    def clear_results_2D(self, sc):
+        """Clears results and the plot.
+
+        This method clears the text in the output fields for area and perimeter,
+        and clears the plot. It also disables buttons related to results and exporting.
+
+        Args:
+            sc: The Matplotlib canvas object used for plotting.
+        """
+        sc.axes.cla()
+        sc.draw()
+
+        self.label_res_area.setText("0.0")
+        self.label_res_perimeter.setText("0.0")
+
+        self.exportPictAction.setEnabled(False)
+        self.exportXlsxAction.setEnabled(False)
+        self.clearAction.setEnabled(False)
+
+        self.buttonPicture.setEnabled(False)
+        self.buttonExport.setEnabled(False)
+        self.buttonClear.setEnabled(False)
