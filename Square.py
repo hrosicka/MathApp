@@ -63,20 +63,24 @@ class WindowSquare(QWidget, ShapeFunctionality):
         self.buttonPicture = QPushButton('Graph Export')
         self.buttonPicture.clicked.connect(lambda: SaveFig.save_fig(self, self.fig, 'Square.png'))
         self.buttonPicture.setEnabled(False)
+        self.buttonPicture.setToolTip("Save graph as picture")
         
         # Button to export data to Excel 
         self.buttonExport = QPushButton('Excel Export')
         self.buttonExport.clicked.connect(lambda: self.export_excel('Square'))
         self.buttonExport.setEnabled(False)
+        self.buttonExport.setToolTip("Save inputs, results and graph into Excel")
                 
         # Button to clear all inputs, results, and the graph
         self.buttonClear = QPushButton('Clear')
         self.buttonClear.clicked.connect(lambda: self.clear_inputs(sc))
         self.buttonClear.setEnabled(False)
+        self.buttonClear.setToolTip("Clear all data and results")
         
         # Button to close the window
         self.buttonClose = QPushButton('Close')
         self.buttonClose.clicked.connect(self.close)
+        self.buttonClose.setToolTip("Close window")
 
         # Create a toolbar for frequently used actions
         toolbar = QToolBar()
@@ -285,6 +289,28 @@ class WindowSquare(QWidget, ShapeFunctionality):
 
 
     def plot_square(self, square_plot, square_color):
+        """Plots a square on the provided Matplotlib figure and updates display elements.
+
+        This method performs the following actions:
+        1. Validates user input for side length and center coordinates (x, y):
+        - Displays a custom message box using `self.custom_messagebox` if:
+            - Side length is 0, empty, or invalid.
+            - X coordinate (x₀) is missing.
+            - Y coordinate (y₀) is missing.
+        2. If all input is valid:
+        - Clears the existing plot on `square_plot`.
+        - Creates a `patches.Rectangle` object representing the square with the specified center, side length, and color.
+        - Sets the plot's X and Y limits to ensure the entire square is visible.
+        - Adds the square to the plot's artist list.
+        - Redraws the plot.
+        - Updates `self.fig` to reference the Matplotlib figure for potential future use.
+        - Calls `self.calculate_square()` to calculate and display square properties.
+        - Enables the "Clear" and "Export" buttons for user interaction.
+
+        Args:
+            square_plot (matplotlib.pyplot.Figure): The Matplotlib figure to plot the square on.
+            square_color (str): The color of the square to be plotted.
+        """
 
         if self.edit_side.text() in ["", "0", "0.", "+", "-"]:
             self.custom_messagebox("Side can be only a possitive number!")
@@ -298,12 +324,21 @@ class WindowSquare(QWidget, ShapeFunctionality):
         else:
             
             square_plot.axes.cla()
-            square = patches.Rectangle((float(self.edit_centerX.text()) - float(self.edit_side.text())/2, (float(self.edit_centerY.text()) - float(self.edit_side.text())/2)), float(self.edit_side.text()), float(self.edit_side.text()), edgecolor = square_color, facecolor = square_color)
 
-            minus_x = float(self.edit_centerX.text())-float(self.edit_side.text())
-            plus_x = float(self.edit_centerX.text())+float(self.edit_side.text())
-            minus_y = float(self.edit_centerY.text())-float(self.edit_side.text())
-            plus_y = float(self.edit_centerY.text())+float(self.edit_side.text())
+            center_x = float(self.edit_centerX.text())
+            center_y = float(self.edit_centerY.text())
+            side_length = float(self.edit_side.text())
+
+            square = patches.Rectangle((center_x - side_length / 2, center_y - side_length / 2), 
+                side_length,
+                side_length,
+                    edgecolor=square_color,
+                facecolor=square_color,
+                )
+            minus_x = center_x - side_length
+            plus_x = center_x + side_length
+            minus_y = center_y - side_length
+            plus_y = center_y + side_length
 
             square_plot.axes.set_xlim(minus_x, plus_x)
             square_plot.axes.set_ylim(minus_y, plus_y)
@@ -312,8 +347,8 @@ class WindowSquare(QWidget, ShapeFunctionality):
             square_plot.draw()
 
             self.fig = square_plot.figure
-           
             self.calculate_square()
+            
             self.clearAction.setEnabled(True)
             self.buttonClear.setEnabled(True)
             self.exportPictAction.setEnabled(True)
@@ -323,8 +358,22 @@ class WindowSquare(QWidget, ShapeFunctionality):
 
 
     def calculate_square(self):
+        """Calculates the perimeter and area of a square.
 
-        side_square = float(self.edit_side.text())
+        This method retrieves the side length of a square from the user interface,
+        creates a `SquareCalc.Square` object, calculates the square's perimeter
+        and area rounded to five decimal places, and updates the corresponding
+        labels with the results.
+
+        Raises:
+            ValueError: If the entered side length is not a valid number.
+        """
+
+        try:
+            side_square = float(self.edit_side.text())
+        except ValueError:
+            raise ValueError("Please enter a valid numeric value for the side length.")
+
         mySquare = SquareCalc.Square(side_square)
         square_perimeter = round(mySquare.circumference(),5)
         square_area = round(mySquare.area(),5)
