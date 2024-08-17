@@ -288,22 +288,22 @@ class WindowEllipse(QWidget, ShapeFunctionality):
         toolbar.addAction(self.closeAction)
 
         self.edit_axis_a.textChanged.connect(self.check_state_rad_and_set_color)
-        self.edit_axis_a.textChanged.connect(lambda: self.clear_results(sc))
+        self.edit_axis_a.textChanged.connect(lambda: self.clear_results_2D(sc))
         self.edit_axis_a.textChanged.emit(self.edit_axis_a.text())
 
         self.edit_axis_b.textChanged.connect(self.check_state_rad_and_set_color)
-        self.edit_axis_b.textChanged.connect(lambda: self.clear_results(sc))
+        self.edit_axis_b.textChanged.connect(lambda: self.clear_results_2D(sc))
         self.edit_axis_b.textChanged.emit(self.edit_axis_b.text())
 
         self.edit_centerX.textChanged.connect(self.check_state_and_set_color)
-        self.edit_centerX.textChanged.connect(lambda: self.clear_results(sc))
+        self.edit_centerX.textChanged.connect(lambda: self.clear_results_2D(sc))
         self.edit_centerX.textChanged.emit(self.edit_centerX.text())
 
         self.edit_centerY.textChanged.connect(self.check_state_and_set_color)
-        self.edit_centerY.textChanged.connect(lambda: self.clear_results(sc))
+        self.edit_centerY.textChanged.connect(lambda: self.clear_results_2D(sc))
         self.edit_centerY.textChanged.emit(self.edit_centerY.text())
 
-        self.combo_color.currentIndexChanged.connect(lambda: self.clear_results(sc))
+        self.combo_color.currentIndexChanged.connect(lambda: self.clear_results_2D(sc))
 
 
     def plot_ellipse(self, ellipse_plot, ellipse_color):
@@ -401,49 +401,18 @@ class WindowEllipse(QWidget, ShapeFunctionality):
 
 
     def clear_inputs(self, sc):
-        """
-        Clears all inputs, results, and the graph.
+        """Clears input fields.
 
-        This method clears the text in the a axis, b axis, x coordinate, and y coordinate
-        fields, as well as the result fields for circumference, and area.
-        It also clears the plot on the Matplotlib canvas.
+        This method clears the text in the a axis, b axis, x coordinate, and y coordinate fields.
+        It then calls the `clear_results_2D` method to clear the results and plot.
 
         Args:
             sc: The Matplotlib canvas object used for plotting.
         """
-        sc.axes.cla()
-        sc.draw()
         self.edit_axis_a.clear()
         self.edit_axis_b.clear()
         self.edit_centerX.clear()
         self.edit_centerY.clear()
-        self.label_res_area.setText("0.0")
-        self.label_res_perimeter.setText("0.0")
-        self.clearAction.setEnabled(False)
-        self.exportPictAction.setEnabled(False)
-        self.buttonPicture.setEnabled(False)
-        self.exportXlsxAction.setEnabled(False)
-        self.buttonExport.setEnabled(False)
-        self.buttonClear.setEnabled(False)
 
-    def clear_results(self, sc):
-        """
-        Clears all inputs, results, and the graph.
-
-        This method clears the text in the a axis, b axis, x coordinate, and y coordinate
-        fields, as well as the result fields for diameter, circumference, and area.
-        It also clears the plot on the Matplotlib canvas.
-
-        Args:
-            sc: The Matplotlib canvas object used for plotting.
-        """
-        sc.axes.cla()
-        sc.draw()
-        self.label_res_area.setText("0.0")
-        self.label_res_perimeter.setText("0.0")
-        self.clearAction.setEnabled(False)
-        self.exportPictAction.setEnabled(False)
-        self.buttonPicture.setEnabled(False)
-        self.exportXlsxAction.setEnabled(False)
-        self.buttonExport.setEnabled(False)
-        self.buttonClear.setEnabled(False)
+        # Clears results and the plot using a helper function
+        self.clear_results_2D(sc)
