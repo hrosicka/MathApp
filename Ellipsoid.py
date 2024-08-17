@@ -42,7 +42,7 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         sc = CanvasThreeD.MplCanvas(self, width=6, height=5, dpi=100)
         self.setWindowIcon(QIcon('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png'))
         
-        # Button to solve and plot the circle
+        # Button to solve and plot the Ellipsoid
         self.buttonplotEllipsoid = QPushButton('Solve and Plot')
         self.buttonplotEllipsoid.clicked.connect(lambda: self.plot_ellipsoid(sc, self.combo_color.currentText()))
         self.buttonplotEllipsoid.setToolTip("Solve and plot picture")
@@ -328,7 +328,7 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         self.edit_centerZ.textChanged.emit(self.edit_centerZ.text())
 
 
-    def plot_ellipsoid(self, sphere_plot, circle_color):
+    def plot_ellipsoid(self, sphere_plot, ellipsoid_color):
         
         sphere_plot.axes.cla()
         sphere_plot.draw()
@@ -380,7 +380,7 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
             sphere_plot.axes.set_ylim(minus_x, plus_x)
             sphere_plot.axes.set_zlim(minus_x, plus_x)
 
-            sphere_plot.axes.plot_wireframe(x, y, z, rstride=20, cstride=20, color=circle_color)
+            sphere_plot.axes.plot_wireframe(x, y, z, rstride=20, cstride=20, color=ellipsoid_color)
             sphere_plot.draw()
 
             self.fig = sphere_plot.figure
@@ -396,10 +396,24 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
 
 
     def calculate_ellipsoid(self):
+        """Calculates the volume and surface area of an ellipsoid.
 
-        semi_axis_a = float(self.edit_axis_a.text())
-        semi_axis_b = float(self.edit_axis_b.text())
-        semi_axis_c = float(self.edit_axis_c.text())
+        This method retrieves the semi-axis lengths (a, b, c) from the user interface,
+        creates an `EllipsoidCalc.Ellipsoid` object, calculates the ellipsoid's volume
+        and surface area rounded to five decimal places, and updates the corresponding
+        labels with the results.
+
+        Raises:
+            ValueError: If any of the entered semi-axis lengths are non-numeric.
+        """
+        try:
+            semi_axis_a = float(self.edit_axis_a.text())
+            semi_axis_b = float(self.edit_axis_b.text())
+            semi_axis_c = float(self.edit_axis_c.text())
+
+        except ValueError:
+            # Handle non-numeric input gracefully (e.g., display an error message)
+            raise ValueError("Please enter valid numeric values for all semi-axis lengths.")
 
         myEllipsoid = EllipsoidCalc.Ellipsoid(semi_axis_a, semi_axis_b, semi_axis_c)
         ellipsoid_volume = round(myEllipsoid.volume(),5)
@@ -410,16 +424,30 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
 
 
     def clear_inputs(self, sc):
+        """Clears input fields, plot, and output labels.
+
+        This method resets the application's state by:
+        - Clearing the plot area.
+        - Emptying input fields for ellipsoid parameters and center coordinates.
+        - Setting output labels for surface area and volume to "0.0".
+        - Disabling export and clear buttons.
+
+        Args:
+            sc: The plot canvas object.
+        """
         sc.axes.cla()
         sc.draw()
+
         self.edit_axis_a.clear()
         self.edit_axis_b.clear()
         self.edit_axis_c.clear()
         self.edit_centerX.clear()
         self.edit_centerY.clear()
         self.edit_centerZ.clear()
+
         self.label_res_surface.setText("0.0")
         self.label_res_volume.setText("0.0")
+        
         self.clearAction.setEnabled(False)
         self.exportPictAction.setEnabled(False)
         self.buttonPicture.setEnabled(False)
