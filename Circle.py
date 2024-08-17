@@ -286,7 +286,8 @@ class WindowCircle(QWidget, ShapeFunctionality):
 
 
     def plot_circle(self, circle_plot, circle_color):
-        """Plots a circle on the provided Matplotlib figure and updates display elements.
+        """
+        Plots a circle on the provided Matplotlib figure and updates display elements.
 
         This method performs the following actions:
 
@@ -358,7 +359,8 @@ class WindowCircle(QWidget, ShapeFunctionality):
             self.buttonExport.setEnabled(True)
 
     def calculate_circle(self):
-        """Calculates the perimeter and area of a circle based on user input.
+        """
+        Calculates the perimeter and area of a circle based on user input.
 
         This method retrieves the radius value entered by the user in the `edit_radius` text field,
         creates a `CircleCalc.Circle` object with that radius, calculates the circle's perimeter and area
@@ -384,7 +386,8 @@ class WindowCircle(QWidget, ShapeFunctionality):
 
 
     def clear_inputs(self, sc):
-        """Clears input fields.
+        """
+        Clears input fields.
 
         This method clears the text in the radius, x, and y coordinate fields.
         It then calls the `clear_results_2D` method to clear the results and plot.

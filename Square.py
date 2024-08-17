@@ -275,21 +275,22 @@ class WindowSquare(QWidget, ShapeFunctionality):
 
 
         self.edit_side.textChanged.connect(self.check_state_rad_and_set_color)
-        self.edit_side.textChanged.connect(lambda: self.clear_results(sc))
+        self.edit_side.textChanged.connect(lambda: self.clear_results_2D(sc))
         self.edit_side.textChanged.emit(self.edit_side.text())
 
         self.edit_centerX.textChanged.connect(self.check_state_and_set_color)
-        self.edit_centerX.textChanged.connect(lambda: self.clear_results(sc))
+        self.edit_centerX.textChanged.connect(lambda: self.clear_results_2D(sc))
         self.edit_centerX.textChanged.emit(self.edit_centerX.text())
 
         self.edit_centerY.textChanged.connect(self.check_state_and_set_color)
-        self.edit_centerY.textChanged.connect(lambda: self.clear_results(sc))
+        self.edit_centerY.textChanged.connect(lambda: self.clear_results_2D(sc))
         self.edit_centerY.textChanged.emit(self.edit_centerY.text())
 
 
 
     def plot_square(self, square_plot, square_color):
-        """Plots a square on the provided Matplotlib figure and updates display elements.
+        """
+        Plots a square on the provided Matplotlib figure and updates display elements.
 
         This method performs the following actions:
         1. Validates user input for side length and center coordinates (x, y):
@@ -358,7 +359,8 @@ class WindowSquare(QWidget, ShapeFunctionality):
 
 
     def calculate_square(self):
-        """Calculates the perimeter and area of a square.
+        """
+        Calculates the perimeter and area of a square.
 
         This method retrieves the side length of a square from the user interface,
         creates a `SquareCalc.Square` object, calculates the square's perimeter
@@ -384,48 +386,17 @@ class WindowSquare(QWidget, ShapeFunctionality):
         
     def clear_inputs(self, sc):
         """
-        Clears all inputs, results, and the graph.
+        Clears input fields.
 
-        This method clears the text in the radius, x coordinate, and y coordinate
-        fields, as well as the result fields for diameter, circumference, and area.
-        It also clears the plot on the Matplotlib canvas.
+        This method clears the text in the side, x coordinate, and y coordinate fields.
+        It then calls the `clear_results_2D` method to clear the results and plot.
 
         Args:
             sc: The Matplotlib canvas object used for plotting.
         """
-        sc.axes.cla()
-        sc.draw()
         self.edit_side.clear()
         self.edit_centerX.clear()
         self.edit_centerY.clear()
-        self.label_res_area.setText("0.0")
-        self.label_res_perimeter.setText("0.0")
-        self.clearAction.setEnabled(False)
-        self.exportPictAction.setEnabled(False)
-        self.buttonPicture.setEnabled(False)
-        self.exportXlsxAction.setEnabled(False)
-        self.buttonExport.setEnabled(False)
-        self.buttonClear.setEnabled(False)
 
-
-    def clear_results(self, sc):
-        """
-        Clears all inputs, results, and the graph.
-
-        This method clears the text in the radius, x coordinate, and y coordinate
-        fields, as well as the result fields for diameter, circumference, and area.
-        It also clears the plot on the Matplotlib canvas.
-
-        Args:
-            sc: The Matplotlib canvas object used for plotting.
-        """
-        sc.axes.cla()
-        sc.draw()
-        self.label_res_area.setText("0.0")
-        self.label_res_perimeter.setText("0.0")
-        self.clearAction.setEnabled(False)
-        self.exportPictAction.setEnabled(False)
-        self.buttonPicture.setEnabled(False)
-        self.exportXlsxAction.setEnabled(False)
-        self.buttonExport.setEnabled(False)
-        self.buttonClear.setEnabled(False)
+        # Clears results and the plot using a helper function
+        self.clear_results_2D(sc)

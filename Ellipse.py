@@ -307,7 +307,8 @@ class WindowEllipse(QWidget, ShapeFunctionality):
 
 
     def plot_ellipse(self, ellipse_plot, ellipse_color):
-        """Plots an ellipse on the provided Matplotlib figure and updates display elements.
+        """
+        Plots an ellipse on the provided Matplotlib figure and updates display elements.
 
         This method performs the following actions:
         1. Clears the existing plot on `ellipse_plot`.
@@ -374,7 +375,8 @@ class WindowEllipse(QWidget, ShapeFunctionality):
             self.buttonExport.setEnabled(True)
 
     def calculate_ellipse(self):
-        """Calculates the perimeter and area of an ellipse.
+        """
+        Calculates the perimeter and area of an ellipse.
 
         This method retrieves the semi-axis lengths (a, b) from the user interface,
         creates an `EllipseCalc.Ellipse` object, calculates the ellipse's perimeter
@@ -401,7 +403,8 @@ class WindowEllipse(QWidget, ShapeFunctionality):
 
 
     def clear_inputs(self, sc):
-        """Clears input fields.
+        """
+        Clears input fields.
 
         This method clears the text in the a axis, b axis, x coordinate, and y coordinate fields.
         It then calls the `clear_results_2D` method to clear the results and plot.
