@@ -1,14 +1,10 @@
-import os
-
 from PyQt5.QtWidgets import (
     QAction, 
-    QFileDialog,
     QGridLayout,
     QGroupBox,
     QHBoxLayout,
     QLabel,
     QLineEdit,
-    QMessageBox,
     QPushButton,
     QToolBar,
     QVBoxLayout,
@@ -21,9 +17,6 @@ from PyQt5.QtGui import (
     QIcon,
     QRegExpValidator,
 )  
-
-
-import pandas as pd
 
 import numpy as np
 import SphereCalc
