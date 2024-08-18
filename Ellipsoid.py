@@ -310,22 +310,31 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         toolbar.addAction(self.closeAction)
 
         self.edit_axis_a.textChanged.connect(self.check_state_rad_and_set_color)
+        self.edit_axis_a.textChanged.connect(lambda: self.clear_results_3D(sc))
         self.edit_axis_a.textChanged.emit(self.edit_axis_a.text())
 
         self.edit_axis_b.textChanged.connect(self.check_state_rad_and_set_color)
+        self.edit_axis_b.textChanged.connect(lambda: self.clear_results_3D(sc))
         self.edit_axis_b.textChanged.emit(self.edit_axis_b.text())
 
         self.edit_axis_c.textChanged.connect(self.check_state_rad_and_set_color)
+        self.edit_axis_c.textChanged.connect(lambda: self.clear_results_3D(sc))
         self.edit_axis_c.textChanged.emit(self.edit_axis_c.text())
 
         self.edit_centerX.textChanged.connect(self.check_state_and_set_color)
+        self.edit_centerX.textChanged.connect(lambda: self.clear_results_3D(sc))
         self.edit_centerX.textChanged.emit(self.edit_centerX.text())
 
         self.edit_centerY.textChanged.connect(self.check_state_and_set_color)
+        self.edit_centerY.textChanged.connect(lambda: self.clear_results_3D(sc))
         self.edit_centerY.textChanged.emit(self.edit_centerY.text())
 
         self.edit_centerZ.textChanged.connect(self.check_state_and_set_color)
+        self.edit_centerZ.textChanged.connect(lambda: self.clear_results_3D(sc))
         self.edit_centerZ.textChanged.emit(self.edit_centerZ.text())
+
+
+        self.combo_color.currentIndexChanged.connect(lambda: self.clear_results_3D(sc))
 
 
     def plot_ellipsoid(self, sphere_plot, ellipsoid_color):
@@ -424,56 +433,25 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
 
 
     def clear_inputs(self, sc):
-        """Clears input fields, plot, and output labels.
+        """
+        Clears input fields and associated plot.
 
-        This method resets the application's state by:
-        - Clearing the plot area.
-        - Emptying input fields for ellipsoid parameters and center coordinates.
-        - Setting output labels for surface area and volume to "0.0".
-        - Disabling export and clear buttons.
+        Resets the input values for the a, b, and c axes, as well as the x, y, and z coordinates.
+        Subsequently, clears the calculated results and the 3D plot displayed on the canvas.
 
         Args:
-            sc: The plot canvas object.
+            sc (matplotlib.backends.backend_qt5agg.FigureCanvasQTAgg): The Matplotlib canvas object.
         """
-        sc.axes.cla()
-        sc.draw()
 
+        # Clear input fields for axis lengths
         self.edit_axis_a.clear()
         self.edit_axis_b.clear()
         self.edit_axis_c.clear()
+
+        # Clear input fields for center coordinates
         self.edit_centerX.clear()
         self.edit_centerY.clear()
         self.edit_centerZ.clear()
 
-        self.label_res_surface.setText("0.0")
-        self.label_res_volume.setText("0.0")
-        
-        self.clearAction.setEnabled(False)
-        self.exportPictAction.setEnabled(False)
-        self.buttonPicture.setEnabled(False)
-        self.exportXlsxAction.setEnabled(False)
-        self.buttonExport.setEnabled(False)
-        self.buttonClear.setEnabled(False)
-
-    
-    def clear_results(self, sc):
-        """
-        Clears all inputs, results, and the graph.
-
-        This method clears the text in the radius, x coordinate, and y coordinate
-        fields, as well as the result fields for diameter, circumference, and area.
-        It also clears the plot on the Matplotlib canvas.
-
-        Args:
-            sc: The Matplotlib canvas object used for plotting.
-        """
-        sc.axes.cla()
-        sc.draw()
-        self.label_res_surface.setText("0.0")
-        self.label_res_volume.setText("0.0")
-        self.clearAction.setEnabled(False)
-        self.exportPictAction.setEnabled(False)
-        self.buttonPicture.setEnabled(False)
-        self.exportXlsxAction.setEnabled(False)
-        self.buttonExport.setEnabled(False)
-        self.buttonClear.setEnabled(False)
+        # Clear calculated results and plot
+        self.clear_results_3D(sc)
