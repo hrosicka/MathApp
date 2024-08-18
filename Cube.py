@@ -38,7 +38,7 @@ class WindowCube(QWidget, ShapeFunctionality):
 
         This method sets up the window layout, widgets, and their connections.
         """
-        # Create a 3D Matplotlib canvas for plotting the sphere
+        # Create a 3D Matplotlib canvas for plotting the cube
         sc = CanvasThreeD.MplCanvas(self, width=6, height=5, dpi=100)
         self.setWindowIcon(QIcon('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png'))
 
@@ -52,10 +52,22 @@ class WindowCube(QWidget, ShapeFunctionality):
         self.buttonPicture.clicked.connect(lambda: SaveFig.save_fig(self, self.fig, 'Cube.png'))
         self.buttonPicture.setEnabled(False)
 
-        buttonClear = QPushButton('Clear')
-        buttonClear.clicked.connect(lambda: self.clear_inputs())
-        buttonClose = QPushButton('Close')
-        buttonClose.clicked.connect(self.close)
+        # Button to export data to Excel 
+        self.buttonExport = QPushButton('Excel Export')
+        self.buttonExport.clicked.connect(lambda: self.export_excel('Cube'))
+        self.buttonExport.setEnabled(False)
+
+        # Button to clear all inputs, results, and the graph
+        self.buttonClear = QPushButton('Clear')
+        self.buttonClear.clicked.connect(lambda: self.clear_inputs(sc))
+
+        # Button to close the window
+        self.buttonClose = QPushButton('Close')
+        self.buttonClose.clicked.connect(self.close)
+
+        # Create a toolbar for frequently used actions
+        toolbar = QToolBar()
+        toolbar.setIconSize(QtCore.QSize(50, 50))
 
         self.setFixedSize(800, 400)
 
@@ -65,30 +77,35 @@ class WindowCube(QWidget, ShapeFunctionality):
         hbox2.addStretch(1)
         hbox2.addWidget(self.buttonplotCube)
         hbox2.addWidget(self.buttonPicture)
-        hbox2.addWidget(buttonClear)
-        hbox2.addWidget(buttonClose)
+        hbox2.addWidget(self.buttonExport)
+        hbox2.addWidget(self.buttonClear)
+        hbox2.addWidget(self.buttonClose)
 
-
-
-        vbox1 = QVBoxLayout()
-
-        vbox2 = QVBoxLayout()
-
+        # Create layout and group box for input parameters
         layout_param = QGridLayout()
-        layout_res = QGridLayout()
-
-
         groupBoxParameters = QGroupBox("Parameters")
         groupBoxParameters.setLayout(layout_param)
+
+        # Create layout and group box for results
+        layout_res = QGridLayout()
         groupBoxResults = QGroupBox("Results")
         groupBoxResults.setLayout(layout_res)
+
+        vbox1 = QVBoxLayout()
         vbox1.addWidget(groupBoxParameters)
         vbox1.addWidget(groupBoxResults)
         vbox1.addStretch(1)
 
+        # Create horizontal layout for the graph and the group boxes with input/results
         hbox1.addLayout(vbox1)
         hbox1.addWidget(sc)
 
+        # vertical box layout for:
+        # 1. menu
+        # 2. horizontal box layout for vbox1 with groupboxes and graph
+        # 3. horizontal box layout with buttons
+        vbox2 = QVBoxLayout()
+        vbox2.setMenuBar(toolbar)
         vbox2.addLayout(hbox1)
         vbox2.addStretch(1)
         vbox2.addLayout(hbox2)
@@ -110,6 +127,7 @@ class WindowCube(QWidget, ShapeFunctionality):
         layout_param.addWidget(self.label_side,0,0)
 
         self.edit_side = QLineEdit(self)
+        self.edit_side.setValidator(validator_possitive)
         self.edit_side.setAlignment(QtCore.Qt.AlignRight)
         self.edit_side.setFixedWidth(150)
         layout_param.addWidget(self.edit_side,0,1)
@@ -120,12 +138,14 @@ class WindowCube(QWidget, ShapeFunctionality):
         layout_param.addWidget(self.label_dim_side,0,2)
 
 
-        self.label_centerX = QLabel("Center - X coord.:")
+        # Create input field for center coordinate x₀
+        self.label_centerX = QLabel("X coordinate (x₀):")
         self.label_centerX.setAlignment(QtCore.Qt.AlignLeft)
         self.label_centerX.setFixedWidth(150)
         layout_param.addWidget(self.label_centerX,1,0)
 
         self.edit_centerX = QLineEdit(self)
+        self.edit_centerX.setValidator(validator_double)
         self.edit_centerX.setAlignment(QtCore.Qt.AlignRight)
         self.edit_centerX.setFixedWidth(150)
         layout_param.addWidget(self.edit_centerX,1,1)
@@ -135,12 +155,14 @@ class WindowCube(QWidget, ShapeFunctionality):
         self.label_dim_x.setFixedWidth(30)
         layout_param.addWidget(self.label_dim_x,1,2)
 
-        self.label_centerY = QLabel("Center - Y coord.:")
+        # Create input field for center coordinate y₀
+        self.label_centerY = QLabel("Y coordinate (y₀):")
         self.label_centerY.setAlignment(QtCore.Qt.AlignLeft)
         self.label_centerY.setFixedWidth(150)
         layout_param.addWidget(self.label_centerY,2,0)
 
         self.edit_centerY = QLineEdit(self)
+        self.edit_centerY.setValidator(validator_double)
         self.edit_centerY.setAlignment(QtCore.Qt.AlignRight)
         self.edit_centerY.setFixedWidth(150)
         layout_param.addWidget(self.edit_centerY,2,1)
@@ -150,12 +172,14 @@ class WindowCube(QWidget, ShapeFunctionality):
         self.label_dim_y.setFixedWidth(30)
         layout_param.addWidget(self.label_dim_y,2,2)
 
-        self.label_centerZ = QLabel("Center - Z coord.:")
+        # Create input field for center coordinate z₀
+        self.label_centerZ = QLabel("Z coordinate (z₀):")
         self.label_centerZ.setAlignment(QtCore.Qt.AlignLeft)
         self.label_centerZ.setFixedWidth(150)
         layout_param.addWidget(self.label_centerZ,3,0)
 
         self.edit_centerZ = QLineEdit(self)
+        self.edit_centerZ.setValidator(validator_double)
         self.edit_centerZ.setAlignment(QtCore.Qt.AlignRight)
         self.edit_centerZ.setFixedWidth(150)
         layout_param.addWidget(self.edit_centerZ,3,1)
@@ -174,13 +198,13 @@ class WindowCube(QWidget, ShapeFunctionality):
         self.combo_color = self.custom_combo()
         layout_param.addWidget(self.combo_color,4,1)
 
-        self.label_volume = QLabel("Cube Volume:")
+        # Create field for result - Volume (V)
+        self.label_volume = QLabel("Cube Volume (V):")
         self.label_volume.setAlignment(QtCore.Qt.AlignLeft)
         self.label_volume.setFixedWidth(150)
         layout_res.addWidget(self.label_volume,0,0)
 
         self.label_res_volume = QLabel('0.0')
-        self.label_res_volume.setStyleSheet("background-color : white; color : darkblue")
         self.label_res_volume.setAlignment(QtCore.Qt.AlignRight)
         self.label_res_volume.setFixedWidth(150)
         layout_res.addWidget(self.label_res_volume,0,1)
@@ -190,15 +214,13 @@ class WindowCube(QWidget, ShapeFunctionality):
         self.label_dim_vol.setFixedWidth(30)
         layout_res.addWidget(self.label_dim_vol,0,2)
 
-
-        self.label_surface = QLabel("Cube Surface:")
+        # Create field for result - Surface (S)
+        self.label_surface = QLabel("Cube Surface (S):")
         self.label_surface.setAlignment(QtCore.Qt.AlignLeft)
         self.label_surface.setFixedWidth(150)
         layout_res.addWidget(self.label_surface,1,0)
 
         self.label_res_surface = QLabel('0.0')
-        # self.label_res_area.setFont(QFont('Arial', 12))
-        self.label_res_surface.setStyleSheet("background-color : white; color : darkblue")
         self.label_res_surface.setAlignment(QtCore.Qt.AlignRight)
         self.label_res_surface.setFixedWidth(150)
         layout_res.addWidget(self.label_res_surface,1,1)
@@ -208,6 +230,64 @@ class WindowCube(QWidget, ShapeFunctionality):
         self.label_dim_surface.setFixedWidth(30)
         layout_res.addWidget(self.label_dim_surface,1,2)
 
+        # Solve and plot picture - button in the top toolbar
+        self.exportPictAction = QAction(self)
+        self.exportPictAction.setToolTip("Solve and plot picture")
+        self.exportPictAction.setIcon(QIcon('CalculateIcon.svg'))
+        self.exportPictAction.triggered.connect(lambda: self.plot_cube(sc, self.combo_color.currentText()))
+        toolbar.addAction(self.exportPictAction)
+
+        # Export graph as PNG - button in the top toolbar
+        self.exportPictAction = QAction(self)
+        self.exportPictAction.setToolTip("Save graph as picture")
+        self.exportPictAction.setIcon(QIcon('SavePictureIcon.svg'))
+        self.exportPictAction.triggered.connect(lambda: SaveFig.save_fig(self, self.fig, 'Cube.png'))
+        self.exportPictAction.setEnabled(False)
+        toolbar.addAction(self.exportPictAction)
+
+        # Export inputs, results and graph into Excel file - button in the top toolbar
+        self.exportXlsxAction = QAction(self)
+        self.exportXlsxAction.setToolTip("Export input data, results\nand graph into Excel")
+        self.exportXlsxAction.setIcon(QIcon('ExportXLSIcon.svg'))
+        self.exportXlsxAction.triggered.connect(lambda: self.export_excel('Cube'))
+        self.exportXlsxAction.setEnabled(False)
+        toolbar.addAction(self.exportXlsxAction)
+        
+
+        # Clear all - inputs, results and graph - button in the top toolbar
+        # Button is disable, when result are not allowable
+        self.clearAction = QAction(self)
+        self.clearAction.setToolTip("Clear all data and results")
+        self.clearAction.setIcon(QIcon('ClearResultsIcon.svg'))
+        self.clearAction.triggered.connect(lambda: self.clear_inputs(sc))
+        self.clearAction.setEnabled(False)
+        toolbar.addAction(self.clearAction)
+
+        # Close window - - button in the top toolbar
+        self.closeAction = QAction(self)
+        self.closeAction.setToolTip("Close window")
+        self.closeAction.setIcon(QIcon('CloseAppIcon.svg'))
+        self.closeAction.triggered.connect(self.close)
+        toolbar.addAction(self.closeAction)
+
+
+        self.edit_side.textChanged.connect(self.check_state_rad_and_set_color)
+        self.edit_side.textChanged.connect(lambda: self.clear_results_3D(sc))
+        self.edit_side.textChanged.emit(self.edit_side.text())
+
+        self.edit_centerX.textChanged.connect(self.check_state_and_set_color)
+        self.edit_centerX.textChanged.connect(lambda: self.clear_results_3D(sc))
+        self.edit_centerX.textChanged.emit(self.edit_centerX.text())
+
+        self.edit_centerY.textChanged.connect(self.check_state_and_set_color)
+        self.edit_centerY.textChanged.connect(lambda: self.clear_results_3D(sc))
+        self.edit_centerY.textChanged.emit(self.edit_centerY.text())
+
+        self.edit_centerZ.textChanged.connect(self.check_state_and_set_color)
+        self.edit_centerZ.textChanged.connect(lambda: self.clear_results_3D(sc))
+        self.edit_centerZ.textChanged.emit(self.edit_centerZ.text())
+
+        self.combo_color.currentIndexChanged.connect(lambda: self.clear_results_3D(sc))
 
     def plot_cube(self, cube_plot):
         u, v = np.mgrid[0:2 * np.pi:30j, 0:np.pi:20j]
@@ -220,14 +300,18 @@ class WindowCube(QWidget, ShapeFunctionality):
 
         cube_plot.draw()
 
+        # Update figure reference and perform additional actions
         self.fig = cube_plot.figure
-
-        self.calculate_sphere()
-
+        self.calculate_cube()
+        self.clearAction.setEnabled(True)
+        self.buttonClear.setEnabled(True)
+        self.exportPictAction.setEnabled(True)
         self.buttonPicture.setEnabled(True)
+        self.exportXlsxAction.setEnabled(True)
+        self.buttonExport.setEnabled(True)
 
 
-    def calculate_sphere(self):
+    def calculate_cube(self):
 
         side_cube = float(self.edit_side.text())
         myCube = CubeCalc.Cube(side_cube)
@@ -238,10 +322,20 @@ class WindowCube(QWidget, ShapeFunctionality):
         self.label_res_surface.setText(str(cube_surface))
 
         
-    def clear_inputs(self):
+    def clear_inputs(self, sc):
+        """
+        Clears input fields.
+
+        This method clears the text in the radius, x, y and z coordinate fields.
+        It then calls the `clear_results_3D` method to clear the results and plot.
+
+        Args:
+            sc: The Matplotlib canvas object used for plotting.
+        """
         self.edit_side.clear()
         self.edit_centerX.clear()
         self.edit_centerY.clear()
-        self.label_res_surface.setText("0.0")
-        self.label_res_volume.setText("0.0")
-        self.buttonPicture.setEnabled(False)
+        self.edit_centerZ.clear()
+
+        # Clears results and the plot using a helper function
+        self.clear_results_3D(sc)
