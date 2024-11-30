@@ -290,30 +290,48 @@ class WindowCube(QWidget, ShapeFunctionality):
         self.combo_color.currentIndexChanged.connect(lambda: self.clear_results_3D(sc))
 
     def plot_cube(self, cube_plot):
-        u, v = np.mgrid[0:2 * np.pi:30j, 0:np.pi:20j]
-        x = 2 * np.cos(u) * np.sin(v)
-        y = 2 * np.sin(u) * np.sin(v)
-        z = 2 * np.cos(v)
 
-        cube_plot.axes.plot_surface(x, y, z, color='red')
-        # YlGnBu_r
+        if self.edit_side.text() in ["", "0", "0.", "+", "-"]:
+            self.custom_messagebox("Side can be only a possitive number!")
 
-        cube_plot.draw()
+        elif self.edit_centerX.text() in ["", "+", "-"]:
+            self.custom_messagebox("X coordinate (x₀) is missing!")
 
-        # Update figure reference and perform additional actions
-        self.fig = cube_plot.figure
-        self.calculate_cube()
-        self.clearAction.setEnabled(True)
-        self.buttonClear.setEnabled(True)
-        self.exportPictAction.setEnabled(True)
-        self.buttonPicture.setEnabled(True)
-        self.exportXlsxAction.setEnabled(True)
-        self.buttonExport.setEnabled(True)
+        elif self.edit_centerY.text() in ["", "+", "-"]:
+            self.custom_messagebox("Y coordinate (y₀) is missing!")
+
+        elif self.edit_centerZ.text() in ["", "+", "-"]:
+            self.custom_messagebox("Y coordinate (z₀) is missing!")
+
+        else:
+            u, v = np.mgrid[0:2 * np.pi:30j, 0:np.pi:20j]
+            x = 2 * np.cos(u) * np.sin(v)
+            y = 2 * np.sin(u) * np.sin(v)
+            z = 2 * np.cos(v)
+
+            cube_plot.axes.plot_surface(x, y, z, color='red')
+            # YlGnBu_r
+
+            cube_plot.draw()
+
+            # Update figure reference and perform additional actions
+            self.fig = cube_plot.figure
+            self.calculate_cube()
+            self.clearAction.setEnabled(True)
+            self.buttonClear.setEnabled(True)
+            self.exportPictAction.setEnabled(True)
+            self.buttonPicture.setEnabled(True)
+            self.exportXlsxAction.setEnabled(True)
+            self.buttonExport.setEnabled(True)
 
 
     def calculate_cube(self):
 
-        side_cube = float(self.edit_side.text())
+        try:
+            side_cube = float(self.edit_side.text())
+        except ValueError:
+            raise ValueError("Please enter a valid numeric value for the side length.")
+
         myCube = CubeCalc.Cube(side_cube)
         cube_volume = round(myCube.volume(),5)
         cube_surface = round(myCube.surface_area(),5)
