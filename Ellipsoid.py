@@ -386,8 +386,8 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
             plus_z = float(self.edit_centerZ.text())+2*float(self.edit_axis_c.text())
 
             sphere_plot.axes.set_xlim(minus_x, plus_x)
-            sphere_plot.axes.set_ylim(minus_x, plus_x)
-            sphere_plot.axes.set_zlim(minus_x, plus_x)
+            sphere_plot.axes.set_ylim(minus_y, plus_y)
+            sphere_plot.axes.set_zlim(minus_z, plus_z)
 
             sphere_plot.axes.plot_wireframe(x, y, z, rstride=20, cstride=20, color=ellipsoid_color)
             sphere_plot.draw()
