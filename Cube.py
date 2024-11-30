@@ -44,7 +44,7 @@ class WindowCube(QWidget, ShapeFunctionality):
 
         # Button to solve and plot Cube
         self.buttonplotCube = QPushButton('Solve and Plot')
-        self.buttonplotCube.clicked.connect(lambda: self.plot_cube(sc))
+        self.buttonplotCube.clicked.connect(lambda: self.plot_cube(sc, self.combo_color.currentText()))
         self.buttonplotCube.setToolTip("Solve and plot picture")
 
         # Button to export the graph as an image
@@ -289,7 +289,7 @@ class WindowCube(QWidget, ShapeFunctionality):
 
         self.combo_color.currentIndexChanged.connect(lambda: self.clear_results_3D(sc))
 
-    def plot_cube(self, cube_plot):
+    def plot_cube(self, cube_plot, cube_color):
 
         if self.edit_side.text() in ["", "0", "0.", "+", "-"]:
             self.custom_messagebox("Side can be only a possitive number!")
@@ -304,12 +304,12 @@ class WindowCube(QWidget, ShapeFunctionality):
             self.custom_messagebox("Y coordinate (z₀) is missing!")
 
         else:
-            u, v = np.mgrid[0:2 * np.pi:30j, 0:np.pi:20j]
-            x = 2 * np.cos(u) * np.sin(v)
-            y = 2 * np.sin(u) * np.sin(v)
-            z = 2 * np.cos(v)
 
-            cube_plot.axes.plot_surface(x, y, z, color='red')
+            axes = [5, 5, 5]
+
+            data = np.ones(axes, dtype=np.bool_)
+
+            cube_plot.axes.voxels(data, facecolors=cube_color, edgecolors='white')
             # YlGnBu_r
 
             cube_plot.draw()
