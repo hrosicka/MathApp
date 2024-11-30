@@ -337,10 +337,10 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         self.combo_color.currentIndexChanged.connect(lambda: self.clear_results_3D(sc))
 
 
-    def plot_ellipsoid(self, sphere_plot, ellipsoid_color):
+    def plot_ellipsoid(self, ellipsoid_plot, ellipsoid_color):
         
-        sphere_plot.axes.cla()
-        sphere_plot.draw()
+        ellipsoid_plot.axes.cla()
+        ellipsoid_plot.draw()
         self.label_res_surface.setText("0.0")
         self.label_res_volume.setText("0.0")
         
@@ -385,14 +385,14 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
             minus_z = float(self.edit_centerZ.text())-2*float(self.edit_axis_c.text())
             plus_z = float(self.edit_centerZ.text())+2*float(self.edit_axis_c.text())
 
-            sphere_plot.axes.set_xlim(minus_x, plus_x)
-            sphere_plot.axes.set_ylim(minus_y, plus_y)
-            sphere_plot.axes.set_zlim(minus_z, plus_z)
+            ellipsoid_plot.axes.set_xlim(minus_x, plus_x)
+            ellipsoid_plot.axes.set_ylim(minus_y, plus_y)
+            ellipsoid_plot.axes.set_zlim(minus_z, plus_z)
 
-            sphere_plot.axes.plot_wireframe(x, y, z, rstride=20, cstride=20, color=ellipsoid_color)
-            sphere_plot.draw()
+            ellipsoid_plot.axes.plot_wireframe(x, y, z, rstride=20, cstride=20, color=ellipsoid_color)
+            ellipsoid_plot.draw()
 
-            self.fig = sphere_plot.figure
+            self.fig = ellipsoid_plot.figure
 
             self.calculate_ellipsoid()
 
