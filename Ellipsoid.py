@@ -38,7 +38,7 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
 
         This method sets up the window layout, widgets, and their connections.
         """
-        # Create a 3D Matplotlib canvas for plotting the circle
+        # Create a 3D Matplotlib canvas for plotting the ellipsoid
         sc = CanvasThreeD.MplCanvas(self, width=6, height=5, dpi=100)
         self.setWindowIcon(QIcon('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png'))
         

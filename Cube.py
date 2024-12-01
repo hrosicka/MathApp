@@ -121,21 +121,21 @@ class WindowCube(QWidget, ShapeFunctionality):
         validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
         validator_double = QRegExpValidator(QtCore.QRegExp(r'([-][1-9][0-9]{0,6})|([-][1-9][0-9]{0,6}[.])|([-][0][.][0-9]{1,6})|([-][1-9]{1,6}[.][0-9]{1,6})|([1-9][0-9]{0,6})|([1-9][0-9]{0,6}[.])|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
 
-        self.label_side = QLabel("Side Length:")
-        self.label_side.setAlignment(QtCore.Qt.AlignLeft)
-        self.label_side.setFixedWidth(150)
-        layout_param.addWidget(self.label_side,0,0)
+        self.label_edge = QLabel("Edge Length:")
+        self.label_edge.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_edge.setFixedWidth(150)
+        layout_param.addWidget(self.label_edge,0,0)
 
-        self.edit_side = QLineEdit(self)
-        self.edit_side.setValidator(validator_possitive)
-        self.edit_side.setAlignment(QtCore.Qt.AlignRight)
-        self.edit_side.setFixedWidth(150)
-        layout_param.addWidget(self.edit_side,0,1)
+        self.edit_edge = QLineEdit(self)
+        self.edit_edge.setValidator(validator_possitive)
+        self.edit_edge.setAlignment(QtCore.Qt.AlignRight)
+        self.edit_edge.setFixedWidth(150)
+        layout_param.addWidget(self.edit_edge,0,1)
 
-        self.label_dim_side = QLabel("cm")
-        self.label_dim_side.setAlignment(QtCore.Qt.AlignLeft)
-        self.label_dim_side.setFixedWidth(30)
-        layout_param.addWidget(self.label_dim_side,0,2)
+        self.label_dim_edge = QLabel("cm")
+        self.label_dim_edge.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_dim_edge.setFixedWidth(30)
+        layout_param.addWidget(self.label_dim_edge,0,2)
 
 
         # Create input field for center coordinate x₀
@@ -271,9 +271,9 @@ class WindowCube(QWidget, ShapeFunctionality):
         toolbar.addAction(self.closeAction)
 
 
-        self.edit_side.textChanged.connect(self.check_state_rad_and_set_color)
-        self.edit_side.textChanged.connect(lambda: self.clear_results_3D(sc))
-        self.edit_side.textChanged.emit(self.edit_side.text())
+        self.edit_edge.textChanged.connect(self.check_state_rad_and_set_color)
+        self.edit_edge.textChanged.connect(lambda: self.clear_results_3D(sc))
+        self.edit_edge.textChanged.emit(self.edit_edge.text())
 
         self.edit_centerX.textChanged.connect(self.check_state_and_set_color)
         self.edit_centerX.textChanged.connect(lambda: self.clear_results_3D(sc))
@@ -291,8 +291,8 @@ class WindowCube(QWidget, ShapeFunctionality):
 
     def plot_cube(self, cube_plot, cube_color):
 
-        if self.edit_side.text() in ["", "0", "0.", "+", "-"]:
-            self.custom_messagebox("Side can be only a possitive number!")
+        if self.edit_edge.text() in ["", "0", "0.", "+", "-"]:
+            self.custom_messagebox("Edge can be only a possitive number!")
 
         elif self.edit_centerX.text() in ["", "+", "-"]:
             self.custom_messagebox("X coordinate (x₀) is missing!")
@@ -305,7 +305,9 @@ class WindowCube(QWidget, ShapeFunctionality):
 
         else:
 
-            axes = [5, 5, 5]
+            edge = int(self.edit_edge.text())
+
+            axes = [edge, edge, edge]
 
             data = np.ones(axes, dtype=np.bool_)
 
@@ -328,11 +330,11 @@ class WindowCube(QWidget, ShapeFunctionality):
     def calculate_cube(self):
 
         try:
-            side_cube = float(self.edit_side.text())
+            edge_cube = float(self.edit_edge.text())
         except ValueError:
-            raise ValueError("Please enter a valid numeric value for the side length.")
+            raise ValueError("Please enter a valid numeric value for the edge length.")
 
-        myCube = CubeCalc.Cube(side_cube)
+        myCube = CubeCalc.Cube(edge_cube)
         cube_volume = round(myCube.volume(),5)
         cube_surface = round(myCube.surface_area(),5)
 
@@ -350,7 +352,7 @@ class WindowCube(QWidget, ShapeFunctionality):
         Args:
             sc: The Matplotlib canvas object used for plotting.
         """
-        self.edit_side.clear()
+        self.edit_edge.clear()
         self.edit_centerX.clear()
         self.edit_centerY.clear()
         self.edit_centerZ.clear()
