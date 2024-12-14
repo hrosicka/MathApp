@@ -29,7 +29,7 @@ from Shape import *
 
 class WindowEllipse(QWidget, ShapeFunctionality):
     """
-    This class represents the main window of the circle calculation application.
+    This class represents the main window of the ellipse calculation application.
 
     It handles the user interface elements, input validation, calculation logic,
     and interaction with external libraries for plotting and data export.
@@ -45,7 +45,7 @@ class WindowEllipse(QWidget, ShapeFunctionality):
 
         This method sets up the window layout, widgets, and their connections.
         """
-        # Create a Matplotlib canvas for plotting the circle
+        # Create a Matplotlib canvas for plotting the ellipse
         sc = Canvas.MplCanvas(self, width=6, height=6, dpi=100)
         self.setWindowIcon(QIcon('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png'))
 
@@ -247,14 +247,14 @@ class WindowEllipse(QWidget, ShapeFunctionality):
         self.solveAction = QAction(self)
         self.solveAction.setToolTip("Solve and plot picture")
         self.solveAction.setIcon(QIcon('CalculateIcon.svg'))
-        self.solveAction.triggered.connect(lambda: self.plot_circle(sc, self.combo_color.currentText()))
+        self.solveAction.triggered.connect(lambda: self.plot_ellipse(sc, self.combo_color.currentText()))
         toolbar.addAction(self.solveAction)
 
         # Export graph as PNG - button in the top toolbar
         self.exportPictAction = QAction(self)
         self.exportPictAction.setToolTip("Save graph as picture")
         self.exportPictAction.setIcon(QIcon('SavePictureIcon.svg'))
-        self.exportPictAction.triggered.connect(lambda: SaveFig.save_fig(self, self.fig, 'Circle.png'))
+        self.exportPictAction.triggered.connect(lambda: SaveFig.save_fig(self, self.fig, 'Ellipse.png'))
         self.exportPictAction.setEnabled(False)
         toolbar.addAction(self.exportPictAction)
 
