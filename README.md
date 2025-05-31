@@ -6,7 +6,6 @@
 ![Contributors](https://img.shields.io/github/contributors/hrosicka/MathApp)
 ![Made with Love](https://img.shields.io/badge/Made%20with-%E2%9D%A4-red)
 
-Popis projektu...
 This interactive application allows you to visualize and learn about various geometric shapes. Still in progress...
 
 ## Key Features:
