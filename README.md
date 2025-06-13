@@ -8,6 +8,25 @@
 
 This interactive application allows you to visualize and learn about various geometric shapes. Still in progress...
 
+## Table of Contents
+
+1. [MathApp - Explore 2D and 3D Shapes](#mathapp---explore-2d-and-3d-shapes)
+2. [Key Features](#key-features)
+3. [Main Window](#main-window)
+   - [Menu](#menu)
+   - [Shortcuts](#shortcuts)
+4. [Circle](#circle)
+   - [User Interface](#user-interface)
+   - [Menu bar](#menu-bar)
+   - [Using the Application](#using-the-application)
+5. [Sphere](#sphere)
+6. [Ellipse](#ellipse)
+7. [Square](#square)
+8. [Unit Tests](#unit-tests)
+   - [Circle](#circle-1)
+   - [Ellipse](#ellipse-1)
+9. [License](#mit-license)
+
 ## Key Features:
 
 - **Multiple Shapes:** Explore circles, spheres, ellipses, ellipsoids, squares, and cubes.
