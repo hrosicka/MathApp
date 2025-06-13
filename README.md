@@ -25,7 +25,7 @@ This interactive application allows you to visualize and learn about various geo
 8. [Unit Tests](#unit-tests)
    - [Circle](#circle-1)
    - [Ellipse](#ellipse-1)
-9. [License](#mit-license)
+9. [License](#license)
 
 ## Key Features:
 
@@ -171,7 +171,7 @@ Tests cover various aspects of the ellipse's behavior:
 - Asserts that get_description generates clear and informative descriptions of the ellipse's properties, including its circumference and area, formatted using the actual axis lengths.
 - Confirms that the returned descriptions accurately reflect the calculated values obtained from the circumference and area methods.
 
-### License
+## License
 [MIT LICENSE](https://github.com/hrosicka/MathApp?tab=MIT-1-ov-file#readme)
 
 
