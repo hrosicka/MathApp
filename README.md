@@ -171,6 +171,7 @@ Tests cover various aspects of the ellipse's behavior:
 - Asserts that get_description generates clear and informative descriptions of the ellipse's properties, including its circumference and area, formatted using the actual axis lengths.
 - Confirms that the returned descriptions accurately reflect the calculated values obtained from the circumference and area methods.
 
+## License
 [MIT LICENSE](https://github.com/hrosicka/MathApp?tab=MIT-1-ov-file#readme)
 
 
