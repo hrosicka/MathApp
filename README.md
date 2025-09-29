@@ -1,5 +1,6 @@
 # MathApp - Explore 2D and 3D Shapes
 
+![Stars](https://img.shields.io/github/stars/hrosicka/MathApp)
 ![License](https://img.shields.io/github/license/hrosicka/MathApp)
 ![Last Commit](https://img.shields.io/github/last-commit/hrosicka/MathApp)
 ![Issues](https://img.shields.io/github/issues/hrosicka/MathApp)
