@@ -3,11 +3,12 @@ import sys
 from math import pi
 
 # setting path
-sys.path.append('../PyQtMathApp')
+sys.path.append("../PyQtMathApp")
 from SphereCalc import *
 
 import unittest
 import math
+
 
 class SphereTest(unittest.TestCase):
 
@@ -69,16 +70,20 @@ class SphereTest(unittest.TestCase):
         sphere = Sphere(1000000.0)  # Extremely large radius
         expected_volume = (4.0 / 3.0) * math.pi * (1000000.0**3)
         self.assertAlmostEqual(sphere.volume(), expected_volume, places=5)
-                               
+
     def test_get_description_positive_radius(self):
         """Tests get_description for a positive radius."""
         sphere = Sphere(2.0)
         expected_description = (
             "Sphere with radius {} cm has surface area {:.3f} cm2.".format(
-                sphere.radius, round(sphere.surface_area(), 3)),
+                sphere.radius, round(sphere.surface_area(), 3)
+            ),
             "Sphere with radius {} cm has volume {:.3f} cm3.".format(
-                sphere.radius, round(sphere.volume(), 3)),)
+                sphere.radius, round(sphere.volume(), 3)
+            ),
+        )
         self.assertEqual(sphere.get_description(), expected_description)
+
 
 if __name__ == "__main__":
     unittest.main()
