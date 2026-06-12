@@ -1,12 +1,12 @@
 class Cube:
     """
-    This class represents a 3D cube and provides methods to calculate its geometrical properties 
+    This class represents a 3D cube and provides methods to calculate its geometrical properties
     like surface area and volume.
 
     Attributes:
-        side_length (float): The length of a side of the cube in centimeters. 
+        side_length (float): The length of a side of the cube in centimeters.
     """
-    
+
     def __init__(self, side_length):
         """
         Initializes a Cube object.
@@ -33,9 +33,9 @@ class Cube:
         Returns:
             float: The surface area of the cube in square centimeters, rounded to 5 decimal places.
         """
-        surface_area = 6 * pow(self.side_length,2)
+        surface_area = 6 * pow(self.side_length, 2)
         return round(surface_area, 5)
-    
+
     def volume(self):
         """
         Calculates and returns the volume of the cube in cubic centimeters.
@@ -53,11 +53,18 @@ class Cube:
         Returns a tuple containing two formatted strings describing the cube's surface area and volume.
 
         Returns:
-            tuple[str, str]: A tuple containing user-friendly descriptions of the cube's surface area 
+            tuple[str, str]: A tuple containing user-friendly descriptions of the cube's surface area
                             and volume in square centimeters and cubic centimeters respectively.
         """
-        surface_area_info = "Cube with side length {} cm has surface area {} cm2.".format(self.side_length, round(self.surface_area(),3))
-        volume_info = "Cube with side length {} cm has volume {} cm3.".format(self.side_length, round(self.volume(),3))
-        return(surface_area_info, volume_info)
+        surface_area_info = (
+            "Cube with side length {} cm has surface area {} cm2.".format(
+                self.side_length, round(self.surface_area(), 3)
+            )
+        )
+        volume_info = "Cube with side length {} cm has volume {} cm3.".format(
+            self.side_length, round(self.volume(), 3)
+        )
+        return (surface_area_info, volume_info)
+
 
 # help(Cube)

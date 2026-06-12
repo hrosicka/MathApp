@@ -16,16 +16,18 @@ from PyQt5.QtGui import (
     QDoubleValidator,
     QIcon,
     QRegExpValidator,
-)  
+)
 
 import matplotlib
-matplotlib.use('Qt5Agg')
+
+matplotlib.use("Qt5Agg")
 
 import numpy as np
 import EllipsoidCalc
 import CanvasThreeD
 import SaveFig
 from Shape import *
+
 
 class WindowEllipsoid(QWidget, ShapeFunctionality):
     def __init__(self):
@@ -40,29 +42,35 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         """
         # Create a 3D Matplotlib canvas for plotting the ellipsoid
         sc = CanvasThreeD.MplCanvas(self, width=6, height=5, dpi=100)
-        self.setWindowIcon(QIcon('D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png'))
-        
+        self.setWindowIcon(
+            QIcon("D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png")
+        )
+
         # Button to solve and plot the Ellipsoid
-        self.buttonplotEllipsoid = QPushButton('Solve and Plot')
-        self.buttonplotEllipsoid.clicked.connect(lambda: self.plot_ellipsoid(sc, self.combo_color.currentText()))
+        self.buttonplotEllipsoid = QPushButton("Solve and Plot")
+        self.buttonplotEllipsoid.clicked.connect(
+            lambda: self.plot_ellipsoid(sc, self.combo_color.currentText())
+        )
         self.buttonplotEllipsoid.setToolTip("Solve and plot picture")
 
         # Button to export the graph as an image
-        self.buttonPicture = QPushButton('Graph Export')
-        self.buttonPicture.clicked.connect(lambda: SaveFig.save_fig(self, self.fig, 'Ellipsoid.png'))
+        self.buttonPicture = QPushButton("Graph Export")
+        self.buttonPicture.clicked.connect(
+            lambda: SaveFig.save_fig(self, self.fig, "Ellipsoid.png")
+        )
         self.buttonPicture.setEnabled(False)
 
-        # Button to export data to Excel 
-        self.buttonExport = QPushButton('Excel Export')
-        self.buttonExport.clicked.connect(lambda: self.export_excel('Ellipsoid'))
+        # Button to export data to Excel
+        self.buttonExport = QPushButton("Excel Export")
+        self.buttonExport.clicked.connect(lambda: self.export_excel("Ellipsoid"))
         self.buttonExport.setEnabled(False)
 
         # Button to clear all inputs, results, and the graph
-        self.buttonClear = QPushButton('Clear')
+        self.buttonClear = QPushButton("Clear")
         self.buttonClear.clicked.connect(lambda: self.clear_inputs(sc))
 
         # Button to close the window
-        self.buttonClose = QPushButton('Close')
+        self.buttonClose = QPushButton("Close")
         self.buttonClose.clicked.connect(self.close)
 
         # Create a toolbar for frequently used actions
@@ -72,7 +80,7 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         self.setFixedSize(850, 568)
 
         hbox1 = QHBoxLayout()
-        
+
         hbox2 = QHBoxLayout()
         hbox2.addStretch(1)
         hbox2.addWidget(self.buttonplotEllipsoid)
@@ -111,185 +119,198 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         vbox2.addLayout(hbox2)
 
         self.setLayout(vbox2)
-        self.setWindowTitle('Ellipsoid')
+        self.setWindowTitle("Ellipsoid")
 
-        validator_double = QDoubleValidator(-10000000,10000000,5)
+        validator_double = QDoubleValidator(-10000000, 10000000, 5)
         locale = QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates)
         validator_double.setLocale(locale)
         validator_double.setNotation(QDoubleValidator.StandardNotation)
 
-        validator_possitive = QRegExpValidator(QtCore.QRegExp(r'([1-9][0-9]{0,6})|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
-        validator_double = QRegExpValidator(QtCore.QRegExp(r'([-][1-9][0-9]{0,6})|([-][1-9][0-9]{0,6}[.])|([-][0][.][0-9]{1,6})|([-][1-9]{1,6}[.][0-9]{1,6})|([1-9][0-9]{0,6})|([1-9][0-9]{0,6}[.])|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})'))
+        validator_possitive = QRegExpValidator(
+            QtCore.QRegExp(
+                r"([1-9][0-9]{0,6})|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})"
+            )
+        )
+        validator_double = QRegExpValidator(
+            QtCore.QRegExp(
+                r"([-][1-9][0-9]{0,6})|([-][1-9][0-9]{0,6}[.])|([-][0][.][0-9]{1,6})|([-][1-9]{1,6}[.][0-9]{1,6})|([1-9][0-9]{0,6})|([1-9][0-9]{0,6}[.])|([0][.][0-9]{1,6})|([1-9]{1,6}[.][0-9]{1,6})"
+            )
+        )
 
         # Create input field for Semi-major axis (a)
         self.label_axis_a = QLabel("Semi axis (a):")
         self.label_axis_a.setAlignment(QtCore.Qt.AlignLeft)
         self.label_axis_a.setFixedWidth(150)
-        layout_param.addWidget(self.label_axis_a,0,0)
+        layout_param.addWidget(self.label_axis_a, 0, 0)
 
         self.edit_axis_a = QLineEdit(self)
         self.edit_axis_a.setValidator(validator_possitive)
         self.edit_axis_a.setAlignment(QtCore.Qt.AlignRight)
         self.edit_axis_a.setFixedWidth(150)
-        layout_param.addWidget(self.edit_axis_a,0,1)
+        layout_param.addWidget(self.edit_axis_a, 0, 1)
 
         self.label_dim_axis_a = QLabel("cm")
         self.label_dim_axis_a.setAlignment(QtCore.Qt.AlignLeft)
         self.label_dim_axis_a.setFixedWidth(30)
-        layout_param.addWidget(self.label_dim_axis_a,0,2)
+        layout_param.addWidget(self.label_dim_axis_a, 0, 2)
 
         # Create input field for Semi-minor axis (b)
         self.label_axis_b = QLabel("Semi axis (b):")
         self.label_axis_b.setAlignment(QtCore.Qt.AlignLeft)
         self.label_axis_b.setFixedWidth(150)
-        layout_param.addWidget(self.label_axis_b,1,0)
+        layout_param.addWidget(self.label_axis_b, 1, 0)
 
         self.edit_axis_b = QLineEdit(self)
         self.edit_axis_b.setValidator(validator_possitive)
         self.edit_axis_b.setAlignment(QtCore.Qt.AlignRight)
         self.edit_axis_b.setFixedWidth(150)
-        layout_param.addWidget(self.edit_axis_b,1,1)
+        layout_param.addWidget(self.edit_axis_b, 1, 1)
 
         self.label_dim_axis_b = QLabel("cm")
         self.label_dim_axis_b.setAlignment(QtCore.Qt.AlignLeft)
         self.label_dim_axis_b.setFixedWidth(30)
-        layout_param.addWidget(self.label_dim_axis_b,1,2)
+        layout_param.addWidget(self.label_dim_axis_b, 1, 2)
 
         # Create input field for Semi-minor axis (c)
         self.label_axis_c = QLabel("Semi axis (c):")
         self.label_axis_c.setAlignment(QtCore.Qt.AlignLeft)
         self.label_axis_c.setFixedWidth(150)
-        layout_param.addWidget(self.label_axis_c,2,0)
+        layout_param.addWidget(self.label_axis_c, 2, 0)
 
         self.edit_axis_c = QLineEdit(self)
         self.edit_axis_c.setValidator(validator_possitive)
         self.edit_axis_c.setAlignment(QtCore.Qt.AlignRight)
         self.edit_axis_c.setFixedWidth(150)
-        layout_param.addWidget(self.edit_axis_c,2,1)
+        layout_param.addWidget(self.edit_axis_c, 2, 1)
 
         self.label_dim_axis_c = QLabel("cm")
         self.label_dim_axis_c.setAlignment(QtCore.Qt.AlignLeft)
         self.label_dim_axis_c.setFixedWidth(30)
-        layout_param.addWidget(self.label_dim_axis_c,2,2)
+        layout_param.addWidget(self.label_dim_axis_c, 2, 2)
 
         # Create input field for center coordinate x₀
         self.label_centerX = QLabel("X coordinate (x₀):")
         self.label_centerX.setAlignment(QtCore.Qt.AlignLeft)
         self.label_centerX.setFixedWidth(150)
-        layout_param.addWidget(self.label_centerX,3,0)
+        layout_param.addWidget(self.label_centerX, 3, 0)
 
         self.edit_centerX = QLineEdit(self)
         self.edit_centerX.setValidator(validator_double)
         self.edit_centerX.setAlignment(QtCore.Qt.AlignRight)
         self.edit_centerX.setFixedWidth(150)
-        layout_param.addWidget(self.edit_centerX,3,1)
+        layout_param.addWidget(self.edit_centerX, 3, 1)
 
         self.label_dim_x = QLabel("cm")
         self.label_dim_x.setAlignment(QtCore.Qt.AlignLeft)
         self.label_dim_x.setFixedWidth(30)
-        layout_param.addWidget(self.label_dim_x,3,2)
+        layout_param.addWidget(self.label_dim_x, 3, 2)
 
         # Create input field for center coordinate y₀
         self.label_centerY = QLabel("Y coordinate (y₀):")
         self.label_centerY.setAlignment(QtCore.Qt.AlignLeft)
         self.label_centerY.setFixedWidth(150)
-        layout_param.addWidget(self.label_centerY,4,0)
+        layout_param.addWidget(self.label_centerY, 4, 0)
 
         self.edit_centerY = QLineEdit(self)
         self.edit_centerY.setValidator(validator_double)
         self.edit_centerY.setAlignment(QtCore.Qt.AlignRight)
         self.edit_centerY.setFixedWidth(150)
-        layout_param.addWidget(self.edit_centerY,4,1)
+        layout_param.addWidget(self.edit_centerY, 4, 1)
 
         self.label_dim_y = QLabel("cm")
         self.label_dim_y.setAlignment(QtCore.Qt.AlignLeft)
         self.label_dim_y.setFixedWidth(30)
-        layout_param.addWidget(self.label_dim_y,4,2)
+        layout_param.addWidget(self.label_dim_y, 4, 2)
 
         # Create input field for center coordinate z₀
         self.label_centerZ = QLabel("Z coordinate (z₀):")
         self.label_centerZ.setAlignment(QtCore.Qt.AlignLeft)
         self.label_centerZ.setFixedWidth(150)
-        layout_param.addWidget(self.label_centerZ,5,0)
+        layout_param.addWidget(self.label_centerZ, 5, 0)
 
         self.edit_centerZ = QLineEdit(self)
         self.edit_centerZ.setValidator(validator_double)
         self.edit_centerZ.setAlignment(QtCore.Qt.AlignRight)
         self.edit_centerZ.setFixedWidth(150)
-        layout_param.addWidget(self.edit_centerZ,5,1)
+        layout_param.addWidget(self.edit_centerZ, 5, 1)
 
         self.label_dim_z = QLabel("cm")
         self.label_dim_z.setAlignment(QtCore.Qt.AlignLeft)
         self.label_dim_z.setFixedWidth(30)
-        layout_param.addWidget(self.label_dim_z,5,2)
+        layout_param.addWidget(self.label_dim_z, 5, 2)
 
         self.label_combo_color = QLabel("Sphere Color:")
         self.label_combo_color.setAlignment(QtCore.Qt.AlignLeft)
         self.label_combo_color.setFixedWidth(150)
-        layout_param.addWidget(self.label_combo_color,6,0)
-
+        layout_param.addWidget(self.label_combo_color, 6, 0)
 
         self.label_combo_color = QLabel("Ellipsoid Color:")
         self.label_combo_color.setAlignment(QtCore.Qt.AlignLeft)
         self.label_combo_color.setFixedWidth(150)
-        layout_param.addWidget(self.label_combo_color,6,0)
+        layout_param.addWidget(self.label_combo_color, 6, 0)
 
         # Create combo for color
         self.combo_color = self.custom_combo()
-        layout_param.addWidget(self.combo_color,6,1)
+        layout_param.addWidget(self.combo_color, 6, 1)
 
         # Create field for result - Volume (V)
         self.label_volume = QLabel("Ellipsoid Volume:")
         self.label_volume.setAlignment(QtCore.Qt.AlignLeft)
         self.label_volume.setFixedWidth(150)
-        layout_res.addWidget(self.label_volume,0,0)
+        layout_res.addWidget(self.label_volume, 0, 0)
 
-        self.label_res_volume = QLabel('0.0')
+        self.label_res_volume = QLabel("0.0")
         self.label_res_volume.setAlignment(QtCore.Qt.AlignRight)
         self.label_res_volume.setFixedWidth(150)
-        layout_res.addWidget(self.label_res_volume,0,1)
+        layout_res.addWidget(self.label_res_volume, 0, 1)
 
         self.label_dim_vol = QLabel("cm<sup>3</sup>")
         self.label_dim_vol.setAlignment(QtCore.Qt.AlignLeft)
         self.label_dim_vol.setFixedWidth(30)
-        layout_res.addWidget(self.label_dim_vol,0,2)
+        layout_res.addWidget(self.label_dim_vol, 0, 2)
 
         # Create field for result - Surface (S)
         self.label_surface = QLabel("Ellipsoid Surface:")
         self.label_surface.setAlignment(QtCore.Qt.AlignLeft)
         self.label_surface.setFixedWidth(150)
-        layout_res.addWidget(self.label_surface,1,0)
+        layout_res.addWidget(self.label_surface, 1, 0)
 
-        self.label_res_surface = QLabel('0.0')
+        self.label_res_surface = QLabel("0.0")
         self.label_res_surface.setAlignment(QtCore.Qt.AlignRight)
         self.label_res_surface.setFixedWidth(150)
-        layout_res.addWidget(self.label_res_surface,1,1)
+        layout_res.addWidget(self.label_res_surface, 1, 1)
 
         self.label_dim_surface = QLabel("cm<sup>2</sup>")
         self.label_dim_surface.setAlignment(QtCore.Qt.AlignLeft)
         self.label_dim_surface.setFixedWidth(30)
-        layout_res.addWidget(self.label_dim_surface,1,2)
+        layout_res.addWidget(self.label_dim_surface, 1, 2)
 
         # Solve and plot picture - button in the top toolbar
         self.exportPictAction = QAction(self)
         self.exportPictAction.setToolTip("Solve and plot picture")
-        self.exportPictAction.setIcon(QIcon('CalculateIcon.svg'))
-        self.exportPictAction.triggered.connect(lambda: self.plot_ellipsoid(sc, self.combo_color.currentText()))
+        self.exportPictAction.setIcon(QIcon("CalculateIcon.svg"))
+        self.exportPictAction.triggered.connect(
+            lambda: self.plot_ellipsoid(sc, self.combo_color.currentText())
+        )
         toolbar.addAction(self.exportPictAction)
 
         # Export graph as PNG - button in the top toolbar
         self.exportPictAction = QAction(self)
         self.exportPictAction.setToolTip("Save graph as picture")
-        self.exportPictAction.setIcon(QIcon('SavePictureIcon.svg'))
-        self.exportPictAction.triggered.connect(lambda: SaveFig.save_fig(self, self.fig, 'Ellipsoid.png'))
+        self.exportPictAction.setIcon(QIcon("SavePictureIcon.svg"))
+        self.exportPictAction.triggered.connect(
+            lambda: SaveFig.save_fig(self, self.fig, "Ellipsoid.png")
+        )
         self.exportPictAction.setEnabled(False)
         toolbar.addAction(self.exportPictAction)
 
         # Export inputs, results and graph into Excel file - button in the top toolbar
         self.exportXlsxAction = QAction(self)
-        self.exportXlsxAction.setToolTip("Export input data, results\nand graph into Excel")
-        self.exportXlsxAction.setIcon(QIcon('ExportXLSIcon.svg'))
-        self.exportXlsxAction.triggered.connect(lambda: self.export_excel('Ellipsoid'))
+        self.exportXlsxAction.setToolTip(
+            "Export input data, results\nand graph into Excel"
+        )
+        self.exportXlsxAction.setIcon(QIcon("ExportXLSIcon.svg"))
+        self.exportXlsxAction.triggered.connect(lambda: self.export_excel("Ellipsoid"))
         self.exportXlsxAction.setEnabled(False)
         toolbar.addAction(self.exportXlsxAction)
 
@@ -297,7 +318,7 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         # Button is disable, when result are not allowable
         self.clearAction = QAction(self)
         self.clearAction.setToolTip("Clear all data and results")
-        self.clearAction.setIcon(QIcon('ClearResultsIcon.svg'))
+        self.clearAction.setIcon(QIcon("ClearResultsIcon.svg"))
         self.clearAction.triggered.connect(lambda: self.clear_inputs(sc))
         self.clearAction.setEnabled(False)
         toolbar.addAction(self.clearAction)
@@ -305,7 +326,7 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         # Close window - - button in the top toolbar
         self.closeAction = QAction(self)
         self.closeAction.setToolTip("Close window")
-        self.closeAction.setIcon(QIcon('CloseAppIcon.svg'))
+        self.closeAction.setIcon(QIcon("CloseAppIcon.svg"))
         self.closeAction.triggered.connect(self.close)
         toolbar.addAction(self.closeAction)
 
@@ -333,17 +354,14 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         self.edit_centerZ.textChanged.connect(lambda: self.clear_results_3D(sc))
         self.edit_centerZ.textChanged.emit(self.edit_centerZ.text())
 
-
         self.combo_color.currentIndexChanged.connect(lambda: self.clear_results_3D(sc))
 
-
     def plot_ellipsoid(self, ellipsoid_plot, ellipsoid_color):
-        
+
         ellipsoid_plot.axes.cla()
         ellipsoid_plot.draw()
         self.label_res_surface.setText("0.0")
         self.label_res_volume.setText("0.0")
-        
 
         if self.edit_axis_a.text() in ["", "0", "0.", "+", "-"]:
             self.custom_messagebox("Semi axis (a) can be only a possitive number!")
@@ -362,7 +380,7 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
 
         elif self.edit_centerZ.text() in ["", "+", "-"]:
             self.custom_messagebox("Z coordinate (z₀) is missing!")
- 
+
         else:
 
             center_x = float(self.edit_centerX.text())
@@ -372,24 +390,38 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
             ry = float(self.edit_axis_b.text())
             rz = float(self.edit_axis_c.text())
 
-            u, v = np.mgrid[0:2 * np.pi:30j, 0:np.pi:30j]
-            
+            u, v = np.mgrid[0 : 2 * np.pi : 30j, 0 : np.pi : 30j]
+
             x = rx * np.outer(np.cos(u), np.sin(v)) + center_x
             y = ry * np.outer(np.sin(u), np.sin(v)) + center_y
             z = rz * np.outer(np.ones(np.size(u)), np.cos(v)) + center_z
 
-            minus_x = float(self.edit_centerX.text())-1.5*float(self.edit_axis_a.text())
-            plus_x = float(self.edit_centerX.text())+1.5*float(self.edit_axis_a.text())
-            minus_y = float(self.edit_centerY.text())-2*float(self.edit_axis_b.text())
-            plus_y = float(self.edit_centerY.text())+2*float(self.edit_axis_b.text())
-            minus_z = float(self.edit_centerZ.text())-2*float(self.edit_axis_c.text())
-            plus_z = float(self.edit_centerZ.text())+2*float(self.edit_axis_c.text())
+            minus_x = float(self.edit_centerX.text()) - 1.5 * float(
+                self.edit_axis_a.text()
+            )
+            plus_x = float(self.edit_centerX.text()) + 1.5 * float(
+                self.edit_axis_a.text()
+            )
+            minus_y = float(self.edit_centerY.text()) - 2 * float(
+                self.edit_axis_b.text()
+            )
+            plus_y = float(self.edit_centerY.text()) + 2 * float(
+                self.edit_axis_b.text()
+            )
+            minus_z = float(self.edit_centerZ.text()) - 2 * float(
+                self.edit_axis_c.text()
+            )
+            plus_z = float(self.edit_centerZ.text()) + 2 * float(
+                self.edit_axis_c.text()
+            )
 
             ellipsoid_plot.axes.set_xlim(minus_x, plus_x)
             ellipsoid_plot.axes.set_ylim(minus_y, plus_y)
             ellipsoid_plot.axes.set_zlim(minus_z, plus_z)
 
-            ellipsoid_plot.axes.plot_wireframe(x, y, z, rstride=20, cstride=20, color=ellipsoid_color)
+            ellipsoid_plot.axes.plot_wireframe(
+                x, y, z, rstride=20, cstride=20, color=ellipsoid_color
+            )
             ellipsoid_plot.draw()
 
             self.fig = ellipsoid_plot.figure
@@ -402,7 +434,6 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
             self.buttonPicture.setEnabled(True)
             self.exportXlsxAction.setEnabled(True)
             self.buttonExport.setEnabled(True)
-
 
     def calculate_ellipsoid(self):
         """Calculates the volume and surface area of an ellipsoid.
@@ -422,15 +453,16 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
 
         except ValueError:
             # Handle non-numeric input gracefully (e.g., display an error message)
-            raise ValueError("Please enter valid numeric values for all semi-axis lengths.")
+            raise ValueError(
+                "Please enter valid numeric values for all semi-axis lengths."
+            )
 
         myEllipsoid = EllipsoidCalc.Ellipsoid(semi_axis_a, semi_axis_b, semi_axis_c)
-        ellipsoid_volume = round(myEllipsoid.volume(),5)
-        ellipsoid_surface = round(myEllipsoid.surface_area(),5)
+        ellipsoid_volume = round(myEllipsoid.volume(), 5)
+        ellipsoid_surface = round(myEllipsoid.surface_area(), 5)
 
         self.label_res_volume.setText(str(ellipsoid_volume))
         self.label_res_surface.setText(str(ellipsoid_surface))
-
 
     def clear_inputs(self, sc):
         """

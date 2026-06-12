@@ -1,8 +1,9 @@
 import math
 
+
 class Ellipsoid:
     """
-    This class represents an ellipsoid and provides methods to calculate its geometrical properties 
+    This class represents an ellipsoid and provides methods to calculate its geometrical properties
     like surface area and volume. Unlike an ellipse, an ellipsoid does not have a major and minor axis.
 
     Attributes:
@@ -10,7 +11,7 @@ class Ellipsoid:
         semi_axis_b (float): The length of the second semi-axis of the ellipsoid in centimeters.
         semi_axis_c (float): The length of the third semi-axis of the ellipsoid in centimeters.
     """
-    
+
     def __init__(self, semi_axis_a, semi_axis_b, semi_axis_c):
         """
         Initializes an Ellipsoid object.
@@ -47,10 +48,21 @@ class Ellipsoid:
         Returns:
         float: The surface area of the ellipsoid in square centimeters.
         """
-        surface_area = 4 * math.pi * pow((pow(self.semi_axis_a * self.semi_axis_b, 1.6075) + pow(self.semi_axis_a * self.semi_axis_c, 1.6075)
-                                            + pow(self.semi_axis_b * self.semi_axis_c, 1.6075)) / 3, 1 / 1.6075);
+        surface_area = (
+            4
+            * math.pi
+            * pow(
+                (
+                    pow(self.semi_axis_a * self.semi_axis_b, 1.6075)
+                    + pow(self.semi_axis_a * self.semi_axis_c, 1.6075)
+                    + pow(self.semi_axis_b * self.semi_axis_c, 1.6075)
+                )
+                / 3,
+                1 / 1.6075,
+            )
+        )
         return round(surface_area, 5)
-    
+
     def volume(self):
         """
         Calculates and returns the volume of the ellipsoid in cubic centimeters.
@@ -60,7 +72,9 @@ class Ellipsoid:
         Returns:
             float: The volume of the ellipsoid in cubic centimeters, rounded to 5 decimal places.
         """
-        volume = (4 / 3) * math.pi * self.semi_axis_a * self.semi_axis_b * self.semi_axis_c
+        volume = (
+            (4 / 3) * math.pi * self.semi_axis_a * self.semi_axis_b * self.semi_axis_c
+        )
         return round(volume, 5)
 
     def get_description(self):
@@ -68,9 +82,19 @@ class Ellipsoid:
         Returns a tuple containing two formatted strings describing the ellipse's circumference and area.
 
         Returns:
-            tuple[str, str]: A tuple containing user-friendly descriptions of the ellipse's circumference 
+            tuple[str, str]: A tuple containing user-friendly descriptions of the ellipse's circumference
                             and area in centimeters and square centimeters respectively.
         """
-        surface_area_info = "Surface area of the ellipsoid with axis {} and {} and {} cm is {:.3f} cm2.".format(self.semi_axis_a, self.semi_axis_b, self.semi_axis_c, round(self.surface_area(), 3))
-        volume_info = "Volume of the ellipsoid with axis {} and {} and {} cm is {:.3f} cm3.".format(self.semi_axis_a, self.semi_axis_b, self.semi_axis_c, round(self.volume(), 3))
-        return(surface_area_info, volume_info)
+        surface_area_info = "Surface area of the ellipsoid with axis {} and {} and {} cm is {:.3f} cm2.".format(
+            self.semi_axis_a,
+            self.semi_axis_b,
+            self.semi_axis_c,
+            round(self.surface_area(), 3),
+        )
+        volume_info = "Volume of the ellipsoid with axis {} and {} and {} cm is {:.3f} cm3.".format(
+            self.semi_axis_a,
+            self.semi_axis_b,
+            self.semi_axis_c,
+            round(self.volume(), 3),
+        )
+        return (surface_area_info, volume_info)
