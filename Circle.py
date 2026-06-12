@@ -1,3 +1,4 @@
+from pathlib import Path
 from PyQt5.QtWidgets import (
     QAction,
     QGridLayout,
@@ -28,6 +29,9 @@ import Canvas
 import SaveFig
 from Shape import *
 
+# Get the absolute path to the directory where this script is located
+SCRIPT_DIR = Path(__file__).resolve().parent
+
 
 class WindowCircle(QWidget, ShapeFunctionality):
     """
@@ -49,9 +53,9 @@ class WindowCircle(QWidget, ShapeFunctionality):
         """
         # Create a Matplotlib canvas for plotting the circle
         sc = Canvas.MplCanvas(self, width=6, height=6, dpi=100)
-        self.setWindowIcon(
-            QIcon("D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png")
-        )
+
+        # FIXED: Resolved absolute path dynamically for the window icon
+        self.setWindowIcon(QIcon(str(SCRIPT_DIR / "Shape_ico.png")))
 
         # Button to solve and plot the circle
         self.buttonplotCircle = QPushButton("Solve and Plot")
@@ -238,10 +242,11 @@ class WindowCircle(QWidget, ShapeFunctionality):
         self.label_dim_area.setFixedWidth(30)
         layout_res.addWidget(self.label_dim_area, 1, 2)
 
+        # FIXED: Resolved absolute paths for toolbar icons dynamically
         # Solve and plot picture - button in the top toolbar
         self.solveAction = QAction(self)
         self.solveAction.setToolTip("Solve and plot picture")
-        self.solveAction.setIcon(QIcon("CalculateIcon.svg"))
+        self.solveAction.setIcon(QIcon(str(SCRIPT_DIR / "CalculateIcon.svg")))
         self.solveAction.triggered.connect(
             lambda: self.plot_circle(sc, self.combo_color.currentText())
         )
@@ -250,7 +255,7 @@ class WindowCircle(QWidget, ShapeFunctionality):
         # Export graph as PNG - button in the top toolbar
         self.exportPictAction = QAction(self)
         self.exportPictAction.setToolTip("Save graph as picture")
-        self.exportPictAction.setIcon(QIcon("SavePictureIcon.svg"))
+        self.exportPictAction.setIcon(QIcon(str(SCRIPT_DIR / "SavePictureIcon.svg")))
         self.exportPictAction.triggered.connect(
             lambda: SaveFig.save_fig(self, self.fig, "Circle.png")
         )
@@ -262,24 +267,23 @@ class WindowCircle(QWidget, ShapeFunctionality):
         self.exportXlsxAction.setToolTip(
             "Export input data, results\nand graph into Excel"
         )
-        self.exportXlsxAction.setIcon(QIcon("ExportXLSIcon.svg"))
+        self.exportXlsxAction.setIcon(QIcon(str(SCRIPT_DIR / "ExportXLSIcon.svg")))
         self.exportXlsxAction.triggered.connect(lambda: self.export_excel("Circle"))
         self.exportXlsxAction.setEnabled(False)
         toolbar.addAction(self.exportXlsxAction)
 
         # Clear all - inputs, results and graph - button in the top toolbar
-        # Button is disable, when result are not allowable
         self.clearAction = QAction(self)
         self.clearAction.setToolTip("Clear all data and results")
-        self.clearAction.setIcon(QIcon("ClearResultsIcon.svg"))
+        self.clearAction.setIcon(QIcon(str(SCRIPT_DIR / "ClearResultsIcon.svg")))
         self.clearAction.triggered.connect(lambda: self.clear_inputs(sc))
         self.clearAction.setEnabled(False)
         toolbar.addAction(self.clearAction)
 
-        # Close window - - button in the top toolbar
+        # Close window - button in the top toolbar
         self.closeAction = QAction(self)
         self.closeAction.setToolTip("Close window")
-        self.closeAction.setIcon(QIcon("CloseAppIcon.svg"))
+        self.closeAction.setIcon(QIcon(str(SCRIPT_DIR / "CloseAppIcon.svg")))
         self.closeAction.triggered.connect(self.close)
         toolbar.addAction(self.closeAction)
 
