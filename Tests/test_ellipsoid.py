@@ -3,8 +3,9 @@ import sys
 from math import pi
 
 # setting path
-sys.path.append('../PyQtMathApp')
+sys.path.append("../PyQtMathApp")
 from EllipsoidCalc import *
+
 
 class EllipsoidTest(unittest.TestCase):
 
@@ -73,7 +74,9 @@ class EllipsoidTest(unittest.TestCase):
         """Tests surface area calculation for positive semi-axes."""
         expected_surface_area = 48.97193
         ellipsoid = Ellipsoid(3.0, 2.0, 1.0)
-        self.assertAlmostEqual(ellipsoid.surface_area(), expected_surface_area, places=5)
+        self.assertAlmostEqual(
+            ellipsoid.surface_area(), expected_surface_area, places=5
+        )
 
     def test_volume_positive_dimensions(self):
         """Tests volume calculation for positive semi-axes."""
@@ -83,15 +86,21 @@ class EllipsoidTest(unittest.TestCase):
 
     def test_surface_area_very_small_dimensions(self):
         """Tests surface area calculation for very small positive dimensions."""
-        expected_surface_area = 0.0  # Very small dimensions result in near-zero surface area
+        expected_surface_area = (
+            0.0  # Very small dimensions result in near-zero surface area
+        )
         ellipsoid = Ellipsoid(0.0001, 0.0002, 0.0003)
-        self.assertAlmostEqual(ellipsoid.surface_area(), expected_surface_area, places=5)
+        self.assertAlmostEqual(
+            ellipsoid.surface_area(), expected_surface_area, places=5
+        )
 
     def test_surface_area_very_large_dimensions(self):
         """Tests surface area calculation for very large positive dimensions."""
         expected_surface_area = 3742681.81
         ellipsoid = Ellipsoid(1000, 500, 200)
-        self.assertAlmostEqual(ellipsoid.surface_area(), expected_surface_area, places=2)
+        self.assertAlmostEqual(
+            ellipsoid.surface_area(), expected_surface_area, places=2
+        )
 
     def test_volume_very_small_dimensions(self):
         """Tests volume calculation for very small positive dimensions."""
@@ -111,11 +120,20 @@ class EllipsoidTest(unittest.TestCase):
         ellipsoid = Ellipsoid(2.0, 3.0, 1.0)
         expected_description = (
             "Surface area of the ellipsoid with axis {} and {} and {} cm is {:.3f} cm2.".format(
-                ellipsoid.semi_axis_a, ellipsoid.semi_axis_b, ellipsoid.semi_axis_c, round(ellipsoid.surface_area(), 3)),
+                ellipsoid.semi_axis_a,
+                ellipsoid.semi_axis_b,
+                ellipsoid.semi_axis_c,
+                round(ellipsoid.surface_area(), 3),
+            ),
             "Volume of the ellipsoid with axis {} and {} and {} cm is {:.3f} cm3.".format(
-                ellipsoid.semi_axis_a, ellipsoid.semi_axis_b, ellipsoid.semi_axis_c, round(ellipsoid.volume(), 3)),
+                ellipsoid.semi_axis_a,
+                ellipsoid.semi_axis_b,
+                ellipsoid.semi_axis_c,
+                round(ellipsoid.volume(), 3),
+            ),
         )
         self.assertEqual(ellipsoid.get_description(), expected_description)
 
+
 if __name__ == "__main__":
-  unittest.main()
+    unittest.main()

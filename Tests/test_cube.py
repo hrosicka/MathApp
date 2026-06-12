@@ -2,7 +2,7 @@ import unittest
 import sys
 
 # setting path
-sys.path.append('../PyQtMathApp')
+sys.path.append("../PyQtMathApp")
 from CubeCalc import *
 
 
@@ -75,6 +75,7 @@ class TestSquare(unittest.TestCase):
             "Cube with side length 2.5 cm has volume 15.625 cm3.",
         )
         self.assertEqual(cube.get_description(), expected_description)
+
 
 if __name__ == "__main__":
     unittest.main()
