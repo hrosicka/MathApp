@@ -3,7 +3,7 @@ import sys
 from math import pi
 
 # setting path
-sys.path.append('../PyQtMathApp')
+sys.path.append("../PyQtMathApp")
 from CircleCalc import *
 
 
@@ -17,7 +17,7 @@ class CircleTest(unittest.TestCase):
     def test_init_radius_zero(self):
         """Tests initialization with radius zero (raises ValueError)."""
         with self.assertRaises(ValueError) as error:
-           Circle(0.0)
+            Circle(0.0)
         self.assertEqual(str(error.exception), "Radius must be a positive number.")
 
     def test_init_negative_radius(self):
@@ -75,15 +75,31 @@ class CircleTest(unittest.TestCase):
     def test_get_description(self):
         """Tests get_description for different radii."""
         circle = Circle(4.0)
-        expected_circumference = "Circle with radius 4.0 cm has circumference {:.3f} cm.".format(circle.circumference())
-        expected_area = "Circle with radius 4.0 cm has area {:.3f} cm2.".format(circle.area())
-        self.assertEqual(circle.get_description(), (expected_circumference, expected_area))
+        expected_circumference = (
+            "Circle with radius 4.0 cm has circumference {:.3f} cm.".format(
+                circle.circumference()
+            )
+        )
+        expected_area = "Circle with radius 4.0 cm has area {:.3f} cm2.".format(
+            circle.area()
+        )
+        self.assertEqual(
+            circle.get_description(), (expected_circumference, expected_area)
+        )
 
         circle = Circle(1.578)
-        expected_circumference = "Circle with radius 1.578 cm has circumference {:.3f} cm.".format(circle.circumference())
-        expected_area = "Circle with radius 1.578 cm has area {:.3f} cm2.".format(circle.area())
-        self.assertEqual(circle.get_description(), (expected_circumference, expected_area))
+        expected_circumference = (
+            "Circle with radius 1.578 cm has circumference {:.3f} cm.".format(
+                circle.circumference()
+            )
+        )
+        expected_area = "Circle with radius 1.578 cm has area {:.3f} cm2.".format(
+            circle.area()
+        )
+        self.assertEqual(
+            circle.get_description(), (expected_circumference, expected_area)
+        )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
