@@ -1,5 +1,6 @@
 import math
 
+
 class Ellipse:
     """
     This class represents an ellipse and provides methods to calculate its properties like circumference and area.
@@ -8,7 +9,7 @@ class Ellipse:
         semi_major_axis (float): The length of the semi-major axis of the ellipse in centimeters.
         semi_minor_axis (float): The length of the semi-minor axis of the ellipse in centimeters.
     """
-    
+
     def __init__(self, semi_major_axis, semi_minor_axis):
         """
         Initializes an Ellipse object.
@@ -41,9 +42,11 @@ class Ellipse:
         Returns:
             float: The circumference of the ellipse in centimeters, rounded to 5 decimal places.
         """
-        circumference =  math.pi * math.sqrt(2*(math.pow(self.semi_major_axis, 2) + math.pow(self.semi_minor_axis, 2)))
-        return round(circumference,5)
-    
+        circumference = math.pi * math.sqrt(
+            2 * (math.pow(self.semi_major_axis, 2) + math.pow(self.semi_minor_axis, 2))
+        )
+        return round(circumference, 5)
+
     def area(self):
         """
         Calculates and returns the area of the ellipse in square centimeters.
@@ -54,16 +57,24 @@ class Ellipse:
             float: The area of the ellipse in square centimeters, rounded to 5 decimal places.
         """
         area = math.pi * self.semi_major_axis * self.semi_minor_axis
-        return round(area,5)
+        return round(area, 5)
 
     def get_description(self):
         """
         Returns a tuple containing two formatted strings describing the ellipse's circumference and area.
 
         Returns:
-            tuple[str, str]: A tuple containing user-friendly descriptions of the ellipse's circumference 
+            tuple[str, str]: A tuple containing user-friendly descriptions of the ellipse's circumference
                             and area in centimeters and square centimeters respectively.
         """
-        info_circumference = "Ellipse with axis {} and {} cm has circumference {:.3f} cm.".format(self.semi_major_axis, self.semi_minor_axis, round(self.circumference(), 3))
-        info_area = "Ellipse with axis {} a {} cm and has area {:.3f} cm2.".format(self.semi_major_axis, self.semi_minor_axis, round(self.area(), 3))
-        return(info_circumference, info_area)
+        info_circumference = (
+            "Ellipse with axis {} and {} cm has circumference {:.3f} cm.".format(
+                self.semi_major_axis,
+                self.semi_minor_axis,
+                round(self.circumference(), 3),
+            )
+        )
+        info_area = "Ellipse with axis {} a {} cm and has area {:.3f} cm2.".format(
+            self.semi_major_axis, self.semi_minor_axis, round(self.area(), 3)
+        )
+        return (info_circumference, info_area)
