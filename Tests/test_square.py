@@ -2,7 +2,7 @@ import unittest
 import sys
 
 # setting path
-sys.path.append('../PyQtMathApp')
+sys.path.append("../PyQtMathApp")
 from SquareCalc import *
 
 
@@ -55,7 +55,9 @@ class TestSquare(unittest.TestCase):
         """Tests circumference calculation for a very small side length."""
         square = Square(0.001)
         expected_circumference = 0.004
-        self.assertAlmostEqual(square.circumference(), expected_circumference, delta=0.0001)
+        self.assertAlmostEqual(
+            square.circumference(), expected_circumference, delta=0.0001
+        )
 
     def test_circumference_large_side_length(self):
         """Tests circumference calculation for a very large side length."""
@@ -78,14 +80,31 @@ class TestSquare(unittest.TestCase):
     def test_get_description(self):
         """Tests get_description for different side lengths."""
         square = Square(4.0)
-        expected_circumference = "Square with side length {} cm has circumference {:.1f} cm.".format(square.side_length, round(square.circumference(), 3))
-        expected_area = "Square with side length {} cm has area {:.1f} cm2.".format(square.side_length, round(square.area(), 3))
-        self.assertEqual(square.get_description(), (expected_circumference, expected_area))
+        expected_circumference = (
+            "Square with side length {} cm has circumference {:.1f} cm.".format(
+                square.side_length, round(square.circumference(), 3)
+            )
+        )
+        expected_area = "Square with side length {} cm has area {:.1f} cm2.".format(
+            square.side_length, round(square.area(), 3)
+        )
+        self.assertEqual(
+            square.get_description(), (expected_circumference, expected_area)
+        )
 
         square = Square(2.5)
-        expected_circumference = "Square with side length {} cm has circumference {:.1f} cm.".format(square.side_length, round(square.circumference(), 3))
-        expected_area = "Square with side length {} cm has area {:.2f} cm2.".format(square.side_length, round(square.area(), 3))
-        self.assertEqual(square.get_description(), (expected_circumference, expected_area))
+        expected_circumference = (
+            "Square with side length {} cm has circumference {:.1f} cm.".format(
+                square.side_length, round(square.circumference(), 3)
+            )
+        )
+        expected_area = "Square with side length {} cm has area {:.2f} cm2.".format(
+            square.side_length, round(square.area(), 3)
+        )
+        self.assertEqual(
+            square.get_description(), (expected_circumference, expected_area)
+        )
 
-if __name__ == '__main__':
-  unittest.main()
+
+if __name__ == "__main__":
+    unittest.main()
