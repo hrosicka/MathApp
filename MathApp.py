@@ -22,6 +22,9 @@ from PyQt5.QtGui import (
 
 from PyQt5 import QtCore
 
+# Get the absolute path to the directory where this script is located
+SCRIPT_DIR = Path(__file__).resolve().parent
+
 from Circle import *
 from Sphere import *
 from Ellipse import *
@@ -83,45 +86,39 @@ class MainWindow(QMainWindow):
         l2.addLayout(l3)
 
         self.label = QLabel(self)
-        self.pixmap = QPixmap("Shapes.png")
-        self.setWindowIcon(QIcon("Shape_ico.png"))
+
+        # Dynamic paths for the main window image and icon
+        shapes_png_path = SCRIPT_DIR / "Shapes.png"
+        shape_ico_path = SCRIPT_DIR / "Shape_ico.png"
+
+        self.pixmap = QPixmap(str(shapes_png_path))
+        self.setWindowIcon(QIcon(str(shape_ico_path)))
+
         self.label.setPixmap(self.pixmap)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         l3.addWidget(self.label, 0, 0, 1, 2)
 
         button1 = QPushButton("Circle")
-        # button1.setStyleSheet('background-color: rgb(128, 0, 32);\ncolor: rgb(255, 255, 255);')
-
         button1.clicked.connect(lambda checked: self.toggle_window(self.window1))
         l3.addWidget(button1, 1, 0)
 
         button2 = QPushButton("Sphere")
-        # button2.setStyleSheet('background-color: rgb(128, 0, 32);\ncolor: rgb(255, 255, 255);')
-
         button2.clicked.connect(lambda checked: self.toggle_window(self.window2))
         l3.addWidget(button2, 1, 1)
 
         button3 = QPushButton("Ellipse")
-        # button3.setStyleSheet('background-color: rgb(128, 0, 32);\ncolor: rgb(255, 255, 255);')
-
         button3.clicked.connect(lambda checked: self.toggle_window(self.window3))
         l3.addWidget(button3, 2, 0)
 
         button4 = QPushButton("Ellipsoid")
-        # button4.setStyleSheet('background-color: rgb(128, 0, 32);\ncolor: rgb(255, 255, 255);')
-
         button4.clicked.connect(lambda checked: self.toggle_window(self.window4))
         l3.addWidget(button4, 2, 1)
 
         button5 = QPushButton("Square")
-        # button5.setStyleSheet('background-color: rgb(128, 0, 32);\ncolor: rgb(255, 255, 255);')
-
         button5.clicked.connect(lambda checked: self.toggle_window(self.window5))
         l3.addWidget(button5, 3, 0)
 
         button6 = QPushButton("Cube")
-        # button6.setStyleSheet('background-color: rgb(128, 0, 32);\ncolor: rgb(255, 255, 255);')
-
         button6.clicked.connect(lambda checked: self.toggle_window(self.window6))
         l3.addWidget(button6, 3, 1)
 
@@ -134,12 +131,10 @@ class MainWindow(QMainWindow):
     def toggle_window(self, window):
         if window.isVisible():
             window.hide()
-
         else:
             window.show()
 
     def _createActions(self):
-        # Creating action using the first constructor
         self.closeAction = QAction(self)
         self.closeAction.setText("&Close")
         self.closeAction.triggered.connect(app.closeAllWindows)
@@ -190,14 +185,11 @@ class MainWindow(QMainWindow):
     def _createMenuBar(self):
         menuBar = QMenuBar(self)
         self.setMenuBar(menuBar)
-        # Creating menus using a QMenu object
         fileMenu = QMenu("&File", self)
         menuBar.addMenu(fileMenu)
         fileMenu.addAction(self.closeAction)
 
-        # Creating menus using a title
         geometryMenu = menuBar.addMenu("&Geometry")
-
         menuBar.addMenu(geometryMenu)
         geometryMenu.addAction(self.circleAction)
         geometryMenu.addAction(self.sphereAction)
@@ -210,7 +202,14 @@ class MainWindow(QMainWindow):
 
 
 app = QApplication(sys.argv)
+
+# Load style.qss using absolute path and explicit UTF-8 encoding
+style_path = SCRIPT_DIR / "style.qss"
+if style_path.exists():
+    app.setStyleSheet(style_path.read_text(encoding="utf-8"))
+else:
+    print(f"Warning: Stylesheet file not found at: {style_path}")
+
 w = MainWindow()
 w.show()
-app.setStyleSheet(Path("style.qss").read_text())
 app.exec()
