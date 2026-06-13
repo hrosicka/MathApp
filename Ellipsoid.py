@@ -1,3 +1,4 @@
+from pathlib import Path
 from PyQt5.QtWidgets import (
     QAction,
     QGridLayout,
@@ -28,6 +29,9 @@ import CanvasThreeD
 import SaveFig
 from Shape import *
 
+# Get the absolute path to the directory where this script is located
+SCRIPT_DIR = Path(__file__).resolve().parent
+
 
 class WindowEllipsoid(QWidget, ShapeFunctionality):
     def __init__(self):
@@ -42,9 +46,9 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         """
         # Create a 3D Matplotlib canvas for plotting the ellipsoid
         sc = CanvasThreeD.MplCanvas(self, width=6, height=5, dpi=100)
-        self.setWindowIcon(
-            QIcon("D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png")
-        )
+
+        # FIXED: Resolved absolute path dynamically for the window icon
+        self.setWindowIcon(QIcon(str(SCRIPT_DIR / "Shape_ico.png")))
 
         # Button to solve and plot the Ellipsoid
         self.buttonplotEllipsoid = QPushButton("Solve and Plot")
@@ -239,11 +243,7 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         self.label_dim_z.setFixedWidth(30)
         layout_param.addWidget(self.label_dim_z, 5, 2)
 
-        self.label_combo_color = QLabel("Sphere Color:")
-        self.label_combo_color.setAlignment(QtCore.Qt.AlignLeft)
-        self.label_combo_color.setFixedWidth(150)
-        layout_param.addWidget(self.label_combo_color, 6, 0)
-
+        # FIXED: Removed duplicate 'Sphere Color' label instantiation
         self.label_combo_color = QLabel("Ellipsoid Color:")
         self.label_combo_color.setAlignment(QtCore.Qt.AlignLeft)
         self.label_combo_color.setFixedWidth(150)
@@ -285,19 +285,20 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         self.label_dim_surface.setFixedWidth(30)
         layout_res.addWidget(self.label_dim_surface, 1, 2)
 
+        # FIXED: Resolved absolute paths for toolbar icons dynamically
         # Solve and plot picture - button in the top toolbar
-        self.exportPictAction = QAction(self)
-        self.exportPictAction.setToolTip("Solve and plot picture")
-        self.exportPictAction.setIcon(QIcon("CalculateIcon.svg"))
-        self.exportPictAction.triggered.connect(
+        self.solveAction = QAction(self)
+        self.solveAction.setToolTip("Solve and plot picture")
+        self.solveAction.setIcon(QIcon(str(SCRIPT_DIR / "CalculateIcon.svg")))
+        self.solveAction.triggered.connect(
             lambda: self.plot_ellipsoid(sc, self.combo_color.currentText())
         )
-        toolbar.addAction(self.exportPictAction)
+        toolbar.addAction(self.solveAction)
 
         # Export graph as PNG - button in the top toolbar
         self.exportPictAction = QAction(self)
         self.exportPictAction.setToolTip("Save graph as picture")
-        self.exportPictAction.setIcon(QIcon("SavePictureIcon.svg"))
+        self.exportPictAction.setIcon(QIcon(str(SCRIPT_DIR / "SavePictureIcon.svg")))
         self.exportPictAction.triggered.connect(
             lambda: SaveFig.save_fig(self, self.fig, "Ellipsoid.png")
         )
@@ -309,7 +310,7 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         self.exportXlsxAction.setToolTip(
             "Export input data, results\nand graph into Excel"
         )
-        self.exportXlsxAction.setIcon(QIcon("ExportXLSIcon.svg"))
+        self.exportXlsxAction.setIcon(QIcon(str(SCRIPT_DIR / "ExportXLSIcon.svg")))
         self.exportXlsxAction.triggered.connect(lambda: self.export_excel("Ellipsoid"))
         self.exportXlsxAction.setEnabled(False)
         toolbar.addAction(self.exportXlsxAction)
@@ -318,7 +319,7 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         # Button is disable, when result are not allowable
         self.clearAction = QAction(self)
         self.clearAction.setToolTip("Clear all data and results")
-        self.clearAction.setIcon(QIcon("ClearResultsIcon.svg"))
+        self.clearAction.setIcon(QIcon(str(SCRIPT_DIR / "ClearResultsIcon.svg")))
         self.clearAction.triggered.connect(lambda: self.clear_inputs(sc))
         self.clearAction.setEnabled(False)
         toolbar.addAction(self.clearAction)
@@ -326,7 +327,7 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         # Close window - - button in the top toolbar
         self.closeAction = QAction(self)
         self.closeAction.setToolTip("Close window")
-        self.closeAction.setIcon(QIcon("CloseAppIcon.svg"))
+        self.closeAction.setIcon(QIcon(str(SCRIPT_DIR / "CloseAppIcon.svg")))
         self.closeAction.triggered.connect(self.close)
         toolbar.addAction(self.closeAction)
 
@@ -357,7 +358,6 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
         self.combo_color.currentIndexChanged.connect(lambda: self.clear_results_3D(sc))
 
     def plot_ellipsoid(self, ellipsoid_plot, ellipsoid_color):
-
         ellipsoid_plot.axes.cla()
         ellipsoid_plot.draw()
         self.label_res_surface.setText("0.0")
@@ -382,7 +382,6 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
             self.custom_messagebox("Z coordinate (z₀) is missing!")
 
         else:
-
             center_x = float(self.edit_centerX.text())
             center_y = float(self.edit_centerY.text())
             center_z = float(self.edit_centerZ.text())
@@ -450,7 +449,6 @@ class WindowEllipsoid(QWidget, ShapeFunctionality):
             semi_axis_a = float(self.edit_axis_a.text())
             semi_axis_b = float(self.edit_axis_b.text())
             semi_axis_c = float(self.edit_axis_c.text())
-
         except ValueError:
             # Handle non-numeric input gracefully (e.g., display an error message)
             raise ValueError(
