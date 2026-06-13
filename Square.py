@@ -1,3 +1,4 @@
+from pathlib import Path
 from PyQt5.QtWidgets import (
     QAction,
     QGridLayout,
@@ -28,6 +29,9 @@ import Canvas
 import SaveFig
 from Shape import *
 
+# Get the absolute path to the directory where this script is located
+SCRIPT_DIR = Path(__file__).resolve().parent
+
 
 class WindowSquare(QWidget, ShapeFunctionality):
     """
@@ -49,9 +53,9 @@ class WindowSquare(QWidget, ShapeFunctionality):
         """
         # Create a Matplotlib canvas for plotting the square
         sc = Canvas.MplCanvas(self, width=6, height=6, dpi=100)
-        self.setWindowIcon(
-            QIcon("D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png")
-        )
+
+        # FIXED: Resolved absolute path dynamically for the window icon
+        self.setWindowIcon(QIcon(str(SCRIPT_DIR / "Shape_ico.png")))
 
         # Button to solve and plot the square
         self.buttonplotSquare = QPushButton("Solve and Plot")
@@ -223,7 +227,7 @@ class WindowSquare(QWidget, ShapeFunctionality):
         self.label_dim_per.setFixedWidth(30)
         layout_res.addWidget(self.label_dim_per, 0, 2)
 
-        # Create field for result - Area (A)# Create field for result - Area (A)
+        # Create field for result - Area (A)
         self.label_area = QLabel("Area (A):")
         self.label_area.setAlignment(QtCore.Qt.AlignLeft)
         self.label_area.setFixedWidth(150)
@@ -240,10 +244,11 @@ class WindowSquare(QWidget, ShapeFunctionality):
         self.label_dim_area.setFixedWidth(30)
         layout_res.addWidget(self.label_dim_area, 1, 2)
 
+        # FIXED: Resolved absolute paths for toolbar icons dynamically
         # Solve and plot picture - button in the top toolbar
         self.solveAction = QAction(self)
         self.solveAction.setToolTip("Solve and plot picture")
-        self.solveAction.setIcon(QIcon("CalculateIcon.svg"))
+        self.solveAction.setIcon(QIcon(str(SCRIPT_DIR / "CalculateIcon.svg")))
         self.solveAction.triggered.connect(
             lambda: self.plot_square(sc, self.combo_color.currentText())
         )
@@ -252,7 +257,7 @@ class WindowSquare(QWidget, ShapeFunctionality):
         # Export graph as PNG - button in the top toolbar
         self.exportPictAction = QAction(self)
         self.exportPictAction.setToolTip("Save graph as picture")
-        self.exportPictAction.setIcon(QIcon("SavePictureIcon.svg"))
+        self.exportPictAction.setIcon(QIcon(str(SCRIPT_DIR / "SavePictureIcon.svg")))
         self.exportPictAction.triggered.connect(
             lambda: SaveFig.save_fig(self, self.fig, "Square.png")
         )
@@ -264,24 +269,23 @@ class WindowSquare(QWidget, ShapeFunctionality):
         self.exportXlsxAction.setToolTip(
             "Export input data, results\nand graph into Excel"
         )
-        self.exportXlsxAction.setIcon(QIcon("ExportXLSIcon.svg"))
+        self.exportXlsxAction.setIcon(QIcon(str(SCRIPT_DIR / "ExportXLSIcon.svg")))
         self.exportXlsxAction.triggered.connect(lambda: self.export_excel("Square"))
         self.exportXlsxAction.setEnabled(False)
         toolbar.addAction(self.exportXlsxAction)
 
         # Clear all - inputs, results and graph - button in the top toolbar
-        # Button is disable, when result are not allowable
         self.clearAction = QAction(self)
         self.clearAction.setToolTip("Clear all data and results")
-        self.clearAction.setIcon(QIcon("ClearResultsIcon.svg"))
+        self.clearAction.setIcon(QIcon(str(SCRIPT_DIR / "ClearResultsIcon.svg")))
         self.clearAction.triggered.connect(lambda: self.clear_inputs(sc))
         self.clearAction.setEnabled(False)
         toolbar.addAction(self.clearAction)
 
-        # Close window - - button in the top toolbar
+        # Close window - button in the top toolbar
         self.closeAction = QAction(self)
         self.closeAction.setToolTip("Close window")
-        self.closeAction.setIcon(QIcon("CloseAppIcon.svg"))
+        self.closeAction.setIcon(QIcon(str(SCRIPT_DIR / "CloseAppIcon.svg")))
         self.closeAction.triggered.connect(self.close)
         toolbar.addAction(self.closeAction)
 
@@ -300,28 +304,7 @@ class WindowSquare(QWidget, ShapeFunctionality):
     def plot_square(self, square_plot, square_color):
         """
         Plots a square on the provided Matplotlib figure and updates display elements.
-
-        This method performs the following actions:
-        1. Validates user input for side length and center coordinates (x, y):
-        - Displays a custom message box using `self.custom_messagebox` if:
-            - Side length is 0, empty, or invalid.
-            - X coordinate (x₀) is missing.
-            - Y coordinate (y₀) is missing.
-        2. If all input is valid:
-        - Clears the existing plot on `square_plot`.
-        - Creates a `patches.Rectangle` object representing the square with the specified center, side length, and color.
-        - Sets the plot's X and Y limits to ensure the entire square is visible.
-        - Adds the square to the plot's artist list.
-        - Redraws the plot.
-        - Updates `self.fig` to reference the Matplotlib figure for potential future use.
-        - Calls `self.calculate_square()` to calculate and display square properties.
-        - Enables the "Clear" and "Export" buttons for user interaction.
-
-        Args:
-            square_plot (matplotlib.pyplot.Figure): The Matplotlib figure to plot the square on.
-            square_color (str): The color of the square to be plotted.
         """
-
         if self.edit_side.text() in ["", "0", "0.", "+", "-"]:
             self.custom_messagebox("Side can be only a possitive number!")
 
@@ -332,7 +315,6 @@ class WindowSquare(QWidget, ShapeFunctionality):
             self.custom_messagebox("Y coordinate (y₀) is missing!")
 
         else:
-
             square_plot.axes.cla()
 
             center_x = float(self.edit_centerX.text())
@@ -370,16 +352,7 @@ class WindowSquare(QWidget, ShapeFunctionality):
     def calculate_square(self):
         """
         Calculates the perimeter and area of a square.
-
-        This method retrieves the side length of a square from the user interface,
-        creates a `SquareCalc.Square` object, calculates the square's perimeter
-        and area rounded to five decimal places, and updates the corresponding
-        labels with the results.
-
-        Raises:
-            ValueError: If the entered side length is not a valid number.
         """
-
         try:
             side_square = float(self.edit_side.text())
         except ValueError:
@@ -395,12 +368,6 @@ class WindowSquare(QWidget, ShapeFunctionality):
     def clear_inputs(self, sc):
         """
         Clears input fields.
-
-        This method clears the text in the side, x coordinate, and y coordinate fields.
-        It then calls the `clear_results_2D` method to clear the results and plot.
-
-        Args:
-            sc: The Matplotlib canvas object used for plotting.
         """
         self.edit_side.clear()
         self.edit_centerX.clear()
