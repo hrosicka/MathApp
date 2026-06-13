@@ -1,11 +1,11 @@
 # MathApp - Explore 2D and 3D Shapes
 
-![Stars](https://img.shields.io/github/stars/hrosicka/MathApp)
-![License](https://img.shields.io/github/license/hrosicka/MathApp)
-![Last Commit](https://img.shields.io/github/last-commit/hrosicka/MathApp)
-![Issues](https://img.shields.io/github/issues/hrosicka/MathApp)
-![Contributors](https://img.shields.io/github/contributors/hrosicka/MathApp)
-![Made with Love](https://img.shields.io/badge/Made%20with-%E2%9D%A4-red)
+![Stars](https://img.shields.io/github/stars/hrosicka/MathApp?style=for-the-badge&color=ffd700&logo=github)
+![License](https://img.shields.io/github/license/hrosicka/MathApp?style=for-the-badge&color=2ecc71)
+![Last Commit](https://img.shields.io/github/last-commit/hrosicka/MathApp?style=for-the-badge&color=3498db&logo=git)
+![Issues](https://img.shields.io/github/issues/hrosicka/MathApp?style=for-the-badge&color=e74c3c)
+![Contributors](https://img.shields.io/github/contributors/hrosicka/MathApp?style=for-the-badge&color=9b5de5)
+![Made With Python](https://img.shields.io/badge/Made%20With-Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 
 This interactive application allows you to visualize and learn about various geometric shapes. Still in progress...
 
