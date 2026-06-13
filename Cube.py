@@ -1,3 +1,4 @@
+from pathlib import Path
 from PyQt5.QtWidgets import (
     QAction,
     QGridLayout,
@@ -28,6 +29,9 @@ import CanvasThreeD
 import SaveFig
 from Shape import *
 
+# Get the absolute path to the directory where this script is located
+SCRIPT_DIR = Path(__file__).resolve().parent
+
 
 class WindowCube(QWidget, ShapeFunctionality):
     def __init__(self):
@@ -42,9 +46,9 @@ class WindowCube(QWidget, ShapeFunctionality):
         """
         # Create a 3D Matplotlib canvas for plotting the cube
         sc = CanvasThreeD.MplCanvas(self, width=6, height=5, dpi=100)
-        self.setWindowIcon(
-            QIcon("D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png")
-        )
+
+        # FIXED: Resolved absolute path dynamically for the window icon
+        self.setWindowIcon(QIcon(str(SCRIPT_DIR / "Shape_ico.png")))
 
         # Button to solve and plot Cube
         self.buttonplotCube = QPushButton("Solve and Plot")
@@ -245,19 +249,22 @@ class WindowCube(QWidget, ShapeFunctionality):
         self.label_dim_surface.setFixedWidth(30)
         layout_res.addWidget(self.label_dim_surface, 1, 2)
 
+        # FIXED: Resolved absolute paths for toolbar icons dynamically
         # Solve and plot picture - button in the top toolbar
-        self.exportPictAction = QAction(self)
-        self.exportPictAction.setToolTip("Solve and plot picture")
-        self.exportPictAction.setIcon(QIcon("CalculateIcon.svg"))
-        self.exportPictAction.triggered.connect(
+        self.solveAction = QAction(
+            self
+        )  # Note: renamed to match intention/Circle class consistency
+        self.solveAction.setToolTip("Solve and plot picture")
+        self.solveAction.setIcon(QIcon(str(SCRIPT_DIR / "CalculateIcon.svg")))
+        self.solveAction.triggered.connect(
             lambda: self.plot_cube(sc, self.combo_color.currentText())
         )
-        toolbar.addAction(self.exportPictAction)
+        toolbar.addAction(self.solveAction)
 
         # Export graph as PNG - button in the top toolbar
         self.exportPictAction = QAction(self)
         self.exportPictAction.setToolTip("Save graph as picture")
-        self.exportPictAction.setIcon(QIcon("SavePictureIcon.svg"))
+        self.exportPictAction.setIcon(QIcon(str(SCRIPT_DIR / "SavePictureIcon.svg")))
         self.exportPictAction.triggered.connect(
             lambda: SaveFig.save_fig(self, self.fig, "Cube.png")
         )
@@ -269,7 +276,7 @@ class WindowCube(QWidget, ShapeFunctionality):
         self.exportXlsxAction.setToolTip(
             "Export input data, results\nand graph into Excel"
         )
-        self.exportXlsxAction.setIcon(QIcon("ExportXLSIcon.svg"))
+        self.exportXlsxAction.setIcon(QIcon(str(SCRIPT_DIR / "ExportXLSIcon.svg")))
         self.exportXlsxAction.triggered.connect(lambda: self.export_excel("Cube"))
         self.exportXlsxAction.setEnabled(False)
         toolbar.addAction(self.exportXlsxAction)
@@ -278,15 +285,15 @@ class WindowCube(QWidget, ShapeFunctionality):
         # Button is disable, when result are not allowable
         self.clearAction = QAction(self)
         self.clearAction.setToolTip("Clear all data and results")
-        self.clearAction.setIcon(QIcon("ClearResultsIcon.svg"))
+        self.clearAction.setIcon(QIcon(str(SCRIPT_DIR / "ClearResultsIcon.svg")))
         self.clearAction.triggered.connect(lambda: self.clear_inputs(sc))
         self.clearAction.setEnabled(False)
         toolbar.addAction(self.clearAction)
 
-        # Close window - - button in the top toolbar
+        # Close window - button in the top toolbar
         self.closeAction = QAction(self)
         self.closeAction.setToolTip("Close window")
-        self.closeAction.setIcon(QIcon("CloseAppIcon.svg"))
+        self.closeAction.setIcon(QIcon(str(SCRIPT_DIR / "CloseAppIcon.svg")))
         self.closeAction.triggered.connect(self.close)
         toolbar.addAction(self.closeAction)
 
@@ -323,16 +330,11 @@ class WindowCube(QWidget, ShapeFunctionality):
             self.custom_messagebox("Y coordinate (z₀) is missing!")
 
         else:
-
             edge = int(self.edit_edge.text())
-
             axes = [edge, edge, edge]
-
             data = np.ones(axes, dtype=np.bool_)
 
             cube_plot.axes.voxels(data, facecolors=cube_color, edgecolors="white")
-            # YlGnBu_r
-
             cube_plot.draw()
 
             # Update figure reference and perform additional actions

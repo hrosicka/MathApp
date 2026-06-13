@@ -1,3 +1,4 @@
+from pathlib import Path
 from PyQt5.QtWidgets import (
     QAction,
     QGridLayout,
@@ -28,6 +29,9 @@ import Canvas
 import SaveFig
 from Shape import *
 
+# Get the absolute path to the directory where this script is located
+SCRIPT_DIR = Path(__file__).resolve().parent
+
 
 class WindowEllipse(QWidget, ShapeFunctionality):
     """
@@ -49,9 +53,9 @@ class WindowEllipse(QWidget, ShapeFunctionality):
         """
         # Create a Matplotlib canvas for plotting the ellipse
         sc = Canvas.MplCanvas(self, width=6, height=6, dpi=100)
-        self.setWindowIcon(
-            QIcon("D:\\Programovani\\Python\\naucse\\PyQtMathApp\\Shape_ico.png")
-        )
+
+        # FIXED: Resolved absolute path dynamically for the window icon
+        self.setWindowIcon(QIcon(str(SCRIPT_DIR / "Shape_ico.png")))
 
         # Button to solve and plot the ellipse
         self.buttonplotEllipse = QPushButton("Solve and Plot")
@@ -246,7 +250,6 @@ class WindowEllipse(QWidget, ShapeFunctionality):
         layout_res.addWidget(self.label_area, 1, 0)
 
         self.label_res_area = QLabel("0.0")
-        # self.label_res_area.setFont(QFont('Arial', 12))
         self.label_res_area.setAlignment(QtCore.Qt.AlignRight)
         self.label_res_area.setFixedWidth(150)
         layout_res.addWidget(self.label_res_area, 1, 1)
@@ -256,10 +259,11 @@ class WindowEllipse(QWidget, ShapeFunctionality):
         self.label_dim_area.setFixedWidth(30)
         layout_res.addWidget(self.label_dim_area, 1, 2)
 
+        # FIXED: Resolved absolute paths for toolbar icons dynamically
         # Solve and plot picture - button in the top toolbar
         self.solveAction = QAction(self)
         self.solveAction.setToolTip("Solve and plot picture")
-        self.solveAction.setIcon(QIcon("CalculateIcon.svg"))
+        self.solveAction.setIcon(QIcon(str(SCRIPT_DIR / "CalculateIcon.svg")))
         self.solveAction.triggered.connect(
             lambda: self.plot_ellipse(sc, self.combo_color.currentText())
         )
@@ -268,7 +272,7 @@ class WindowEllipse(QWidget, ShapeFunctionality):
         # Export graph as PNG - button in the top toolbar
         self.exportPictAction = QAction(self)
         self.exportPictAction.setToolTip("Save graph as picture")
-        self.exportPictAction.setIcon(QIcon("SavePictureIcon.svg"))
+        self.exportPictAction.setIcon(QIcon(str(SCRIPT_DIR / "SavePictureIcon.svg")))
         self.exportPictAction.triggered.connect(
             lambda: SaveFig.save_fig(self, self.fig, "Ellipse.png")
         )
@@ -280,7 +284,7 @@ class WindowEllipse(QWidget, ShapeFunctionality):
         self.exportXlsxAction.setToolTip(
             "Export input data, results\nand graph into Excel"
         )
-        self.exportXlsxAction.setIcon(QIcon("ExportXLSIcon.svg"))
+        self.exportXlsxAction.setIcon(QIcon(str(SCRIPT_DIR / "ExportXLSIcon.svg")))
         self.exportXlsxAction.triggered.connect(lambda: self.export_excel("Ellipse"))
         self.exportXlsxAction.setEnabled(False)
         toolbar.addAction(self.exportXlsxAction)
@@ -289,7 +293,7 @@ class WindowEllipse(QWidget, ShapeFunctionality):
         # Button is disable, when result are not allowable
         self.clearAction = QAction(self)
         self.clearAction.setToolTip("Clear all data and results")
-        self.clearAction.setIcon(QIcon("ClearResultsIcon.svg"))
+        self.clearAction.setIcon(QIcon(str(SCRIPT_DIR / "ClearResultsIcon.svg")))
         self.clearAction.triggered.connect(lambda: self.clear_inputs(sc))
         self.clearAction.setEnabled(False)
         toolbar.addAction(self.clearAction)
@@ -297,7 +301,7 @@ class WindowEllipse(QWidget, ShapeFunctionality):
         # Close window - - button in the top toolbar
         self.closeAction = QAction(self)
         self.closeAction.setToolTip("Close window")
-        self.closeAction.setIcon(QIcon("CloseAppIcon.svg"))
+        self.closeAction.setIcon(QIcon(str(SCRIPT_DIR / "CloseAppIcon.svg")))
         self.closeAction.triggered.connect(self.close)
         toolbar.addAction(self.closeAction)
 
@@ -367,7 +371,6 @@ class WindowEllipse(QWidget, ShapeFunctionality):
             self.custom_messagebox("Y coordinate (y₀) is missing!")
 
         else:
-
             center_x = float(self.edit_centerX.text())
             center_y = float(self.edit_centerY.text())
             width = 2 * float(self.edit_axis_a.text())
@@ -409,7 +412,6 @@ class WindowEllipse(QWidget, ShapeFunctionality):
             axis_a = float(self.edit_axis_a.text())
             axis_b = float(self.edit_axis_b.text())
         except ValueError:
-            # Handle non-numeric input gracefully (e.g., display an error message)
             raise ValueError(
                 "Please enter valid numeric values for both semi-axis lengths."
             )
