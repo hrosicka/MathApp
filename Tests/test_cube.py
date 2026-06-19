@@ -3,11 +3,10 @@ import sys
 
 # setting path
 sys.path.append("../PyQtMathApp")
-from CubeCalc import *
+from CubeCalc import Cube
 
 
 class TestSquare(unittest.TestCase):
-
     def test_init_valid_side_length(self):
         """Tests initialization with a valid positive side length."""
         cube = Cube(5.526)

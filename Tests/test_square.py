@@ -3,11 +3,10 @@ import sys
 
 # setting path
 sys.path.append("../PyQtMathApp")
-from SquareCalc import *
+from SquareCalc import Square
 
 
 class TestSquare(unittest.TestCase):
-
     def test_init_valid_side_length(self):
         """Tests initialization with a valid positive side length."""
         square = Square(5.0)

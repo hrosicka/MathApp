@@ -27,7 +27,7 @@ from matplotlib.patches import Ellipse
 import EllipseCalc
 import Canvas
 import SaveFig
-from Shape import *
+from Shape import ShapeFunctionality
 
 # Get the absolute path to the directory where this script is located
 SCRIPT_DIR = Path(__file__).resolve().parent

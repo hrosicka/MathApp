@@ -4,11 +4,10 @@ from math import pi
 
 # setting path
 sys.path.append("../PyQtMathApp")
-from CircleCalc import *
+from CircleCalc import Circle
 
 
 class CircleTest(unittest.TestCase):
-
     def test_init_valid_radius(self):
         """Tests initialization with a valid positive radius."""
         circle = Circle(5.0)

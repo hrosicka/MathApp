@@ -1,17 +1,14 @@
 import unittest
 import sys
-from math import pi
 
 # setting path
 sys.path.append("../PyQtMathApp")
-from SphereCalc import *
+from SphereCalc import Sphere
 
-import unittest
 import math
 
 
 class SphereTest(unittest.TestCase):
-
     def test_init_valid_radius(self):
         """Tests initialization with a valid positive radius."""
         sphere = Sphere(5.0)

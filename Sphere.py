@@ -23,7 +23,7 @@ import numpy as np
 import SphereCalc
 import CanvasThreeD
 import SaveFig
-from Shape import *
+from Shape import ShapeFunctionality
 
 # Get the absolute path to the directory where this script is located
 SCRIPT_DIR = Path(__file__).resolve().parent

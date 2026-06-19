@@ -1,5 +1,8 @@
 import sys
 from pathlib import Path
+import matplotlib
+
+matplotlib.use("Qt5Agg")
 
 from PyQt5.QtWidgets import (
     QApplication,
@@ -22,26 +25,21 @@ from PyQt5.QtGui import (
 
 from PyQt5 import QtCore
 
-# Get the absolute path to the directory where this script is located
-SCRIPT_DIR = Path(__file__).resolve().parent
-
-from Circle import *
-from Sphere import *
-from Ellipse import *
-from Ellipsoid import *
-from Square import *
-from Cube import *
-
-import matplotlib
-
-matplotlib.use("Qt5Agg")
+from Circle import WindowCircle
+from Sphere import WindowSphere
+from Ellipse import WindowEllipse
+from Ellipsoid import WindowEllipsoid
+from Square import WindowSquare
+from Cube import WindowCube
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 
+# Get the absolute path to the directory where this script is located
+SCRIPT_DIR = Path(__file__).resolve().parent
+
 
 class MplCanvas(FigureCanvasQTAgg):
-
     def __init__(self, parent=None, width=5, height=5, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot(111)
@@ -50,7 +48,6 @@ class MplCanvas(FigureCanvasQTAgg):
 
 
 class MainWindow(QMainWindow):
-
     def __init__(self):
         super().__init__()
 
@@ -75,9 +72,9 @@ class MainWindow(QMainWindow):
         buttonClose = QPushButton("Close")
         buttonClose.clicked.connect(app.closeAllWindows)
 
-        l = QHBoxLayout()
-        l.addStretch(1)
-        l.addWidget(buttonClose)
+        layout = QHBoxLayout()
+        layout.addStretch(1)
+        layout.addWidget(buttonClose)
 
         l2 = QVBoxLayout()
 
@@ -122,7 +119,7 @@ class MainWindow(QMainWindow):
         button6.clicked.connect(lambda checked: self.toggle_window(self.window6))
         l3.addWidget(button6, 3, 1)
 
-        l2.addLayout(l)
+        l2.addLayout(layout)
 
         w = QWidget()
         w.setLayout(l2)
@@ -198,7 +195,7 @@ class MainWindow(QMainWindow):
         geometryMenu.addAction(self.squareAction)
         geometryMenu.addAction(self.cubeAction)
 
-        helpMenu = menuBar.addMenu("&Help")
+        menuBar.addMenu("&Help")
 
 
 app = QApplication(sys.argv)
