@@ -1,6 +1,6 @@
 import unittest
 import sys
-from math import pi
+import math
 
 # setting path
 sys.path.append("../PyQtMathApp")
@@ -67,7 +67,7 @@ class EllipseTest(unittest.TestCase):
         ellipse = Ellipse(0.000001, 3.0)
         self.assertAlmostEqual(
             ellipse.circumference(),
-            round(pi * math.sqrt(2 * (0.000001**2 + 3.0**2)), 5),
+            round(math.pi * math.sqrt(2 * (0.000001**2 + 3.0**2)), 5),
         )
 
     def test_init_very_large_major_axis(self):
@@ -75,7 +75,7 @@ class EllipseTest(unittest.TestCase):
         ellipse = Ellipse(1000000.0, 3.0)
         self.assertAlmostEqual(
             ellipse.circumference(),
-            round(pi * math.sqrt(2 * (1000000.0**2 + 3.0**2)), 5),
+            round(math.pi * math.sqrt(2 * (1000000.0**2 + 3.0**2)), 5),
         )
 
     def test_init_empty_string_major_axis(self):
@@ -97,21 +97,21 @@ class EllipseTest(unittest.TestCase):
     def test_circumference(self):
         """Tests circumference calculation for various axis lengths."""
         ellipse = Ellipse(3.0, 1.0)
-        expected_circumference = round(pi * math.sqrt(2 * (3.0**2 + 1.0**2)), 5)
+        expected_circumference = round(math.pi * math.sqrt(2 * (3.0**2 + 1.0**2)), 5)
         self.assertEqual(ellipse.circumference(), expected_circumference)
 
         ellipse = Ellipse(8.0, 4.0)
-        expected_circumference = round(pi * math.sqrt(2 * (8.0**2 + 4.0**2)), 5)
+        expected_circumference = round(math.pi * math.sqrt(2 * (8.0**2 + 4.0**2)), 5)
         self.assertEqual(ellipse.circumference(), expected_circumference)
 
     def test_area(self):
         """Tests area calculation for various axis lengths."""
         ellipse = Ellipse(2.0, 1.5)
-        expected_area = round(pi * 2.0 * 1.5, 5)
+        expected_area = round(math.pi * 2.0 * 1.5, 5)
         self.assertEqual(ellipse.area(), expected_area)
 
         ellipse = Ellipse(7.0, 3.0)
-        expected_area = round(pi * 7.0 * 3.0, 5)
+        expected_area = round(math.pi * 7.0 * 3.0, 5)
         self.assertEqual(ellipse.area(), expected_area)
 
     def test_get_description(self):
