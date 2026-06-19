@@ -4,7 +4,7 @@ from math import pi
 
 # setting path
 sys.path.append("../PyQtMathApp")
-from EllipseCalc import *
+from EllipseCalc import Ellipse
 
 
 class EllipseTest(unittest.TestCase):

@@ -3,7 +3,7 @@ import sys
 
 # setting path
 sys.path.append("../PyQtMathApp")
-from SquareCalc import *
+from SquareCalc import Square
 
 
 class TestSquare(unittest.TestCase):

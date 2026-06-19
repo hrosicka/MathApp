@@ -4,7 +4,7 @@ from math import pi
 
 # setting path
 sys.path.append("../PyQtMathApp")
-from CircleCalc import *
+from CircleCalc import Circle
 
 
 class CircleTest(unittest.TestCase):

@@ -4,7 +4,7 @@ from math import pi
 
 # setting path
 sys.path.append("../PyQtMathApp")
-from EllipsoidCalc import *
+from EllipsoidCalc import Ellipsoid
 
 
 class EllipsoidTest(unittest.TestCase):

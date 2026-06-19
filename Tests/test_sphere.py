@@ -3,7 +3,7 @@ import sys
 
 # setting path
 sys.path.append("../PyQtMathApp")
-from SphereCalc import *
+from SphereCalc import Sphere
 
 import math
 
