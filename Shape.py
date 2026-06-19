@@ -18,7 +18,6 @@ import pandas as pd
 
 
 class ShapeFunctionality:
-
     def custom_messagebox(self, text="Error!"):
         """
         Displays a custom message box with an error icon.

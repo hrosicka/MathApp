@@ -8,7 +8,6 @@ from EllipseCalc import *
 
 
 class EllipseTest(unittest.TestCase):
-
     def test_init_valid_axes(self):
         """Tests initialization with valid positive axis lengths."""
         ellipse = Ellipse(5.0, 3.0)

@@ -8,7 +8,6 @@ from EllipsoidCalc import *
 
 
 class EllipsoidTest(unittest.TestCase):
-
     def test_init_valid_dimensions(self):
         """Tests initialization with valid positive semi-axes."""
         ellipsoid = Ellipsoid(5.0, 3.0, 2.0)
