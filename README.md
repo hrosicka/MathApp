@@ -1,11 +1,37 @@
 # MathApp - Explore 2D and 3D Shapes
 
-![Stars](https://img.shields.io/github/stars/hrosicka/MathApp?style=for-the-badge&color=ffd700&logo=github)
-![License](https://img.shields.io/github/license/hrosicka/MathApp?style=for-the-badge&color=2ecc71)
-![Last Commit](https://img.shields.io/github/last-commit/hrosicka/MathApp?style=for-the-badge&color=3498db&logo=git)
-![Issues](https://img.shields.io/github/issues/hrosicka/MathApp?style=for-the-badge&color=e74c3c)
-![Contributors](https://img.shields.io/github/contributors/hrosicka/MathApp?style=for-the-badge&color=9b5de5)
-![Made With Python](https://img.shields.io/badge/Made%20With-Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+<div align="center">
+
+  <a href="https://github.com/hrosicka/MathApp/stargazers">
+    <img src="https://img.shields.io/github/stars/hrosicka/MathApp?style=for-the-badge&color=4F8EF7&logo=starship&logoColor=white" alt="Stars" />
+  </a>
+  <a href="https://github.com/hrosicka/MathApp/network/members">
+    <img src="https://img.shields.io/github/forks/hrosicka/MathApp?style=for-the-badge&color=4F8EF7&logo=git&logoColor=white" alt="Forks" />
+  </a>
+  <a href="https://github.com/hrosicka/MathApp/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/hrosicka/MathApp?style=for-the-badge&color=4F8EF7&logo=github&logoColor=white" alt="Contributors" />
+  </a>
+  <a href="https://github.com/hrosicka/MathApp/commits/main">
+    <img src="https://img.shields.io/github/last-commit/hrosicka/MathApp?style=for-the-badge&color=6366F1&logo=githubactions&logoColor=white" alt="Last Commit" />
+  </a>
+  <a href="https://github.com/hrosicka/MathApp/issues">
+    <img src="https://img.shields.io/github/issues/hrosicka/MathApp?style=for-the-badge&color=F59E0B&logo=github&logoColor=white" alt="Issues" />
+  </a>
+  <br/>
+
+  <a href="https://www.python.org/">
+    <img src="https://img.shields.io/badge/Made%20With-Python-3776AB?style=for-the-badge&logo=python&logoColor=FFE873" alt="Made With Python" />
+  </a>
+  <img src="https://img.shields.io/badge/App-Math%20App-EF4444?style=for-the-badge&logo=calculator&logoColor=white" alt="Math App" />
+  <img src="https://img.shields.io/badge/Focus-Mathematics-8B5CF6?style=for-the-badge&logo=wolframmathematica&logoColor=white" alt="Mathematics" />
+  <img src="https://img.shields.io/github/repo-size/hrosicka/MathApp?style=for-the-badge&color=3B82F6&logo=files&logoColor=white" alt="Repo Size" />
+  <br/>
+
+  <a href="LICENSE">
+    <img src="https://img.shields.io/github/license/hrosicka/MathApp?style=for-the-badge&color=10B981&logo=opensourceinitiative&logoColor=white" alt="License" />
+  </a>
+
+</div>
 
 This interactive application allows you to visualize and learn about various geometric shapes. Still in progress...
 
